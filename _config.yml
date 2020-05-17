@@ -122,3 +122,14 @@ symbols_count_time:
   time: true
   total_symbols: true
   total_time: true
+
+douban:
+  user: 99588562
+  builtin: true
+  book:
+    title: '读书'
+    quote: '早闻道，夕死可矣'
+  movie:
+    title: '观影'
+    quote: '世间所有的相遇，都是久别重逢'
+  timeout: 10000
