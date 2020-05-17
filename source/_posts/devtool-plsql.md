@@ -2,16 +2,15 @@
 layout: post
 title:  "PLSQL12使用"
 date:   2019-11-06 19:06:18 +0800
-categories: devtool
-tags: 开发工具 PLSQL12
-author: jychen
+categories: 
+  - devtool
+tags: 
+  - 开发工具 
+  - PLSQL12
 ---
 
-* content
-{:toc}
-
-本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。
-
+    本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。
+<!--more-->
 
 
 

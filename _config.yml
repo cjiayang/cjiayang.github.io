@@ -111,3 +111,14 @@ leancloud_counter_security:
   username: jychen
   password: hexo
   
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 1000
+  
+symbols_count_time:
+  symbols: true
+  time: true
+  total_symbols: true
+  total_time: true
