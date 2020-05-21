@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/11/14/IrNvxQJbOqyLRAY.png">
 <meta property="og:image" content="https://i.loli.net/2019/11/14/x32vGRN6PeLaOKu.png">
 <meta property="article:published_time" content="2019-11-06T11:06:18.000Z">
-<meta property="article:modified_time" content="2020-05-18T04:21:21.538Z">
+<meta property="article:modified_time" content="2020-05-21T11:11:16.982Z">
 <meta property="article:author" content="jychen">
 <meta property="article:tag" content="开发工具">
 <meta property="article:tag" content="PLSQL12">
@@ -261,7 +261,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-18 12:21:21" itemprop="dateModified" datetime="2020-05-18T12:21:21+08:00">2020-05-18</time>
+                <time title="修改时间：2020-05-21 19:11:16" itemprop="dateModified" datetime="2020-05-21T19:11:16+08:00">2020-05-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -283,7 +283,7 @@
             </span>
             <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
-                <i class="eye"></i>
+                <i class="fa || fa-eye"></i>
               </span>
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
@@ -307,7 +307,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.5k</span>
+              <span>1.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -326,18 +326,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <pre><code>本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。</code></pre><a id="more"></a>
+        <p>本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。</p>
+<a id="more"></a>
 
 
 
-<h3 id="1-PLSQL下载安装及汉化"><a href="#1-PLSQL下载安装及汉化" class="headerlink" title="1 PLSQL下载安装及汉化"></a>1 PLSQL下载安装及汉化</h3><h4 id="1-1-下载地址"><a href="#1-1-下载地址" class="headerlink" title="1.1 下载地址"></a>1.1 下载地址</h4><ul>
-<li><p>PLSQL官网下载：<a href="https://www.allroundautomations.com/bodyplsqldevreg.html" target="_blank" rel="noopener"> PL/SQL Developer - Registered Download </a></p>
-</li>
-<li><p>汉化可执行文件下载：<a href="https://www.allroundautomations.com/plsqldevlang/120/index.html" target="_blank" rel="noopener"> PL/SQL Developer - Language Packs </a></p>
+<h2 id="PLSQL下载安装及汉化"><a href="#PLSQL下载安装及汉化" class="headerlink" title="PLSQL下载安装及汉化"></a>PLSQL下载安装及汉化</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>PLSQL官网下载：<a href="https://www.allroundautomations.com/bodyplsqldevreg.html" target="_blank" rel="noopener"> PL/SQL Developer - Registered Download </a></p>
+<p>汉化可执行文件下载：<a href="https://www.allroundautomations.com/plsqldevlang/120/index.html" target="_blank" rel="noopener"> PL/SQL Developer - Language Packs </a></p>
 <p><img src="https://i.loli.net/2019/11/13/IN8AicbCqn3Gup9.png" alt="plsql_pic0.png"></p>
-</li>
-</ul>
-<h4 id="1-2-安装及汉化"><a href="#1-2-安装及汉化" class="headerlink" title="1.2 安装及汉化"></a>1.2 安装及汉化</h4><ul>
+<h3 id="安装及汉化"><a href="#安装及汉化" class="headerlink" title="安装及汉化"></a>安装及汉化</h3><ul>
 <li>下载 12.0.7x64位版本  <a href="https://www.allroundautomations.com/files/plsqldev1207x64.msi" target="_blank" rel="noopener">plsqldev1207x64.msi</a>  ，双击安装，安装时选择Enter licence information输入注册码如下：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">product code： 4vkjwhfeh3ufnqnmpr9brvcuyujrx3n3le</span><br><span class="line">serial Number：226959</span><br><span class="line">password: xs374ca</span><br></pre></td></tr></table></figure>
@@ -348,48 +345,27 @@
 <p><img src="https://i.loli.net/2019/11/14/PwhSCk5amAXeZ4l.gif" alt="devtool_plsql_gif2.gif"></p>
 </li>
 </ul>
-<h3 id="2-Oracle客户端下载"><a href="#2-Oracle客户端下载" class="headerlink" title="2 Oracle客户端下载"></a>2 Oracle客户端下载</h3><h4 id="2-1-下载Oracle客户端"><a href="#2-1-下载Oracle客户端" class="headerlink" title="2.1 下载Oracle客户端"></a>2.1 下载Oracle客户端</h4><p>Oracle客户端下载页面：<a href="https://www.oracle.com/database/technologies/instant-client/downloads.html" target="_blank" rel="noopener">Oracle Instant Client Downloads</a>，</p>
+<h2 id="Oracle客户端下载"><a href="#Oracle客户端下载" class="headerlink" title="Oracle客户端下载"></a>Oracle客户端下载</h2><h3 id="下载Oracle客户端"><a href="#下载Oracle客户端" class="headerlink" title="下载Oracle客户端"></a>下载Oracle客户端</h3><p>Oracle客户端下载页面：<a href="https://www.oracle.com/database/technologies/instant-client/downloads.html" target="_blank" rel="noopener">Oracle Instant Client Downloads</a>，</p>
 <p>点击选择 <a href="https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html" target="_blank" rel="noopener">Instant Client for Microsoft Windows (x64)</a> ，选择与自己安装数据库相匹配的客户端版本， 下载Instant Client Package - Basic 包，如我的Oracle版本是Version 11.2.0.4.0，则下载 <a href="https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html#license-lightbox" target="_blank" rel="noopener">instantclient-basic-windows.x64-11.2.0.4.0.zip</a> ，解压到plsql安装的同级目录（也可其他目录，主要是好找）</p>
 <p>  <img src="https://i.loli.net/2019/11/14/QRjJ7WOXFbyKSTY.gif" alt="devtool_plsql_gif3.gif"></p>
-<h4 id="2-2-PL-SQL配置Oracle客户端"><a href="#2-2-PL-SQL配置Oracle客户端" class="headerlink" title="2.2 PL/SQL配置Oracle客户端"></a>2.2 PL/SQL配置Oracle客户端</h4><ul>
-<li>免登录进入PLSQL，点击首选项 -&gt; 连接，Oracle注目录名和OCI库选择Oracle客户端解压目录下的oci.dll文件，点击应用，重启后即可在页面连接登录<br><img src="https://i.loli.net/2019/11/14/JFenlED5PTvYUI4.png" alt="plsql_pic9.png"></li>
-</ul>
-<h3 id="3-PL-SQL配置"><a href="#3-PL-SQL配置" class="headerlink" title="3 PL/SQL配置"></a>3 PL/SQL配置</h3><h4 id="3-1-视图配置"><a href="#3-1-视图配置" class="headerlink" title="3.1 视图配置"></a>3.1 视图配置</h4><ul>
-<li><p>切换到<code>视图</code>选项卡，勾选连接和对象浏览器，勾选单文档，调整窗口布局后，点击保存布局。</p>
+<h3 id="PL-SQL配置Oracle客户端"><a href="#PL-SQL配置Oracle客户端" class="headerlink" title="PL/SQL配置Oracle客户端"></a>PL/SQL配置Oracle客户端</h3><p>免登录进入PLSQL，点击首选项 -&gt; 连接，Oracle注目录名和OCI库选择Oracle客户端解压目录下的oci.dll文件，点击应用，重启后即可在页面连接登录<br><img src="https://i.loli.net/2019/11/14/JFenlED5PTvYUI4.png" alt="plsql_pic9.png"></p>
+<h3 id="PL-SQL配置"><a href="#PL-SQL配置" class="headerlink" title="PL/SQL配置"></a>PL/SQL配置</h3><h4 id="视图配置"><a href="#视图配置" class="headerlink" title="视图配置"></a>视图配置</h4><p>切换到<code>视图</code>选项卡，勾选连接和对象浏览器，勾选单文档，调整窗口布局后，点击保存布局。</p>
 <p><img src="https://i.loli.net/2019/11/14/Eobm1IFcsnwgf6a.png" alt="devtool_plsql_pic1.png"></p>
-</li>
-</ul>
-<h4 id="3-2-连接配置"><a href="#3-2-连接配置" class="headerlink" title="3.2 连接配置"></a>3.2 连接配置</h4><ul>
-<li><p>切换到<code>配置</code>选项卡，点击<code>连接</code>按钮，添加经常使用的连接信息，不同连接可以选不同的颜色进行区分。重启PL/SQL之后，就可以在登录界面上看到已经填写好的连接，直接双击即可登录，不用每次输入连接信息。</p>
+<h4 id="连接配置"><a href="#连接配置" class="headerlink" title="连接配置"></a>连接配置</h4><p>切换到<code>配置</code>选项卡，点击<code>连接</code>按钮，添加经常使用的连接信息，不同连接可以选不同的颜色进行区分。重启PL/SQL之后，就可以在登录界面上看到已经填写好的连接，直接双击即可登录，不用每次输入连接信息。</p>
 <p><img src="https://i.loli.net/2019/11/18/RphNMajLwf8rq9e.png" alt="devtool_plsql_pic4.png"></p>
 <p><img src="https://i.loli.net/2019/11/18/KdzcYvXGmDTJnRg.png" alt="devtool_plsql_pic5.png"></p>
-</li>
-</ul>
-<h4 id="3-3-对象浏览器配置"><a href="#3-3-对象浏览器配置" class="headerlink" title="3.3 对象浏览器配置"></a>3.3 对象浏览器配置</h4><ul>
-<li><p><code>首选项 -&gt; 用户界面 - &gt; 浏览器</code>，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到配置选项卡，点击<code>对象浏览器文件夹</code>按钮，进行配置。</p>
+<h4 id="对象浏览器配置"><a href="#对象浏览器配置" class="headerlink" title="对象浏览器配置"></a>对象浏览器配置</h4><p><code>首选项 -&gt; 用户界面 - &gt; 浏览器</code>，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到配置选项卡，点击<code>对象浏览器文件夹</code>按钮，进行配置。</p>
 <p><img src="https://i.loli.net/2019/11/14/UAYViHs7cDEnPr8.gif" alt="devtool_plsql_gif6.gif"></p>
-</li>
-</ul>
-<h4 id="3-4-自动代码补全配置"><a href="#3-4-自动代码补全配置" class="headerlink" title="3.4 自动代码补全配置"></a>3.4 自动代码补全配置</h4><ul>
-<li><p>可以为常用的关键字和查询语句设置代码补全，以下代码供参考：</p>
+<h4 id="自动代码补全配置"><a href="#自动代码补全配置" class="headerlink" title="自动代码补全配置"></a>自动代码补全配置</h4><p>可以为常用的关键字和查询语句设置代码补全，以下代码供参考：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s &#x3D; SELECT</span><br><span class="line">f &#x3D; FROM</span><br><span class="line">w &#x3D; WHERE</span><br><span class="line">o &#x3D; ORDER BY</span><br><span class="line">d &#x3D; DELETE</span><br><span class="line">sf &#x3D; SELECT * FROM</span><br><span class="line">df &#x3D; DELETE FROM</span><br><span class="line">sc &#x3D; SELECT COUNT (*) FROM</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ul>
-<p>  <img src="https://i.loli.net/2019/11/14/vOwJnzimt2LVxP8.gif" alt="devtool_plsql_gif5.gif"></p>
-<h4 id="3-5-美化器配置"><a href="#3-5-美化器配置" class="headerlink" title="3.5 美化器配置"></a>3.5 美化器配置</h4><ul>
-<li><p>配置美化格式，配置完后可以保存成文件，在其他机子也可以用</p>
+<p><img src="https://i.loli.net/2019/11/14/vOwJnzimt2LVxP8.gif" alt="devtool_plsql_gif5.gif"></p>
+<h4 id="美化器配置"><a href="#美化器配置" class="headerlink" title="美化器配置"></a>美化器配置</h4><p>配置美化格式，配置完后可以保存成文件，在其他机子也可以用</p>
 <p><img src="https://i.loli.net/2019/11/14/IrNvxQJbOqyLRAY.png" alt="devtool_plsql_pic2.png"></p>
-</li>
-</ul>
-<h4 id="3-6-快捷键配置"><a href="#3-6-快捷键配置" class="headerlink" title="3.6 快捷键配置"></a>3.6 快捷键配置</h4><ul>
-<li><code>首选项 -&gt; 用户界面 -&gt; 键配置</code>设置常用的快捷键，如打开SQL窗口和命令窗口的快捷键<br><img src="https://i.loli.net/2019/11/14/x32vGRN6PeLaOKu.png" alt="devtool_plsql_pic3.png"></li>
-</ul>
-<h4 id="3-7-工具使用"><a href="#3-7-工具使用" class="headerlink" title="3.7 工具使用"></a>3.7 工具使用</h4><ul>
-<li>在工具选项卡常用的有导出用户对象，比较用户对象，导出表，比较表数据的功能，功能都比较强大。</li>
-</ul>
+<h4 id="快捷键配置"><a href="#快捷键配置" class="headerlink" title="快捷键配置"></a>快捷键配置</h4><p><code>首选项 -&gt; 用户界面 -&gt; 键配置</code>设置常用的快捷键，如打开SQL窗口和命令窗口的快捷键<br><img src="https://i.loli.net/2019/11/14/x32vGRN6PeLaOKu.png" alt="devtool_plsql_pic3.png"></p>
+<h4 id="工具使用"><a href="#工具使用" class="headerlink" title="工具使用"></a>工具使用</h4><p>在工具选项卡常用的有导出用户对象，比较用户对象，导出表，比较表数据的功能，功能都比较强大。</p>
 <h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><hr>
 <ul>
 <li><a href="https://blog.csdn.net/sl1992/article/details/80489413" target="_blank" rel="noopener">PLSQL Developer 12.0.7连接Oracle12c数据库</a></li>
@@ -405,7 +381,7 @@
 	  
 		<div>
     
-        <div style="text-align:center;color: #555;font-size:14px;">-------------The End-------------</div>
+        <div style="text-align:center;font-size:22px;letter-spacing:10px;user-select:none;color:#bbb;"><br>----------- 本文结束啦<i class="fa fa-star"></i>感谢您阅读 -----------<br><br></div>
     
 </div>
 	  
@@ -521,7 +497,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-PLSQL下载安装及汉化"><span class="nav-number">1.</span> <span class="nav-text">1 PLSQL下载安装及汉化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-下载地址"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 下载地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-安装及汉化"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 安装及汉化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Oracle客户端下载"><span class="nav-number">2.</span> <span class="nav-text">2 Oracle客户端下载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-下载Oracle客户端"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 下载Oracle客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-PL-SQL配置Oracle客户端"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 PL&#x2F;SQL配置Oracle客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-PL-SQL配置"><span class="nav-number">3.</span> <span class="nav-text">3 PL&#x2F;SQL配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-视图配置"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 视图配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-连接配置"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-对象浏览器配置"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 对象浏览器配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-自动代码补全配置"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 自动代码补全配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-美化器配置"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 美化器配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-6-快捷键配置"><span class="nav-number">3.6.</span> <span class="nav-text">3.6 快捷键配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-7-工具使用"><span class="nav-number">3.7.</span> <span class="nav-text">3.7 工具使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">4.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PLSQL下载安装及汉化"><span class="nav-number">1.</span> <span class="nav-text">PLSQL下载安装及汉化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载地址"><span class="nav-number">1.1.</span> <span class="nav-text">下载地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装及汉化"><span class="nav-number">1.2.</span> <span class="nav-text">安装及汉化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Oracle客户端下载"><span class="nav-number">2.</span> <span class="nav-text">Oracle客户端下载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载Oracle客户端"><span class="nav-number">2.1.</span> <span class="nav-text">下载Oracle客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PL-SQL配置Oracle客户端"><span class="nav-number">2.2.</span> <span class="nav-text">PL&#x2F;SQL配置Oracle客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PL-SQL配置"><span class="nav-number">2.3.</span> <span class="nav-text">PL&#x2F;SQL配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#视图配置"><span class="nav-number">2.3.1.</span> <span class="nav-text">视图配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接配置"><span class="nav-number">2.3.2.</span> <span class="nav-text">连接配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对象浏览器配置"><span class="nav-number">2.3.3.</span> <span class="nav-text">对象浏览器配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自动代码补全配置"><span class="nav-number">2.3.4.</span> <span class="nav-text">自动代码补全配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#美化器配置"><span class="nav-number">2.3.5.</span> <span class="nav-text">美化器配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#快捷键配置"><span class="nav-number">2.3.6.</span> <span class="nav-text">快捷键配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#工具使用"><span class="nav-number">2.3.7.</span> <span class="nav-text">工具使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">2.4.</span> <span class="nav-text">参考文章</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -537,7 +513,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -550,7 +526,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -615,7 +591,7 @@
   <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
       <span class="post-meta-item-icon">
-        <i class="user"></i>
+        <i class="fa || fa-user"></i>
       </span>
       <span class="site-uv" title="我的第 undefined 位朋友">
         <span id="busuanzi_value_site_uv"></span>
@@ -624,7 +600,7 @@
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
       <span class="post-meta-item-icon">
-        <i class="eye"></i>
+        <i class="fa || fa-eye"></i>
       </span>
       <span class="site-pv" title="历经 undefined 次回眸才与你相遇">
         <span id="busuanzi_value_site_pv"></span>

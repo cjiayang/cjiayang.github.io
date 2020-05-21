@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>利用Hexo在GitHub Page搭建博客</title>
+    <url>/2020/05/21/blog-hexo/</url>
+    <content><![CDATA[<p>Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo在GitHub Pages 上搭建博客的过程，以备忘。</p>
+<a id="more"></a>
+
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>为了搭建博客，经历了一番波折，也翻了好多文章，一些值得参考的文章会在文章后面列出。总结起来博客搭建经历了以下几个过程。</p>
+<p>第一阶段，搭建博客，并将文章上传到github上。这个过程比较简单，基本安装完node.js，git客户端后按hexo官方教程即可实现。这个阶段遇到的问题是执行<code>hexo d</code>命令后只将hexo解析后的代码发布到github上，并没有将博客的配置代码和文章源码上传到github上，这没有实现我想要的可以在多台电脑上写博客的需求，所以到网上继续翻。</p>
+<p>第二阶段，删除第一阶段创建的github仓库，重新创建，创建完成后继续创建一个source源码分支，用于保存博客的源代码。这个阶段遇到些困难，细节后面会讲到。</p>
+<p>第三阶段，选择next主题，并对主题做优化。</p>
+<p>所以，利用hexo在github上搭建博客，如果有保存源码需求的，首先要考虑如何保存源码（可考虑使用github分支或另建一个仓库），然后选择主题，如果想博客漂亮一点可以美化美化，最后就坚持写写写。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>搭建博客过程使用的环境：</p>
+<ul>
+<li>windows10</li>
+<li>Node.js</li>
+<li>Git</li>
+</ul>
+<h2 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h2><h2 id="GitHub-Pages-上搭建博客"><a href="#GitHub-Pages-上搭建博客" class="headerlink" title="GitHub Pages 上搭建博客"></a>GitHub Pages 上搭建博客</h2><p>因为考虑到要保存源码，所以在github上创建仓库之后，创建一个source分支</p>
+<h3 id="github创建仓库"><a href="#github创建仓库" class="headerlink" title="github创建仓库"></a>github创建仓库</h3><p>在github上新建一个仓库名为<code>用户名.github.io</code>的仓库，创建完成后，创建一个source分支，</p>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+        <tag>next</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/05/18/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
@@ -23,18 +48,15 @@
   <entry>
     <title>PLSQL12使用</title>
     <url>/2019/11/06/devtool-plsql/</url>
-    <content><![CDATA[<pre><code>本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。</code></pre><a id="more"></a>
+    <content><![CDATA[<p>本文对PLSQL12.0.7版本的下载，安装，汉化，和日常使用技巧做记录。</p>
+<a id="more"></a>
 
 
 
-<h3 id="1-PLSQL下载安装及汉化"><a href="#1-PLSQL下载安装及汉化" class="headerlink" title="1 PLSQL下载安装及汉化"></a>1 PLSQL下载安装及汉化</h3><h4 id="1-1-下载地址"><a href="#1-1-下载地址" class="headerlink" title="1.1 下载地址"></a>1.1 下载地址</h4><ul>
-<li><p>PLSQL官网下载：<a href="https://www.allroundautomations.com/bodyplsqldevreg.html" target="_blank" rel="noopener"> PL/SQL Developer - Registered Download </a></p>
-</li>
-<li><p>汉化可执行文件下载：<a href="https://www.allroundautomations.com/plsqldevlang/120/index.html" target="_blank" rel="noopener"> PL/SQL Developer - Language Packs </a></p>
+<h2 id="PLSQL下载安装及汉化"><a href="#PLSQL下载安装及汉化" class="headerlink" title="PLSQL下载安装及汉化"></a>PLSQL下载安装及汉化</h2><h3 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h3><p>PLSQL官网下载：<a href="https://www.allroundautomations.com/bodyplsqldevreg.html" target="_blank" rel="noopener"> PL/SQL Developer - Registered Download </a></p>
+<p>汉化可执行文件下载：<a href="https://www.allroundautomations.com/plsqldevlang/120/index.html" target="_blank" rel="noopener"> PL/SQL Developer - Language Packs </a></p>
 <p><img src="https://i.loli.net/2019/11/13/IN8AicbCqn3Gup9.png" alt="plsql_pic0.png"></p>
-</li>
-</ul>
-<h4 id="1-2-安装及汉化"><a href="#1-2-安装及汉化" class="headerlink" title="1.2 安装及汉化"></a>1.2 安装及汉化</h4><ul>
+<h3 id="安装及汉化"><a href="#安装及汉化" class="headerlink" title="安装及汉化"></a>安装及汉化</h3><ul>
 <li>下载 12.0.7x64位版本  <a href="https://www.allroundautomations.com/files/plsqldev1207x64.msi" target="_blank" rel="noopener">plsqldev1207x64.msi</a>  ，双击安装，安装时选择Enter licence information输入注册码如下：</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">product code： 4vkjwhfeh3ufnqnmpr9brvcuyujrx3n3le</span><br><span class="line">serial Number：226959</span><br><span class="line">password: xs374ca</span><br></pre></td></tr></table></figure>
@@ -45,48 +67,27 @@
 <p><img src="https://i.loli.net/2019/11/14/PwhSCk5amAXeZ4l.gif" alt="devtool_plsql_gif2.gif"></p>
 </li>
 </ul>
-<h3 id="2-Oracle客户端下载"><a href="#2-Oracle客户端下载" class="headerlink" title="2 Oracle客户端下载"></a>2 Oracle客户端下载</h3><h4 id="2-1-下载Oracle客户端"><a href="#2-1-下载Oracle客户端" class="headerlink" title="2.1 下载Oracle客户端"></a>2.1 下载Oracle客户端</h4><p>Oracle客户端下载页面：<a href="https://www.oracle.com/database/technologies/instant-client/downloads.html" target="_blank" rel="noopener">Oracle Instant Client Downloads</a>，</p>
+<h2 id="Oracle客户端下载"><a href="#Oracle客户端下载" class="headerlink" title="Oracle客户端下载"></a>Oracle客户端下载</h2><h3 id="下载Oracle客户端"><a href="#下载Oracle客户端" class="headerlink" title="下载Oracle客户端"></a>下载Oracle客户端</h3><p>Oracle客户端下载页面：<a href="https://www.oracle.com/database/technologies/instant-client/downloads.html" target="_blank" rel="noopener">Oracle Instant Client Downloads</a>，</p>
 <p>点击选择 <a href="https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html" target="_blank" rel="noopener">Instant Client for Microsoft Windows (x64)</a> ，选择与自己安装数据库相匹配的客户端版本， 下载Instant Client Package - Basic 包，如我的Oracle版本是Version 11.2.0.4.0，则下载 <a href="https://www.oracle.com/database/technologies/instant-client/winx64-64-downloads.html#license-lightbox" target="_blank" rel="noopener">instantclient-basic-windows.x64-11.2.0.4.0.zip</a> ，解压到plsql安装的同级目录（也可其他目录，主要是好找）</p>
 <p>  <img src="https://i.loli.net/2019/11/14/QRjJ7WOXFbyKSTY.gif" alt="devtool_plsql_gif3.gif"></p>
-<h4 id="2-2-PL-SQL配置Oracle客户端"><a href="#2-2-PL-SQL配置Oracle客户端" class="headerlink" title="2.2 PL/SQL配置Oracle客户端"></a>2.2 PL/SQL配置Oracle客户端</h4><ul>
-<li>免登录进入PLSQL，点击首选项 -&gt; 连接，Oracle注目录名和OCI库选择Oracle客户端解压目录下的oci.dll文件，点击应用，重启后即可在页面连接登录<br><img src="https://i.loli.net/2019/11/14/JFenlED5PTvYUI4.png" alt="plsql_pic9.png"></li>
-</ul>
-<h3 id="3-PL-SQL配置"><a href="#3-PL-SQL配置" class="headerlink" title="3 PL/SQL配置"></a>3 PL/SQL配置</h3><h4 id="3-1-视图配置"><a href="#3-1-视图配置" class="headerlink" title="3.1 视图配置"></a>3.1 视图配置</h4><ul>
-<li><p>切换到<code>视图</code>选项卡，勾选连接和对象浏览器，勾选单文档，调整窗口布局后，点击保存布局。</p>
+<h3 id="PL-SQL配置Oracle客户端"><a href="#PL-SQL配置Oracle客户端" class="headerlink" title="PL/SQL配置Oracle客户端"></a>PL/SQL配置Oracle客户端</h3><p>免登录进入PLSQL，点击首选项 -&gt; 连接，Oracle注目录名和OCI库选择Oracle客户端解压目录下的oci.dll文件，点击应用，重启后即可在页面连接登录<br><img src="https://i.loli.net/2019/11/14/JFenlED5PTvYUI4.png" alt="plsql_pic9.png"></p>
+<h3 id="PL-SQL配置"><a href="#PL-SQL配置" class="headerlink" title="PL/SQL配置"></a>PL/SQL配置</h3><h4 id="视图配置"><a href="#视图配置" class="headerlink" title="视图配置"></a>视图配置</h4><p>切换到<code>视图</code>选项卡，勾选连接和对象浏览器，勾选单文档，调整窗口布局后，点击保存布局。</p>
 <p><img src="https://i.loli.net/2019/11/14/Eobm1IFcsnwgf6a.png" alt="devtool_plsql_pic1.png"></p>
-</li>
-</ul>
-<h4 id="3-2-连接配置"><a href="#3-2-连接配置" class="headerlink" title="3.2 连接配置"></a>3.2 连接配置</h4><ul>
-<li><p>切换到<code>配置</code>选项卡，点击<code>连接</code>按钮，添加经常使用的连接信息，不同连接可以选不同的颜色进行区分。重启PL/SQL之后，就可以在登录界面上看到已经填写好的连接，直接双击即可登录，不用每次输入连接信息。</p>
+<h4 id="连接配置"><a href="#连接配置" class="headerlink" title="连接配置"></a>连接配置</h4><p>切换到<code>配置</code>选项卡，点击<code>连接</code>按钮，添加经常使用的连接信息，不同连接可以选不同的颜色进行区分。重启PL/SQL之后，就可以在登录界面上看到已经填写好的连接，直接双击即可登录，不用每次输入连接信息。</p>
 <p><img src="https://i.loli.net/2019/11/18/RphNMajLwf8rq9e.png" alt="devtool_plsql_pic4.png"></p>
 <p><img src="https://i.loli.net/2019/11/18/KdzcYvXGmDTJnRg.png" alt="devtool_plsql_pic5.png"></p>
-</li>
-</ul>
-<h4 id="3-3-对象浏览器配置"><a href="#3-3-对象浏览器配置" class="headerlink" title="3.3 对象浏览器配置"></a>3.3 对象浏览器配置</h4><ul>
-<li><p><code>首选项 -&gt; 用户界面 - &gt; 浏览器</code>，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到配置选项卡，点击<code>对象浏览器文件夹</code>按钮，进行配置。</p>
+<h4 id="对象浏览器配置"><a href="#对象浏览器配置" class="headerlink" title="对象浏览器配置"></a>对象浏览器配置</h4><p><code>首选项 -&gt; 用户界面 - &gt; 浏览器</code>，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到配置选项卡，点击<code>对象浏览器文件夹</code>按钮，进行配置。</p>
 <p><img src="https://i.loli.net/2019/11/14/UAYViHs7cDEnPr8.gif" alt="devtool_plsql_gif6.gif"></p>
-</li>
-</ul>
-<h4 id="3-4-自动代码补全配置"><a href="#3-4-自动代码补全配置" class="headerlink" title="3.4 自动代码补全配置"></a>3.4 自动代码补全配置</h4><ul>
-<li><p>可以为常用的关键字和查询语句设置代码补全，以下代码供参考：</p>
+<h4 id="自动代码补全配置"><a href="#自动代码补全配置" class="headerlink" title="自动代码补全配置"></a>自动代码补全配置</h4><p>可以为常用的关键字和查询语句设置代码补全，以下代码供参考：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s &#x3D; SELECT</span><br><span class="line">f &#x3D; FROM</span><br><span class="line">w &#x3D; WHERE</span><br><span class="line">o &#x3D; ORDER BY</span><br><span class="line">d &#x3D; DELETE</span><br><span class="line">sf &#x3D; SELECT * FROM</span><br><span class="line">df &#x3D; DELETE FROM</span><br><span class="line">sc &#x3D; SELECT COUNT (*) FROM</span><br></pre></td></tr></table></figure>
 
 
 
-</li>
-</ul>
-<p>  <img src="https://i.loli.net/2019/11/14/vOwJnzimt2LVxP8.gif" alt="devtool_plsql_gif5.gif"></p>
-<h4 id="3-5-美化器配置"><a href="#3-5-美化器配置" class="headerlink" title="3.5 美化器配置"></a>3.5 美化器配置</h4><ul>
-<li><p>配置美化格式，配置完后可以保存成文件，在其他机子也可以用</p>
+<p><img src="https://i.loli.net/2019/11/14/vOwJnzimt2LVxP8.gif" alt="devtool_plsql_gif5.gif"></p>
+<h4 id="美化器配置"><a href="#美化器配置" class="headerlink" title="美化器配置"></a>美化器配置</h4><p>配置美化格式，配置完后可以保存成文件，在其他机子也可以用</p>
 <p><img src="https://i.loli.net/2019/11/14/IrNvxQJbOqyLRAY.png" alt="devtool_plsql_pic2.png"></p>
-</li>
-</ul>
-<h4 id="3-6-快捷键配置"><a href="#3-6-快捷键配置" class="headerlink" title="3.6 快捷键配置"></a>3.6 快捷键配置</h4><ul>
-<li><code>首选项 -&gt; 用户界面 -&gt; 键配置</code>设置常用的快捷键，如打开SQL窗口和命令窗口的快捷键<br><img src="https://i.loli.net/2019/11/14/x32vGRN6PeLaOKu.png" alt="devtool_plsql_pic3.png"></li>
-</ul>
-<h4 id="3-7-工具使用"><a href="#3-7-工具使用" class="headerlink" title="3.7 工具使用"></a>3.7 工具使用</h4><ul>
-<li>在工具选项卡常用的有导出用户对象，比较用户对象，导出表，比较表数据的功能，功能都比较强大。</li>
-</ul>
+<h4 id="快捷键配置"><a href="#快捷键配置" class="headerlink" title="快捷键配置"></a>快捷键配置</h4><p><code>首选项 -&gt; 用户界面 -&gt; 键配置</code>设置常用的快捷键，如打开SQL窗口和命令窗口的快捷键<br><img src="https://i.loli.net/2019/11/14/x32vGRN6PeLaOKu.png" alt="devtool_plsql_pic3.png"></p>
+<h4 id="工具使用"><a href="#工具使用" class="headerlink" title="工具使用"></a>工具使用</h4><p>在工具选项卡常用的有导出用户对象，比较用户对象，导出表，比较表数据的功能，功能都比较强大。</p>
 <h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><hr>
 <ul>
 <li><a href="https://blog.csdn.net/sl1992/article/details/80489413" target="_blank" rel="noopener">PLSQL Developer 12.0.7连接Oracle12c数据库</a></li>
