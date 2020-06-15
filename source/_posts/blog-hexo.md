@@ -32,13 +32,17 @@ Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo�
 
 ## GitHub Pages 上搭建博客
 
-因为考虑到要保存源码，所以在github上创建仓库之后，创建一个source分支。
+因为考虑到要保存源码，所以在github上创建名为`用户名.github.io`的仓库之后，立即创建一个source分支用来保存源码。
+
+在 Hexo 中有两份主要的配置文件，其名称都是 `_config.yml`。 其中，一份位于站点根目录下，主要包含 Hexo 本身的配置；另一份位于主题目录下，这份配置由主题作者提供，主要用于配置主题相关的选项。
+
+为了描述方便，在以下说明中，将前者称为 **站点配置文件**， 后者称为 **主题配置文件**。
 
 ### github上创建仓库
 
-在github上新建一个仓库名为`用户名.github.io`的仓库，创建完成后默认会有一个master分支，我们再创建一个source分支，用于保存源码。source分支怎么用，后面会解释。
+假定github的用户名为james，在github上新建一个仓库名为`james.github.io`的仓库，创建完成后默认会有一个master分支，我们再创建一个source分支，用于保存源码，此时master跟source分支都仅只有一个README.md文件。source分支怎么用，后面会解释。
 
-### 本地电脑搭建hexo
+### 本地电脑搭建Hexo 
 
 安装hexo-cli，在Git Bash窗口输入命令：
 
@@ -46,7 +50,7 @@ Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo�
 $ npm install -g hexo-cli
 ```
 
-初始化博客，新建一个博客文件夹hexo，并切换到hexo文件夹，执行命令：
+初始化博客，新建一个博客文件夹hexo ，并切换到hexo文件夹，执行命令：
 
 ```shell
 $ hexo init
@@ -55,7 +59,7 @@ _config.yml    package.json       scaffolds/  themes/
 node_modules/  package-lock.json  source/
 ```
 
-初始化过程中会将https://github.com/hexojs/hexo-starter.git代码Clone到hexo文件夹内。
+初始化过程中会将https://github.com/hexojs/hexo-starter.git代码克隆到hexo文件夹内。此处的**_config.yml** 即为Hexo的 **站点配置文件**。
 
 下载依赖包，执行命令：
 
@@ -74,4 +78,76 @@ $ hexo s # 启动服务器
 
 ### 更换NexT主题
 
-hexo主题文件放在themes文件夹下，默认主题为landscape，要更换主题，只需将主题文件下载到themes文件内，并修改配置文件即可。
+Hexo主题文件放在themes文件夹下，默认主题为landscape，要更换主题，只需将主题文件放到themes文件内，并修改**站点配置文件**的配置项即可。
+
+克隆NexT主题，在站点根目录下，执行命令：
+
+```shell
+$ git clone https://github.com/theme-next/hexo-theme-next.git themes/next
+```
+
+主题文件克隆完成后，进入./themes/next目录，将**.git**目录删除，这个目录时NexT主题的git仓库，不需要用到。
+
+修改站点配置文件，将theme字段配置为next。
+
+```yaml
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
+```
+
+重启Hexo服务器
+
+```shell
+$ hexo g
+$ hexo s
+```
+
+浏览器刷新，即可看到效果。
+
+### 部署到github
+
+接下来要做的是把Hexo生成的代码保存到github仓库的master分支下，然后把站点的配置及博客源码保存到source分支下。
+
+首先，我们先将Hexo生成后的代码部署到github上，看下效果。
+
+修改站点配置文件，配置Hexo生成的代码上传的目的地址。
+
+```yaml
+deploy:
+  type: 'git'
+  repo:
+    github: https://github.com/james/james.github.io.git //这里即github仓库地址
+  branch: master //这里必须是master分支，否则看不到效果
+```
+
+然后在站点根目录下执行：
+
+```shell
+$ hexo g
+$ hexo d
+```
+
+hexo g是hexo generate命令的缩写，就是将我们用markdown写的博客文件解析成目标文件，解析后的文件在public文件夹下。
+
+hexo d是hexo deploy命令的缩写，作用就是将解析后的文件上传到上面配置的github仓库地址的master分支下。执行hexo d命令完成后，在浏览器输入
+
+https:james.github.io，即可看到部署后的效果。
+
+接下来，我们还需把源码部署到github的source分支上。
+
+在本地电脑再创建一个文件夹，名为source（随便取），然后将第一步创建的github仓库的source分支克隆到该目录下。
+
+```shell
+git clone -b source https://github.com/james/james.git
+```
+
+
+
+
+
+
+
+
+
