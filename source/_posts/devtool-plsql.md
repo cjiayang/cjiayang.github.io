@@ -18,7 +18,7 @@ tags:
 ##   PLSQL下载安装及汉化
 ### 下载地址
 
-PLSQL官网下载：[ PL/SQL Developer - Registered Download ](https://www.allroundautomations.com/bodyplsqldevreg.html)
+PLSQL12官网下载：  [plsqldev1207x64.msi](https://www.allroundautomations.com/files/plsqldev1207x64.msi) 
 
 汉化可执行文件下载：[ PL/SQL Developer - Language Packs ]( https://www.allroundautomations.com/plsqldevlang/120/index.html )
 
@@ -78,13 +78,13 @@ Oracle客户端下载页面：[Oracle Instant Client Downloads]( https://www.ora
 
 #### 对象浏览器配置
 
-`首选项 -> 用户界面 - > 浏览器`，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到配置选项卡，点击`对象浏览器文件夹`按钮，进行配置。
+`首选项 -> 用户界面 - > 浏览器`，点击文件夹，对象浏览器各个常用的对象如表，视图，函数等可以调整顺序和改变文件夹的颜色，方便使用。也可切换到`配置`选项卡，点击`对象浏览器文件夹`按钮，进行配置。
 
 ![devtool_plsql_gif6.gif](https://i.loli.net/2019/11/14/UAYViHs7cDEnPr8.gif)
 
-#### 自动代码补全配置
+#### 自动代码替换配置
 
-可以为常用的关键字和查询语句设置代码补全，以下代码供参考：
+设置常用的代码简写可以显著提高代码编写效率，导航到`首选项 → 用户界面 → 编辑器 → 自动替换`，点击编辑，可以为常用的关键字和查询语句设置代码补全。设置后，编写SQL语句时只要输入简写字母，然后按空格键，即可快速替换成配置的代码。以下代码供参考：
 
 ```
 s = SELECT
