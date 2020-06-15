@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.1">
+<meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -28,7 +28,7 @@
 <meta property="og:description" content="Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo在GitHub Pages 上搭建博客的过程，以备忘。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-05-21T11:16:07.000Z">
-<meta property="article:modified_time" content="2020-05-21T13:07:20.660Z">
+<meta property="article:modified_time" content="2020-06-15T13:27:49.513Z">
 <meta property="article:author" content="jychen">
 <meta property="article:tag" content="hexo">
 <meta property="article:tag" content="next">
@@ -240,10 +240,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-05-21 19:16:07 / 修改时间：21:07:20" itemprop="dateCreated datePublished" datetime="2020-05-21T19:16:07+08:00">2020-05-21</time>
+              <time title="创建时间：2020-05-21 19:16:07" itemprop="dateCreated datePublished" datetime="2020-05-21T19:16:07+08:00">2020-05-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-15 21:27:49" itemprop="dateModified" datetime="2020-06-15T21:27:49+08:00">2020-06-15</time>
+              </span>
 
           
             <span id="/2020/05/21/blog-hexo/" class="post-meta-item leancloud_visitors" data-flag-title="利用Hexo在GitHub Page搭建博客" title="阅读次数">
@@ -279,7 +285,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>643</span>
+              <span>1.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -302,18 +308,33 @@
 <a id="more"></a>
 
 <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>为了搭建博客，经历了一番波折，也翻了好多文章，一些值得参考的文章会在文章后面列出。总结起来博客搭建经历了以下几个过程。</p>
-<p>第一阶段，搭建博客，并将文章上传到github上。这个过程比较简单，基本安装完node.js，git客户端后按hexo官方教程即可实现。这个阶段遇到的问题是执行<code>hexo d</code>命令后只将hexo解析后的代码发布到github上，并没有将博客的配置代码和文章源码上传到github上，这没有实现我想要的可以在多台电脑上写博客的需求，所以到网上继续翻。</p>
+<p>第一阶段，搭建博客，并将文章上传到github上。这个过程比较简单，基本安装完node.js，git客户端后按hexo官方教程即可实现。这个阶段遇到的问题是执行<code>hexo d</code>命令后只将hexo解析后的代码发布到github上，并没有将博客的配置代码和文章源码上传到github上，通常写博客都会在多台电脑上写，这些配置和博客源码需要在多台电脑同步，按上述操作并不能满足需求，所以到网上继续翻。</p>
 <p>第二阶段，删除第一阶段创建的github仓库，重新创建，创建完成后继续创建一个source源码分支，用于保存博客的源代码。这个阶段遇到些困难，细节后面会讲到。</p>
-<p>第三阶段，选择next主题，并对主题做优化。</p>
-<p>所以，利用hexo在github上搭建博客，如果有保存源码需求的，首先要考虑如何保存源码（可考虑使用github分支或另建一个仓库），然后选择主题，如果想博客漂亮一点可以美化美化，最后就坚持写写写。</p>
-<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>搭建博客过程使用的环境：</p>
+<p>第三阶段，选择next主题，并对主题做个性化配置。</p>
+<p>所以，利用hexo在github上搭建博客，如果有保存源码需求的，首先要考虑如何保存源码（可考虑使用github分支或另建一个仓库），然后选择主题，如果想博客漂亮一点可以美化美化，然后就可以开始写博客了。</p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>搭建博客过程需安装的环境：</p>
 <ul>
-<li>windows10</li>
+<li>Windows10</li>
 <li>Node.js</li>
 <li>Git</li>
 </ul>
-<h2 id="博客搭建"><a href="#博客搭建" class="headerlink" title="博客搭建"></a>博客搭建</h2><h2 id="GitHub-Pages-上搭建博客"><a href="#GitHub-Pages-上搭建博客" class="headerlink" title="GitHub Pages 上搭建博客"></a>GitHub Pages 上搭建博客</h2><p>因为考虑到要保存源码，所以在github上创建仓库之后，创建一个source分支</p>
-<h3 id="github创建仓库"><a href="#github创建仓库" class="headerlink" title="github创建仓库"></a>github创建仓库</h3><p>在github上新建一个仓库名为<code>用户名.github.io</code>的仓库，创建完成后，创建一个source分支，</p>
+<h2 id="GitHub-Pages-上搭建博客"><a href="#GitHub-Pages-上搭建博客" class="headerlink" title="GitHub Pages 上搭建博客"></a>GitHub Pages 上搭建博客</h2><p>因为考虑到要保存源码，所以在github上创建仓库之后，创建一个source分支。</p>
+<h3 id="github上创建仓库"><a href="#github上创建仓库" class="headerlink" title="github上创建仓库"></a>github上创建仓库</h3><p>在github上新建一个仓库名为<code>用户名.github.io</code>的仓库，创建完成后默认会有一个master分支，我们再创建一个source分支，用于保存源码。source分支怎么用，后面会解释。</p>
+<h3 id="本地电脑搭建hexo"><a href="#本地电脑搭建hexo" class="headerlink" title="本地电脑搭建hexo"></a>本地电脑搭建hexo</h3><p>安装hexo-cli，在Git Bash窗口输入命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install -g hexo-cli</span></span><br></pre></td></tr></table></figure>
+
+<p>初始化博客，新建一个博客文件夹hexo，并切换到hexo文件夹，执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo init</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ls</span></span><br><span class="line">_config.yml    package.json       scaffolds/  themes/</span><br><span class="line">node_modules/  package-lock.json  source/</span><br></pre></td></tr></table></figure>
+
+<p>初始化过程中会将<a href="https://github.com/hexojs/hexo-starter.git代码Clone到hexo文件夹内。" target="_blank" rel="noopener">https://github.com/hexojs/hexo-starter.git代码Clone到hexo文件夹内。</a></p>
+<p>下载依赖包，执行命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> npm install</span></span><br></pre></td></tr></table></figure>
+
+<p>依赖包下载完成后，就可以打包并执行hexo内置Web服务器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> hexo g <span class="comment"># 生成静态文件</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> hexo s <span class="comment"># 启动服务器</span></span></span><br></pre></td></tr></table></figure>
+
+<p>浏览器中输入 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 就可以本地预览博客了。</p>
+<h3 id="更换NexT主题"><a href="#更换NexT主题" class="headerlink" title="更换NexT主题"></a>更换NexT主题</h3><p>hexo主题文件放在themes文件夹下，默认主题为landscape，要更换主题，只需将主题文件下载到themes文件内，并修改配置文件即可。</p>
 
     </div>
 
@@ -380,7 +401,10 @@
     <a href="/2020/05/18/hello-world/" rel="prev" title="Hello World">
       <i class="fa fa-chevron-left"></i> Hello World
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/06/windowsTerminal/" rel="next" title="windowsTerminal">
+      windowsTerminal <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -440,7 +464,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#博客搭建"><span class="nav-number">3.</span> <span class="nav-text">博客搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-Pages-上搭建博客"><span class="nav-number">4.</span> <span class="nav-text">GitHub Pages 上搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github创建仓库"><span class="nav-number">4.1.</span> <span class="nav-text">github创建仓库</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub-Pages-上搭建博客"><span class="nav-number">3.</span> <span class="nav-text">GitHub Pages 上搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#github上创建仓库"><span class="nav-number">3.1.</span> <span class="nav-text">github上创建仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本地电脑搭建hexo"><span class="nav-number">3.2.</span> <span class="nav-text">本地电脑搭建hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更换NexT主题"><span class="nav-number">3.3.</span> <span class="nav-text">更换NexT主题</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -456,20 +480,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -519,12 +543,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">2k</span>
+    <span title="站点总字数">7k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">2 分钟</span>
+    <span title="站点阅读时长">6 分钟</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
