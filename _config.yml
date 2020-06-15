@@ -125,7 +125,7 @@ symbols_count_time:
 
 douban:
   user: 99588562
-  builtin: true
+  builtin: false
   book:
     title: '读书'
     quote: '早闻道，夕死可矣'
