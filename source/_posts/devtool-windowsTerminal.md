@@ -8,9 +8,7 @@ tags:
   - windows terminal
 ---
 
-windows terminal工具配置
-
-windows terminal是微软推出的易用的**命令行终端工具**，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。
+windows terminal是微软推出的简单易用的**命令行终端工具**，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。
 
 <!--more-->
 

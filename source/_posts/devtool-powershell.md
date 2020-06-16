@@ -8,8 +8,6 @@ tags:
   - powershell
 ---
 
-PowerShell还没
-
 PowerShell基础
 
 <!--more-->
