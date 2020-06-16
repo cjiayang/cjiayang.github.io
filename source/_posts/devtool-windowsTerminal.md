@@ -1,13 +1,16 @@
 ---
-title: windowsTerminal
+title: 初识windows Terminal
 date: 2020-06-06 10:26:01
 categories: 
   - windows
+  - devtool
 tags: 
   - windows terminal
 ---
 
 windows terminal工具配置
+
+windows terminal是微软推出的易用的**命令行终端工具**，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。
 
 <!--more-->
 
@@ -15,7 +18,7 @@ windows terminal工具配置
 
 Windows 终端是一个面向命令行工具和 shell（如命令提示符、PowerShell 和适用于 Linux 的 Windows 子系统 (WSL)）用户的新式终端应用程序。 它的主要功能包括多个选项卡、窗格、Unicode 和 UTF-8 字符支持、GPU 加速文本呈现引擎，还可以用于创建你自己的主题并自定义文本、颜色、背景和快捷键绑定。
 
-上面是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个**终端工具**，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。
+以上是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个**终端工具**，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。
 
 ### 如何安装
 

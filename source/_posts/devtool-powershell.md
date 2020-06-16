@@ -1,5 +1,5 @@
 ---
-title: devtool-powershell
+title: 初识powershell
 date: 2020-06-06 16:12:32
 categories:
   - devtool
@@ -8,7 +8,9 @@ tags:
   - powershell
 ---
 
-PowerShell 入门
+PowerShell还没
+
+PowerShell基础
 
 <!--more-->
 
