@@ -1214,7 +1214,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #a7f105;
+  background: #c40849;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2685,9 +2685,9 @@ span {
 .post-body h4,
 .post-body h5,
 .post-body h6 {
+  padding-top: 0px;
   border-left: 4px solid #f27c8d;
-  margin-left: -40px;
-  padding-left: 32px;
+  padding-left: 20px;
   border-bottom: none;
 }
 .post-body h2 {
@@ -2697,7 +2697,7 @@ span {
   position: relative;
 }
 .post-body h3 {
-  padding-bottom: 0.3em;
+  padding-bottom: 0.1em;
   color: #2e405b;
   position: relative;
 }
@@ -2750,4 +2750,17 @@ blockquote {
 .site-subtitle {
   color: #586e75;
   font-size: 0.9em;
+}
+p {
+  text-indent: 2em;
+  margin: 0 0 5px 0;
+}
+li > p {
+  text-indent: 0;
+}
+body {
+  line-height: 1.65;
+}
+.post-body {
+  font-size: 1.05em;
 }
