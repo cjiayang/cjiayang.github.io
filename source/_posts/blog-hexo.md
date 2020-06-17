@@ -22,13 +22,15 @@ Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo�
 
 所以，利用Hexo在github上搭建博客，如果有保存源码需求的，首先要考虑如何保存源码（可考虑使用github分支或另建一个仓库），然后选择主题，如果想博客漂亮一点可以美化美化，然后就可以开始写博客了。
 
-## 环境
+### 环境
 
 搭建博客过程需安装的环境：
 
 - Windows10
 - Node.js
 - Git
+- hexo: 4.2.0
+- NexT
 
 ## GitHub Pages 上搭建博客
 
@@ -74,7 +76,7 @@ Hexo 是一个快速、简洁且高效的博客框架。本文记录利用Hexo�
    $ hexo s # 启动服务器
    ```
 
-浏览器中输入 http://localhost:4000/ 就可以本地预览博客了。
+浏览器中输入 [http://localhost:4000/](http://localhost:4000/) 就可以本地预览博客了。
 
 ### 更换NexT主题
 
@@ -129,9 +131,7 @@ Hexo主题文件放在themes文件夹下，默认主题为landscape，要更换�
    $ hexo d
    ```
 
-hexo g是hexo generate命令的缩写，就是将我们用markdown写的博客文件解析成静态资源文件，解析后的文件在public文件夹下。
-
-hexo d是hexo deploy命令的缩写，这个命令会将public的文件上传到第一步配置的github仓库的master分支下。执行`hexo d`命令完成后，在浏览器输入https://james.github.io即可看到部署后的效果。到这里我们已经将本地博客发布到github上了。
+执行`hexo d`命令完成后，在浏览器输入`https://james.github.io`即可看到部署后的效果。到这里我们已经将本地博客发布到github上了。
 
 第二步，我们还需把源码部署到github的source分支上，用source分支保存源码，方便再各台电脑上同步源码及配置。
 
@@ -171,5 +171,164 @@ $ git push
 
 ## 站点配置
 
+### 配置
+
+Hexo 官网：[https://hexo.io/zh-cn/docs/configuration](https://hexo.io/zh-cn/docs/configuration)
+
+站点配置在**站点配置文件**中配置，即根目录下的_config.yml配置文件，大部分的配置先保持默认即可，有需要修改的时候再改。进行下一步之前先改下网站信息：
+
+```yaml
+# Site
+title: Monkey Young
+subtitle: '路漫漫其修远兮'
+description: [阅读, 记录, 前行]
+keywords:
+author: jychen
+language: zh-CN
+timezone: Asia/Shanghai
+```
+
+### Hexo常用命令
+
+```shell
+$ hexo init # 初始化网站
+$ hexo new <title> # 新建文章
+$ hexo g # hexo g是hexo generate命令的缩写，就是将我们用markdown写的博客文件解析成静态资源文件，解析后的文件在public文件夹下。
+$ hexo s # hexo s是hexo server命令的缩写。启动服务器，默认访问网址为： http://localhost:4000/。
+$ hexo d # hexo d是hexo deploy命令的缩写，这个命令会将public的文件上传到第一步配置的github仓库的master分支下。
+$ hexo clean #清除缓存文件 (db.json) 和已生成的静态文件 (public)。
+```
+
+## 主题配置
+
+NexT 官方文档：[http://theme-next.iissnan.com/getting-started ](http://theme-next.iissnan.com/getting-started )
+
+最新版本文档：https://theme-next.js.org/docs/getting-started/
+
+最新版本文档还不支持中文，旧版本的文档已经很全，可直接看旧版本文档。主题配置文件为./themes/next目录下的_config.yml，下面列出一些本博客用到的配置。
+
+```yaml
+# 主题
+#scheme: Muse
+#scheme: Mist
+scheme: Pisces
+#scheme: Gemini
+
+# 自定义配置文件
+custom_file_path:
+  #head: source/_data/head.swig
+  #header: source/_data/header.swig
+  #sidebar: source/_data/sidebar.swig
+  #postMeta: source/_data/post-meta.swig
+  #postBodyEnd: source/_data/post-body-end.swig
+  #footer: source/_data/footer.swig
+  #bodyEnd: source/_data/body-end.swig
+  #variable: source/_data/variables.styl
+  #mixin: source/_data/mixins.styl
+  style: source/_data/styles.styl
+
+# 目录设置
+menu:
+  home: / || fa fa-home 
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  movies: /movies/ || fa fa-film
+  books: /books/ || fa fa-book
+  #schedule: /schedule/ || fa fa-calendar
+  #sitemap: /sitemap.xml || fa fa-sitemap
+  #commonweal: /404/ || fa fa-heartbeat
+
+# 侧边栏社交账号
+social:
+  GitHub: https://github.com/cjiayang || fab fa-github
+  豆瓣: https://www.douban.com/people/99588562/ || fa fa-film
+  知乎: https://www.zhihu.com/people/yang-zi-43-81-44 || fa fa-question-circle
+  简书: https://www.jianshu.com/u/129784edb0b6 || fa fa-book
+
+# 文末打赏功能
+reward:
+  wechatpay: /images/wechatpay.png
+  #alipay: /images/alipay.png
+  #paypal: /images/paypal.png
+  #bitcoin: /images/bitcoin.png
+
+# github角
+github_banner:
+  enable: false
+  permalink: https://github.com/yourname
+  title: Follow me on GitHub
+
+# valine评论
+valine:
+  enable: true
+  appid: g2JcDOgE11SRuaMu7LMFSMAA-gzGzoHsz # Your leancloud application appid
+  appkey: tE9EIqQRVvHB9X3uQyKkOCdI # Your leancloud application appkey
+  notify: false # Mail notifier
+  verify: false # Verification code
+  placeholder: Just go go # Comment box placeholder
+  avatar: mm # Gravatar style
+  guest_info: nick,mail,link # Custom comment header
+  pageSize: 10 # Pagination size
+  language: zh-cn # Language, available values: en, zh-cn
+  visitor: false # Article reading statistic
+  comment_count: true # If false, comment count will only be displayed in post page, not in home page
+  recordIP: false # Whether to record the commenter IP
+  serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
+  #post_meta_order: 0
+  
+# 百度统计
+baidu_analytics: xxxxxxxxxxxxxxxxxxx
+
+# leancloud访问统计
+leancloud_visitors:
+  enable: true
+  app_id: xxxxx-xxxxxxx
+  app_key: xxxxxxxxxxxx
+  # Required for apps from CN region
+  server_url: # <your server url>
+  # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
+  # If you don't care about security in leancloud counter and just want to use it directly
+  # (without hexo-leancloud-counter-security plugin), set `security` to `false`.
+  security: true
+
+# 不算子统计
+busuanzi_count:
+  enable: true
+  total_visitors: true
+  total_visitors_icon: fa || fa-user
+  total_views: true
+  total_views_icon: fa || fa-eye
+  post_views: true
+  post_views_icon: fa || fa-eye
+
+# 本地搜索功能
+local_search:
+  enable: true
+  # If auto, trigger search by changing input.
+  # If manual, trigger search by pressing enter key or search button.
+  trigger: auto
+  # Show top n results per article, show all results by setting to -1
+  top_n_per_article: 1
+  # Unescape html strings to the readable one.
+  unescape: false
+  # Preload the search data when the page loads.
+  preload: false
+  
+# 文章末尾添加“本文结束”标记
+passage_end_tag:
+  enabled: true
+```
 
 
+
+
+
+## 参考
+
+1. [Hexo 官方文档](https://hexo.io/zh-cn/docs/)
+2. [NexT 官方文档 ](http://theme-next.iissnan.com/getting-started )
+3. [Hexo 搭建个人博客文章汇总](https://tding.top/archives/aad98408.html)
+4. [尝试折腾了下用 Hexo-Next-Theme 搭建的博客](https://leay.net/2020/03/23/hexo-next/)
+5. [最全Hexo博客搭建](https://www.simon96.online/2018/10/12/hexo-tutorial/)
