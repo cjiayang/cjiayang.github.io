@@ -1,6 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Oracle11.2.0.4打补丁实践</title>
+    <url>/2020/07/10/oracle-Opatch/</url>
+    <content><![CDATA[<p>本文介绍如何给Oracle数据库打补丁，数据库版本为Oracle11.2.0.4，单实例，操作系统为redhat6.5。</p>
+<a id="more"></a>
+
+<h2 id="下载升级包"><a href="#下载升级包" class="headerlink" title="下载升级包"></a>下载升级包</h2><ol>
+<li><p><strong>下载升级包</strong></p>
+<p>因为没有MOS帐号，从网上下载了升级包</p>
+<blockquote>
+<p>p30670774_112040_Linux-x86-64.zip：数据库补丁<br>p6880880_112000_Linux-x86-64.zip：opatch升级包<br>百度云链接：<a href="https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw</a><br>提取码：plhp<br>微云链接：<a href="https://share.weiyun.com/k8CbxL3K" target="_blank" rel="noopener">https://share.weiyun.com/k8CbxL3K</a></p>
+</blockquote>
+<p>opatch是安装补丁的程序，数据库软件安装完成后，就自带了opatch，但是版本太旧了，所以这里下载最新的opatch，p6880880_112000_Linux-x86-64.zip包就是用来升级opatch用的。</p>
+</li>
+</ol>
+<h2 id="升级opatch"><a href="#升级opatch" class="headerlink" title="升级opatch"></a>升级opatch</h2><p>opatch的升级只要将新版本的包解压，覆盖系统原始的文件即可。</p>
+<ol start="2">
+<li><p><strong>查看原始opatch信息</strong></p>
+<p>查看原始版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看原始版本</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.4</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>查看补丁情况</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ ./opatch lsinventory	# 查看补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 中间补丁程序安装程序版本 11.2.0.3.4</span><br><span class="line">版权所有 (c) 2012, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">Oracle Home       : /home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">Central Inventory : /home/oracle/app/oraInventory</span><br><span class="line">   from           : /home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch version    : 11.2.0.3.4</span><br><span class="line">OUI version       : 11.2.0.4.0</span><br><span class="line">Log file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-23-35下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_16-23-35下午.txt</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line">此 Oracle 主目录中未安装任何中间补丁程序。</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>备份原opatch</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ cd $ORACLE_HOME</span><br><span class="line">[oracle@node1 dbhome_1]$ mv OPatch OPatch.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解压新下载的opatch包</strong></p>
+<p>将下载的opatch包上传到oracle的家目录，上传完后，解压到<code>$ORACLE_HOME</code>下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 dbhome_1]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p6880880_112000_Linux-x86-64.zip -d $ORACLE_HOME</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>检查opatch是否升级成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看版本信息</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.21</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>现在版本为11.2.0.3.21，说明升级成功</p>
+</li>
+</ol>
+<h2 id="数据库打补丁"><a href="#数据库打补丁" class="headerlink" title="数据库打补丁"></a>数据库打补丁</h2><ol start="6">
+<li><p><strong>关闭监听、数据库</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解压补丁包</strong></p>
+<p>将下载的补丁包上传到oracle家目录，并解压</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p30670774_112040_Linux-x86-64.zip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>校验冲突</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd 30670774/</span><br><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-54-06下午_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq "checkconflictagainstohwithdetail"</span><br><span class="line"></span><br><span class="line">Prereq "checkConflictAgainstOHWithDetail" passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>由于这个测试库之前并没有打补丁，所以这里就没有补丁冲突的问题，如果这里显示有冲突，再去网MOS上查找相关解决方案。</p>
+</li>
+<li><p><strong>执行打补丁</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch apply</span><br></pre></td></tr></table></figure>
+
+<p><img src="confirmAndContinue.png" alt="确认并继续"></p>
+<p>这里要输入3次y和一次回车，打补丁的过程耗是比较久的，耐心等待</p>
+</li>
+<li><p><strong>检查打补丁情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br></pre></td></tr></table></figure>
+
+<p>这里会列出系统已打的补丁情况</p>
+</li>
+<li><p><strong>启动数据库，并运行sql文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 30670774]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle.sql psu apply</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动监听</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>至此数据库打补丁已经全部完成</p>
+<h2 id="回退数据库补丁"><a href="#回退数据库补丁" class="headerlink" title="回退数据库补丁"></a>回退数据库补丁</h2><p><strong>数据库在做变更时，需要考虑回退方案</strong>，接下来介绍如何回退数据库补丁</p>
+<ol start="13">
+<li><p><strong>关闭监听、数据库</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>回退补丁</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ $ORACLE_HOME/OPatch/opatch rollback -id 30670774</span><br></pre></td></tr></table></figure>
+
+<p><img src="rollback.png" alt="回退补丁"></p>
+<p>这里要回复一次y，回退过程比较耗时，需耐心等待</p>
+</li>
+</ol>
+<ol start="15">
+<li><p><strong>启动数据库，并运行sql文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 admin]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle_PSU_ORCL_ROLLBACK.sql	<span class="comment"># 这里的ORCL为实例名称</span></span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>检查回退情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_18-24-48下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_18-24-48下午.txt</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Local Machine Information::</span><br><span class="line">Hostname: localhost</span><br><span class="line">ARU platform id: 226</span><br><span class="line">ARU platform description:: Linux x86-64</span><br><span class="line"></span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line"></span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">此 Oracle 主目录中未安装任何临时补丁程序。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，补丁已经被卸载了</p>
+</li>
+<li><p><strong>启动监听</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>这样补丁回退就结束了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了单实例数据库打补丁的步骤，仅做参考，实际应以补丁包中的readme为准。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/ddzj01/p/12097467.html" target="_blank" rel="noopener">Oracle - 数据库打补丁最佳实践</a></li>
+<li>readme.html</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+        <tag>OPatch</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>初识powershell</title>
     <url>/2020/06/06/devtool-powershell/</url>
     <content><![CDATA[<p>PowerShell基础</p>
@@ -218,8 +329,27 @@
 
 
 
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="在文章中插入图片"><a href="#在文章中插入图片" class="headerlink" title="在文章中插入图片"></a>在文章中插入图片</h3><p>在写文章时，经常会有配图的需求。Hexo中有多种图片插入方式，可以将图片存放在本地引用或者将图片放在CDN或者图床上引用。</p>
+<h4 id="本地引用"><a href="#本地引用" class="headerlink" title="本地引用"></a>本地引用</h4><ul>
+<li><p><strong>绝对路径</strong></p>
+<p>当Hexo项目中只用到少量图片时，可以将图片统一放在<code>source/images</code>文件夹中，通过markdown语法访问它们。</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![<span class="string">我是一张图片</span>](<span class="link">/images/imagename.jpg</span>)</span><br></pre></td></tr></table></figure>
 
+<p>图片既可以在首页内容中访问到，也可以在文章正文中访问到。</p>
+</li>
+<li><p><strong>相对路径</strong><br>图片除了可以放在统一的<code>images</code>文件夹中，还可以放在文章自己的目录中。文章的目录可以通过配置站点<strong>配置文件</strong><code>_config.yml</code>来生成。将post_asset_folder配置项改为true。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">post_asset_folder: true</span><br></pre></td></tr></table></figure>
 
+<p>将<code>_config.yml</code>文件中的配置项<code>post_asset_folder</code>设为<code>true</code>后，执行命令<code>$ hexo new post_name</code>，在<code>source/_posts</code>中会生成文章<code>post_name.md</code>和同名文件夹<code>post_name</code>。将图片资源放在<code>post_name</code>中，文章就可以使用相对路径引用图片资源了。</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">![](imagename.jpg)</span><br></pre></td></tr></table></figure>
+
+<p>上述是markdown的引用方式，图片只能在文章中显示，但无法在首页中正常显示。</p>
+<p>如果希望图片在文章和首页中同时显示，可以使用标签插件语法。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">_posts&#x2F;post_name&#x2F;image.jpg&#123;% asset_img image.jpg This is an image %&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h4 id="本地引用-1"><a href="#本地引用-1" class="headerlink" title="本地引用"></a>本地引用</h4><p>除了在本地存储图片，还可以将图片上传到一些免费的图床或CDN服务中，图片上传后会生成对应的url地址，将地址直接拿来引用即可。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo 官方文档</a></li>
 <li><a href="http://theme-next.iissnan.com/getting-started" target="_blank" rel="noopener">NexT 官方文档 </a></li>
