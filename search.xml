@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux升级bash版本</title>
+    <url>/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/</url>
+    <content><![CDATA[<p>因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。</p>
+<a id="more"></a>
+
+<h2 id="bash漏洞简介"><a href="#bash漏洞简介" class="headerlink" title="bash漏洞简介"></a>bash漏洞简介</h2><p>bash4.3及以下版本的bash存在远程执行代码漏洞，包括但不限于Redhat、CentOS、Ubuntu、Debian、Fedora 等平台。</p>
+<ul>
+<li><p>CVE漏洞名称：CVE-2014-6271</p>
+</li>
+<li><p>中文漏洞名称：破壳</p>
+<p><strong>验证：</strong></p>
+<blockquote>
+<p>通过普通用户登录主机，在bash shell下执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果输出 ：this is a test </p>
+<p>则不存bash在远程执行代码漏洞;</p>
+</blockquote>
+<blockquote>
+<p>如果输出：<br>vulnerable<br>this is a test<br>则存在bash远程执行代码漏洞</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p>针对以上漏洞可将bash升级到4.3以上版本，下面说明升级步骤。</p>
+<h2 id="升级bash版本"><a href="#升级bash版本" class="headerlink" title="升级bash版本"></a>升级bash版本</h2><ol>
+<li><p><strong>下载最新版bash</strong><br>bash下载地址：<a href="http://ftp.gnu.org/gnu/bash/" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/</a><br>本文下载的是bash5.0版本： <a href="http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz</a></p>
+</li>
+<li><p><strong>查看当前系统bash版本</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash, version 4.1.2(1)-release (x86_64-redhat-linux-gnu)</span><br><span class="line">Copyright (C) 2009 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">This is free software; you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+
+<p>可以知道当前版本为4.1.2</p>
+</li>
+<li><p><strong>升级bash</strong><br>上传bash版本包到服务器，解压升级</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# tar -zxf bash-5.0.tar.gz </span><br><span class="line">[root@node1 ~]# cd bash-5.0</span><br><span class="line">[root@node1 bash-5.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>因为bash默认是安装在/usr/local/bin/目录下，所以需要创建一个链接到 /bin/目录下！</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 bash-5.0]# mv /bin/bash /bin/bash.bak</span><br><span class="line">[root@node1 bash-5.0]# ln -s /usr/local/bin/bash /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>验证</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash，版本 5.0.0(1)-release (x86_64-pc-linux-gnu)</span><br><span class="line">Copyright (C) 2019 Free Software Foundation, Inc.</span><br><span class="line">许可证 GPLv3+: GNU GPL 许可证第三版或者更新版本 &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">本软件是自由软件，您可以自由地更改和重新发布。</span><br><span class="line">在法律许可的情况下特此明示，本软件不提供任何担保。</span><br><span class="line">[root@node1 bash-5.0]# env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br><span class="line">this is a test</span><br></pre></td></tr></table></figure>
+
+<p>现在bash版本已经是 5.0.0，bash漏洞也已修复</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>bash</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Oracle11.2.0.4打补丁实践</title>
     <url>/2020/07/10/oracle-Opatch/</url>
     <content><![CDATA[<p>本文介绍如何给Oracle数据库打补丁，数据库版本为Oracle11.2.0.4，单实例，操作系统为redhat6.5。</p>
@@ -226,8 +282,8 @@
 
 ]]></content>
       <categories>
-        <category>windows</category>
         <category>devtool</category>
+        <category>windows</category>
       </categories>
       <tags>
         <tag>windows terminal</tag>

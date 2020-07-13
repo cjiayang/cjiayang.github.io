@@ -20,17 +20,21 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="阅读记录前行">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Monkey Young">
-<meta property="og:url" content="http://yoursite.com/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/index.html">
+  <meta name="description" content="因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux升级bash版本">
+<meta property="og:url" content="http://yoursite.com/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/index.html">
 <meta property="og:site_name" content="Monkey Young">
-<meta property="og:description" content="阅读记录前行">
+<meta property="og:description" content="因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-13T08:36:33.000Z">
+<meta property="article:modified_time" content="2020-07-13T09:00:35.666Z">
 <meta property="article:author" content="jychen">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="bash">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
+<link rel="canonical" href="http://yoursite.com/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/">
 
 
 <script id="page-configurations">
@@ -38,12 +42,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: 开发工具 | Monkey Young</title>
+  <title>Linux升级bash版本 | Monkey Young</title>
   
 
 
@@ -206,57 +210,227 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jychen">
+      <meta itemprop="description" content="阅读,记录,前行">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Monkey Young">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux升级bash版本
+        </h1>
+
+        <div class="post-meta">
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-13 16:36:33 / 修改时间：17:00:35" itemprop="dateCreated datePublished" datetime="2020-07-13T16:36:33+08:00">2020-07-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/" class="post-meta-item leancloud_visitors" data-flag-title="Linux升级bash版本" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa || fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">开发工具
-          <small>标签</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2019</span>
+        <p>因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。</p>
+<a id="more"></a>
+
+<h2 id="bash漏洞简介"><a href="#bash漏洞简介" class="headerlink" title="bash漏洞简介"></a>bash漏洞简介</h2><p>bash4.3及以下版本的bash存在远程执行代码漏洞，包括但不限于Redhat、CentOS、Ubuntu、Debian、Fedora 等平台。</p>
+<ul>
+<li><p>CVE漏洞名称：CVE-2014-6271</p>
+</li>
+<li><p>中文漏洞名称：破壳</p>
+<p><strong>验证：</strong></p>
+<blockquote>
+<p>通过普通用户登录主机，在bash shell下执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果输出 ：this is a test </p>
+<p>则不存bash在远程执行代码漏洞;</p>
+</blockquote>
+<blockquote>
+<p>如果输出：<br>vulnerable<br>this is a test<br>则存在bash远程执行代码漏洞</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p>针对以上漏洞可将bash升级到4.3以上版本，下面说明升级步骤。</p>
+<h2 id="升级bash版本"><a href="#升级bash版本" class="headerlink" title="升级bash版本"></a>升级bash版本</h2><ol>
+<li><p><strong>下载最新版bash</strong><br>bash下载地址：<a href="http://ftp.gnu.org/gnu/bash/" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/</a><br>本文下载的是bash5.0版本： <a href="http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz</a></p>
+</li>
+<li><p><strong>查看当前系统bash版本</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash, version 4.1.2(1)-release (x86_64-redhat-linux-gnu)</span><br><span class="line">Copyright (C) 2009 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">This is free software; you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+
+<p>可以知道当前版本为4.1.2</p>
+</li>
+<li><p><strong>升级bash</strong><br>上传bash版本包到服务器，解压升级</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# tar -zxf bash-5.0.tar.gz </span><br><span class="line">[root@node1 ~]# cd bash-5.0</span><br><span class="line">[root@node1 bash-5.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>因为bash默认是安装在/usr/local/bin/目录下，所以需要创建一个链接到 /bin/目录下！</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 bash-5.0]# mv /bin/bash /bin/bash.bak</span><br><span class="line">[root@node1 bash-5.0]# ln -s /usr/local/bin/bash /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>验证</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash，版本 5.0.0(1)-release (x86_64-pc-linux-gnu)</span><br><span class="line">Copyright (C) 2019 Free Software Foundation, Inc.</span><br><span class="line">许可证 GPLv3+: GNU GPL 许可证第三版或者更新版本 &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">本软件是自由软件，您可以自由地更改和重新发布。</span><br><span class="line">在法律许可的情况下特此明示，本软件不提供任何担保。</span><br><span class="line">[root@node1 bash-5.0]# env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br><span class="line">this is a test</span><br></pre></td></tr></table></figure>
+
+<p>现在bash版本已经是 5.0.0，bash漏洞也已修复</p>
+</li>
+</ol>
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+	<div>
+	  
+		<div>
+    
+        <div style="text-align:center;font-size:22px;letter-spacing:10px;user-select:none;color:#bbb;"><br>----------- 本文结束啦<i class="fa fa-star"></i>感谢您阅读 -----------<br><br></div>
+    
+</div>
+	  
+	</div>
+      
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2019-11-06T19:06:18+08:00"
-              content="2019-11-06">
-          11-06
-        </time>
+        <div class="reward-container">
+  <div></div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="jychen 微信支付">
+        <p>微信支付</p>
       </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2019/11/06/devtool-plsql/" itemprop="url">
-            <span itemprop="name">PLSQL12使用</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-    </div>
   </div>
-  
-  
-  
+</div>
 
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>jychen
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yoursite.com/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/" title="Linux升级bash版本">http://yoursite.com/2020/07/13/linux-bash升级/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+              <a href="/tags/bash/" rel="tag"><i class="fa fa-tag"></i> bash</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/10/oracle-Opatch/" rel="prev" title="Oracle11.2.0.4打补丁实践">
+      <i class="fa fa-chevron-left"></i> Oracle11.2.0.4打补丁实践
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -303,6 +477,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#bash漏洞简介"><span class="nav-number">1.</span> <span class="nav-text">bash漏洞简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#升级bash版本"><span class="nav-number">2.</span> <span class="nav-text">升级bash版本</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
