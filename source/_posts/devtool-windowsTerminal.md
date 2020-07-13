@@ -2,8 +2,8 @@
 title: 初识windows Terminal
 date: 2020-06-06 10:26:01
 categories: 
-  - windows
-  - devtool
+  - [windows]
+  - [devtool]
 tags: 
   - windows terminal
 ---
