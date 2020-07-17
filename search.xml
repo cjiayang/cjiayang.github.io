@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>软件资源下载</title>
+    <url>/2020/07/17/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</url>
+    <content><![CDATA[<p>本文搜集开发常用软件资源下载链接。资源在文章发出之前都测试过可以使用，有不可使用的欢迎评论。</p>
+<a id="more"></a>
+
+<h2 id="Linux开源镜像"><a href="#Linux开源镜像" class="headerlink" title="Linux开源镜像"></a>Linux开源镜像</h2><p>Linux镜像在国内有很多镜像站可供使用，一般点前几个链接就可以找到资源，其他镜像站供参考。</p>
+<ul>
+<li><p><strong>开源网站镜像</strong><br>搜狐开源镜像站：<a href="http://mirrors.sohu.com/" target="_blank" rel="noopener">http://mirrors.sohu.com/</a><br>阿里云开源镜像：<a href="http://mirrors.aliyun.com/" target="_blank" rel="noopener">http://mirrors.aliyun.com/</a><br>首都在线科技股份有限公司：<a href="http://mirrors.yun-idc.com/" target="_blank" rel="noopener">http://mirrors.yun-idc.com/</a><br>网易开源镜像站：<a href="http://mirrors.163.com/" target="_blank" rel="noopener">http://mirrors.163.com/</a><br>常州贝特康姆软件技术有限公司(原cn99）：<a href="http://centos.bitcomm.cn/" target="_blank" rel="noopener">http://centos.bitcomm.cn/</a></p>
+</li>
+<li><p>大学校园镜像<br>大连理工大学：<a href="http://mirror.dlut.edu.cn/" target="_blank" rel="noopener">http://mirror.dlut.edu.cn/</a><br>浙江大学：<a href="http://mirrors.zju.edu.cn/" target="_blank" rel="noopener">http://mirrors.zju.edu.cn/</a><br>兰州大学：<a href="http://mirror.lzu.edu.cn/" target="_blank" rel="noopener">http://mirror.lzu.edu.cn/</a><br>北京理工大学：<br><a href="http://mirror.bit.edu.cn" target="_blank" rel="noopener">http://mirror.bit.edu.cn</a> (IPv4 only)<br><a href="http://mirror.bit6.edu.cn" target="_blank" rel="noopener">http://mirror.bit6.edu.cn</a> (IPv6 only)<br>北京交通大学：<br><a href="http://mirror.bjtu.edu.cn" target="_blank" rel="noopener">http://mirror.bjtu.edu.cn</a> (IPv4 only)<br><a href="http://debian.bjtu.edu.cn" target="_blank" rel="noopener">http://debian.bjtu.edu.cn</a> (IPv4+IPv6)<br>上海交通大学：<br><a href="http://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">http://ftp.sjtu.edu.cn/</a> (IPv4 only)<br><a href="http://ftp6.sjtu.edu.cn" target="_blank" rel="noopener">http://ftp6.sjtu.edu.cn</a> (IPv6 only)<br>清华大学：<br><a href="http://mirrors.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.tuna.tsinghua.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors.6.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.6.tuna.tsinghua.edu.cn/</a> (IPv6 only)<br><a href="http://mirrors.4.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.4.tuna.tsinghua.edu.cn/</a> (IPv4 only)<br>中国科学技术大学：<br><a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors4.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors4.ustc.edu.cn/</a><br><a href="http://mirrors6.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors6.ustc.edu.cn/</a><br>东北大学：<br><a href="http://mirror.neu.edu.cn/" target="_blank" rel="noopener">http://mirror.neu.edu.cn/</a> (IPv4 only)<br><a href="http://mirror.neu6.edu.cn/" target="_blank" rel="noopener">http://mirror.neu6.edu.cn/</a> (IPv6 only)<br>华中科技大学：<br><a href="http://mirrors.hust.edu.cn/" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/</a><br><a href="http://mirrors.hustunique.com/" target="_blank" rel="noopener">http://mirrors.hustunique.com/</a><br><a href="http://ubuntu.uestc.edu.cn/" target="_blank" rel="noopener">http://ubuntu.uestc.edu.cn/</a><br>电子科大星辰工作室(少数小众发布版镜像)<br><a href="http://mirrors.stuhome.net/" target="_blank" rel="noopener">http://mirrors.stuhome.net/</a></p>
+</li>
+<li><p><strong>RedHat镜像</strong><br><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></p>
+</li>
+</ul>
+<h2 id="虚拟机下载"><a href="#虚拟机下载" class="headerlink" title="虚拟机下载"></a>虚拟机下载</h2><p>这里提供VMware各版本资源的下载，下载要注册vmware帐号，本文不提供注册码。</p>
+<ul>
+<li><p>历史版本<br><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </p>
+</li>
+<li><p>14版本地址<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186</a> </p>
+</li>
+<li><p>15版本地址<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859</a></p>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/Hi-blog/p/Linux-Mirror-Sites.html" target="_blank" rel="noopener">中国Linux源镜像站大全</a></li>
+<li><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></li>
+<li><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </li>
+</ul>
+]]></content>
+      <categories>
+        <category>资源</category>
+      </categories>
+      <tags>
+        <tag>资源下载</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VMware虚拟机安装及使用</title>
+    <url>/2020/07/17/VMware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85/</url>
+    <content><![CDATA[<p><a href="https://www.vmware.com/products/workstation-pro.html" target="_blank" rel="noopener">VMware Workstation Pro</a> 是在单个Linux或Windows系统上运行多个操作系统的行业标准。VMware是一款非常好用的虚拟机软件，在软件开发，测试中经常会使用到。本文介绍VMware15.1.0版本在Windows10环境下的安装和使用。</p>
+<a id="more"></a>
+
+<h2 id="资源下载"><a href="#资源下载" class="headerlink" title="资源下载"></a>资源下载</h2><p>VMware下载完后，直接安装，然后输入注册码即可使用。官网文档说的比较全面，不过太细了，遇到具体问题再过来翻一翻。</p>
+<ul>
+<li><p>官网下载地址：<a href="https://download3.vmware.com/software/wkst/file/VMware-workstation-full-15.1.0-13591040.exe" target="_blank" rel="noopener">VMware Workstation Pro 15.1.0 Build 9474260</a></p>
+</li>
+<li><p>官网文档：<a href="https://docs.vmware.com/cn/VMware-Workstation-Pro/15.0/com.vmware.ws.using.doc/GUID-0EE752F8-C159-487A-9159-FE1F646EE4CA.html" target="_blank" rel="noopener">使用 VMware Workstation Pro</a></p>
+</li>
+<li><p>注册码：</p>
+<blockquote>
+<p>UG5J2-0ME12-M89WY-NPWXX-WQH88<br>GA590-86Y05-4806Y-X4PEE-ZV8E0<br>YA18K-0WY8P-H85DY-L4NZG-X7RAD<br>UA5DR-2ZD4H-089FY-6YQ5T-YPRX6<br>B806Y-86Y05-GA590-X4PEE-ZV8E0<br>ZF582-0NW5N-H8D2P-0XZEE-Z22VA</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>VMware</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux升级bash版本</title>
     <url>/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/</url>
     <content><![CDATA[<p>因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。</p>
