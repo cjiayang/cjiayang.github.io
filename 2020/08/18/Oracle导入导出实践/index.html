@@ -20,20 +20,22 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="windows terminal是微软推出的简单易用的命令行终端工具，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。">
+  <meta name="description" content="本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初识windows Terminal">
-<meta property="og:url" content="http://yoursite.com/2020/06/06/devtool-windowsTerminal/index.html">
+<meta property="og:title" content="Oracle导入导出实践">
+<meta property="og:url" content="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/index.html">
 <meta property="og:site_name" content="Monkey Young">
-<meta property="og:description" content="windows terminal是微软推出的简单易用的命令行终端工具，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。">
+<meta property="og:description" content="本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-06T02:26:01.000Z">
-<meta property="article:modified_time" content="2020-07-13T08:42:26.284Z">
+<meta property="article:published_time" content="2020-08-18T06:01:54.000Z">
+<meta property="article:modified_time" content="2020-08-18T06:07:00.609Z">
 <meta property="article:author" content="jychen">
-<meta property="article:tag" content="windows terminal">
+<meta property="article:tag" content="Oracle">
+<meta property="article:tag" content="expdp">
+<meta property="article:tag" content="impdp">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/06/06/devtool-windowsTerminal/">
+<link rel="canonical" href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/">
 
 
 <script id="page-configurations">
@@ -46,7 +48,7 @@
   };
 </script>
 
-  <title>初识windows Terminal | Monkey Young</title>
+  <title>Oracle导入导出实践 | Monkey Young</title>
   
 
 
@@ -216,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/06/devtool-windowsTerminal/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -229,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          初识windows Terminal
+          Oracle导入导出实践
         </h1>
 
         <div class="post-meta">
@@ -239,32 +241,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-06-06 10:26:01" itemprop="dateCreated datePublished" datetime="2020-06-06T10:26:01+08:00">2020-06-06</time>
+              <time title="创建时间：2020-08-18 14:01:54 / 修改时间：14:07:00" itemprop="dateCreated datePublished" datetime="2020-08-18T14:01:54+08:00">2020-08-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-13 16:42:26" itemprop="dateModified" datetime="2020-07-13T16:42:26+08:00">2020-07-13</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/devtool/" itemprop="url" rel="index"><span itemprop="name">devtool</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/windows/" itemprop="url" rel="index"><span itemprop="name">windows</span></a>
+                  <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
                 </span>
             </span>
 
           
-            <span id="/2020/06/06/devtool-windowsTerminal/" class="post-meta-item leancloud_visitors" data-flag-title="初识windows Terminal" title="阅读次数">
+            <span id="/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/" class="post-meta-item leancloud_visitors" data-flag-title="Oracle导入导出实践" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -286,8 +278,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/06/06/devtool-windowsTerminal/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/06/devtool-windowsTerminal/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -297,7 +289,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>3.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -316,17 +308,70 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>windows terminal是微软推出的简单易用的<strong>命令行终端工具</strong>，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。</p>
+        <p>本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。</p>
 <a id="more"></a>
 
-<h2 id="Windows-Terminal简介"><a href="#Windows-Terminal简介" class="headerlink" title="Windows Terminal简介"></a>Windows Terminal简介</h2><p>Windows 终端是一个面向命令行工具和 shell（如命令提示符、PowerShell 和适用于 Linux 的 Windows 子系统 (WSL)）用户的新式终端应用程序。 它的主要功能包括多个选项卡、窗格、Unicode 和 UTF-8 字符支持、GPU 加速文本呈现引擎，还可以用于创建你自己的主题并自定义文本、颜色、背景和快捷键绑定。</p>
-<p>以上是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个<strong>终端工具</strong>，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。</p>
-<h3 id="如何安装"><a href="#如何安装" class="headerlink" title="如何安装"></a>如何安装</h3><p>直接从 <a href="https://aka.ms/terminal" target="_blank" rel="noopener">Microsoft Store</a> 安装 Windows Terminal。</p>
-<h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><p><a href="https://docs.microsoft.com/zh-cn/windows/terminal/" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/terminal/</a></p>
-<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="在哪配置"><a href="#在哪配置" class="headerlink" title="在哪配置"></a>在哪配置</h3><p>打开 Windows 终端，在下拉菜单中选择“设置” 。 终端会使用默认文本编辑器打开 <code>settings.json</code> 文件。在<code>settings.json</code>文件中，终端支持自定义影响整个应用程序的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/global-settings" target="_blank" rel="noopener">全局属性</a>、影响每个配置文件的设置的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/profile-settings" target="_blank" rel="noopener">配置文件属性</a>以及允许你使用键盘与终端交互的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/key-bindings" target="_blank" rel="noopener">键绑定</a>。</p>
-<p>配置文件的具体配置官方文档已经写的足够简洁了，一般使用默认配置即可满足需求，如果需要修改快捷键或者主题样式，可以按官方文档的配置步骤配置即可。下面对配置文件进行解释。</p>
-<h3 id="配置文件注释"><a href="#配置文件注释" class="headerlink" title="配置文件注释"></a>配置文件注释</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 最外层的都是全局属性，配置的指影响全局</span><br><span class="line">&#123;</span><br><span class="line">    &quot;$schema&quot;: &quot;https:&#x2F;&#x2F;aka.ms&#x2F;terminal-profiles-schema&quot;,</span><br><span class="line">    &quot;alwaysShowTabs&quot; : true,</span><br><span class="line">    &quot;defaultProfile&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;, &#x2F;&#x2F; 配置打开新标签页时使用的是哪个profile，值对应profiles里对象的guid</span><br><span class="line">    &quot;initialCols&quot; : 120,</span><br><span class="line">    &quot;initialRows&quot; : 30,</span><br><span class="line">    &quot;keybindings&quot; : &#x2F;&#x2F; 配置快捷键的地方</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;closeTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+w&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;newTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+t&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;requestedTheme&quot; : &quot;system&quot;,</span><br><span class="line">    &quot;showTabsInTitlebar&quot; : true,</span><br><span class="line">    &quot;showTerminalTitleInTitlebar&quot; : true,</span><br><span class="line">    &quot;profiles&quot; :  &#x2F;&#x2F; 每个终端的配置</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;acrylicOpacity&quot; : 0.9,</span><br><span class="line">            &#x2F;&#x2F; &quot;background&quot; : &quot;#012456&quot;,</span><br><span class="line">            &quot;closeOnExit&quot; : true,</span><br><span class="line">            &quot;colorScheme&quot; : &quot;Solarized Dark&quot;, 		&#x2F;&#x2F; 颜色主题，对应的是schemes对象的name值</span><br><span class="line">            &quot;commandline&quot; : &quot;powershell.exe&quot;,		&#x2F;&#x2F; 打开时执行的命令</span><br><span class="line">            &quot;cursorColor&quot; : &quot;#FFFFFF&quot;,</span><br><span class="line">            &quot;cursorShape&quot; : &quot;bar&quot;,</span><br><span class="line">            &quot;fontFace&quot; : &quot;Consolas&quot;,  				&#x2F;&#x2F; 字体</span><br><span class="line">            &quot;fontSize&quot; : 10,  						&#x2F;&#x2F; 字体大小</span><br><span class="line">            &quot;guid&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;,	&#x2F;&#x2F; 终端guid</span><br><span class="line">            &quot;historySize&quot; : 9001,</span><br><span class="line">            &quot;icon&quot; : &quot;ms-appx:&#x2F;&#x2F;&#x2F;ProfileIcons&#x2F;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;.png&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Windows PowerShell&quot;, 			&#x2F;&#x2F; 终端名</span><br><span class="line">            &quot;padding&quot; : &quot;0, 0, 0, 0&quot;,</span><br><span class="line">            &quot;snapOnInput&quot; : true,</span><br><span class="line">            &quot;startingDirectory&quot; : &quot;%USERPROFILE%&quot;,</span><br><span class="line">            &quot;useAcrylic&quot; : false					&#x2F;&#x2F; 透明背景</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;schemes&quot; : 	&#x2F;&#x2F; 主题样式</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;background&quot; : &quot;#0C0C0C&quot;, 	&#x2F;&#x2F; 背景颜色</span><br><span class="line">            &quot;black&quot; : &quot;#0C0C0C&quot;,</span><br><span class="line">            &quot;blue&quot; : &quot;#0037DA&quot;,</span><br><span class="line">            &quot;brightBlack&quot; : &quot;#767676&quot;,</span><br><span class="line">            &quot;brightBlue&quot; : &quot;#3B78FF&quot;,</span><br><span class="line">            &quot;brightCyan&quot; : &quot;#61D6D6&quot;,</span><br><span class="line">            &quot;brightGreen&quot; : &quot;#16C60C&quot;,</span><br><span class="line">            &quot;brightPurple&quot; : &quot;#B4009E&quot;,</span><br><span class="line">            &quot;brightRed&quot; : &quot;#E74856&quot;,</span><br><span class="line">            &quot;brightWhite&quot; : &quot;#F2F2F2&quot;,</span><br><span class="line">            &quot;brightYellow&quot; : &quot;#F9F1A5&quot;,</span><br><span class="line">            &quot;cyan&quot; : &quot;#3A96DD&quot;,</span><br><span class="line">            &quot;foreground&quot; : &quot;#CCCCCC&quot;,	&#x2F;&#x2F;前景颜色</span><br><span class="line">            &quot;green&quot; : &quot;#13A10E&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Campbell&quot;,		&#x2F;&#x2F;主题名称</span><br><span class="line">            &quot;purple&quot; : &quot;#881798&quot;,</span><br><span class="line">            &quot;red&quot; : &quot;#C50F1F&quot;,</span><br><span class="line">            &quot;white&quot; : &quot;#CCCCCC&quot;,</span><br><span class="line">            &quot;yellow&quot; : &quot;#C19C00&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="数据导出"><a href="#数据导出" class="headerlink" title="数据导出"></a>数据导出</h3><p>Oracle提供的expdp工具可以将数据库对象的元数据或数据导出到转储文件中，expdp可以导出表、用户模式、表空间和全数据库4种数据。<br>expdp工具只能将导出的转储文件存放在directory对象对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。因此，使用expdp工具时，必须首先建立directory对象，并且需要为数据库用户授予使用directory对象的权限。</p>
+<h4 id="EXPDP选项"><a href="#EXPDP选项" class="headerlink" title="EXPDP选项"></a>EXPDP选项</h4><p>可以在命令行输入<code>expdp help=y;</code>获取帮助<br>expdp常用选项：</p>
+<ul>
+<li>HELP: 帮助信息</li>
+<li>DIRECTORY：用于转储文件和日志文件的目录对象</li>
+<li>DUMPFILE：指定目标转储文件名的列表</li>
+<li>SCHEMAS: 要导出的方案的列表</li>
+<li>TABLES: 标识要导出的表的列表<br>例如, TABLES=HR.EMPLOYEES,SH.SALES:SALES_1995</li>
+<li>TABLESPACES: 标识要导出的表空间的列表</li>
+<li>EXCLUDE：排除特定对象类型<br>例如, EXCLUDE=SCHEMA:”=’HR’”</li>
+<li>INCLUDE: 包括特定对象类型</li>
+<li>FULL：导出整个数据库</li>
+<li>LOGFILE: 指定日志文件名</li>
+<li>QUERY: 用于导出表的子集的谓词子句<br>例如, QUERY=employees:”WHERE department_id &gt; 10”</li>
+</ul>
+<h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><p>为方便演示创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create user manager identified by code666 default tablespace system temporary tablespace temp;</span><br><span class="line">SQL&gt; grant connect,resource,dba to manager;</span><br><span class="line">SQL&gt; alter user scott account unlock;</span><br><span class="line">SQL&gt; alter user scott identified by tiger;</span><br></pre></td></tr></table></figure>
 
+<h4 id="创建导出目录"><a href="#创建导出目录" class="headerlink" title="创建导出目录"></a>创建导出目录</h4><p>首先在oracle用户下创建导出目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p &#x2F;home&#x2F;oracle&#x2F;data&#x2F;dump</span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create or replace directory dump_dir as '/home/oracle/data/dump';</span><br><span class="line">SQL&gt; grant read,write on directory dump_dir to scott;</span><br><span class="line">SQL&gt; grant read,write on directory dump_dir to manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表"><a href="#导出表" class="headerlink" title="导出表"></a>导出表</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp scott/tiger directory=dump_dir dumpfile=table.dmp tables=emp,dept</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出模式"><a href="#导出模式" class="headerlink" title="导出模式"></a>导出模式</h4><p>导出模式时，当前用户只能导出当前用户的模式对象，要导出其他用户的对象要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。下面导出scott模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp scott/tiger directory=dump_dir dumpfile=schema.dmp schemas=scott</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表空间"><a href="#导出表空间" class="headerlink" title="导出表空间"></a>导出表空间</h4><p>导出表空间是指将一个或多个表空间中的所有对象及数据存储到转储文件中。导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色，下面用manager用户导出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp manager/code666 directory=dump_dir dumpfile=tablespace.dmp tablespaces=system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导出"><a href="#全库导出" class="headerlink" title="全库导出"></a>全库导出</h4><p>导出数据库要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。<br>注意，导出数据库时，不会导出SYS、ORDSYS、ORDPLUGINS、CTXSYS、MDSYS、LBACSYS以及XDB等模式中的对象</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp manager/code666@orcl directory=dump_dir dumpfile=full.dmp full=y logfile=full.log;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h3><p>Oracle提供impdp工具可以将转储文件中的数据库对象的元数据导入到Oracle数据库中，IMPDP也可以进行4种类型的导入操作：导入表、导入模式、导入表空间和导入全数据库。<br>与expdp相似，数据泵导入时，其转储文件被存储在DIRECTORY对象所对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。</p>
+<h4 id="IMPDP命令"><a href="#IMPDP命令" class="headerlink" title="IMPDP命令"></a>IMPDP命令</h4><p>同样可以在命令行输入<code>impdp help=y;</code>查看impdp获取命令帮助。</p>
+<p>下面操作假设拿到dump文件，将dump文件导入到另一台机子中去，所以也需要创建用户和创建目录的操作。导入前需要将dump文件放到导入目录中，并改文件所属用户为oracle。</p>
+<h4 id="创建用户-1"><a href="#创建用户-1" class="headerlink" title="创建用户"></a>创建用户</h4><p>创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create user manager identified by code666 default tablespace system temporary tablespace temp;</span><br><span class="line">SQL&gt; grant connect,resource,dba to manager;</span><br><span class="line">SQL&gt; alter user scott account unlock;</span><br><span class="line">SQL&gt; alter user scott identified by tiger;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建导入目录"><a href="#创建导入目录" class="headerlink" title="创建导入目录"></a>创建导入目录</h4><p>首先在oracle用户下创建导入目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p /home/oracle/data/imp</span></span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create or replace directory imp_dir as '/home/oracle/data/imp';</span><br><span class="line">SQL&gt; grant read,write on directory imp_dir to manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表"><a href="#导入表" class="headerlink" title="导入表"></a>导入表</h4><p>普通用户只可以将表导入到自己的模式中，但如果以其他用户身份导入表，则要求该用户必须具有IMP_FULL_DATABASE角色和DBA角色。<br>导入表时，既可以将表导入到源模式中，也可以将表导入到其他模式中。以下示例将emp,dept表导入到manager模式中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=table.dmp tables=scott.emp,scott.dept remap_schema=scott:manager</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导入模式"><a href="#导入模式" class="headerlink" title="导入模式"></a>导入模式</h4><p>普通用户可以将对象导入到自身模式中，但如果以其他用户身份导入模式时，则要求该用户必须具有IMP_FULL_DATABASE角色或DBA角色。<br>导入模式时，既可以将模式的所有对象导入到源模式中，也可以将模式的所有对象导入到其他模式中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=schema.dmp remap_schema=scott:manager</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表空间"><a href="#导入表空间" class="headerlink" title="导入表空间"></a>导入表空间</h4><p>导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。导入时，可以将数据导入到其他表空间中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=tablespace.dmp remap_tablespace=users:system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导入"><a href="#全库导入" class="headerlink" title="全库导入"></a>全库导入</h4><p>全库导入要求用户必须具有DBA角色或EXP_FULL_DATABASE角色</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=ful.dmp full=y</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Oracle提供的expdp工具和impdp工具都是工作在服务端，可以方便的多粒度的进行数据的导出导入操作，在开发中可以灵活使用。</p>
 
     </div>
 
@@ -343,6 +388,12 @@
 	  
 	</div>
       
+  <div class="popular-posts-header">相关文章推荐</div>
+  <ul class="popular-posts">
+    <li class="popular-posts-item">
+      <div class="popular-posts-title"><a href="\2020\07\10\oracle-Opatch\" rel="bookmark">Oracle11.2.0.4打补丁实践</a></div>
+    </li>
+  </ul>
 
         <div class="reward-container">
   <div></div>
@@ -368,7 +419,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yoursite.com/2020/06/06/devtool-windowsTerminal/" title="初识windows Terminal">http://yoursite.com/2020/06/06/devtool-windowsTerminal/</a>
+    <a href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/" title="Oracle导入导出实践">http://yoursite.com/2020/08/18/Oracle导入导出实践/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -380,7 +431,9 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/windows-terminal/" rel="tag"><i class="fa fa-tag"></i> windows terminal</a>
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+              <a href="/tags/expdp/" rel="tag"><i class="fa fa-tag"></i> expdp</a>
+              <a href="/tags/impdp/" rel="tag"><i class="fa fa-tag"></i> impdp</a>
           </div>
 
         
@@ -389,13 +442,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/05/21/blog-hexo/" rel="prev" title="利用Hexo在GitHub Page搭建博客">
-      <i class="fa fa-chevron-left"></i> 利用Hexo在GitHub Page搭建博客
+    <a href="/2020/08/12/Linux-%E5%BF%AB%E6%8D%B7%E9%94%AE/" rel="prev" title="Linux 快捷键">
+      <i class="fa fa-chevron-left"></i> Linux 快捷键
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/06/06/devtool-powershell/" rel="next" title="初识powershell">
-      初识powershell <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -455,7 +505,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-Terminal简介"><span class="nav-number">1.</span> <span class="nav-text">Windows Terminal简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何安装"><span class="nav-number">1.1.</span> <span class="nav-text">如何安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官方文档"><span class="nav-number">1.2.</span> <span class="nav-text">官方文档</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义配置"><span class="nav-number">2.</span> <span class="nav-text">自定义配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#在哪配置"><span class="nav-number">2.1.</span> <span class="nav-text">在哪配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置文件注释"><span class="nav-number">2.2.</span> <span class="nav-text">配置文件注释</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据导出"><span class="nav-number">1.</span> <span class="nav-text">数据导出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPDP选项"><span class="nav-number">1.1.</span> <span class="nav-text">EXPDP选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建用户"><span class="nav-number">1.2.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建导出目录"><span class="nav-number">1.3.</span> <span class="nav-text">创建导出目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出表"><span class="nav-number">1.4.</span> <span class="nav-text">导出表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出模式"><span class="nav-number">1.5.</span> <span class="nav-text">导出模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出表空间"><span class="nav-number">1.6.</span> <span class="nav-text">导出表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全库导出"><span class="nav-number">1.7.</span> <span class="nav-text">全库导出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据导入"><span class="nav-number">2.</span> <span class="nav-text">数据导入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IMPDP命令"><span class="nav-number">2.1.</span> <span class="nav-text">IMPDP命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建用户-1"><span class="nav-number">2.2.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建导入目录"><span class="nav-number">2.3.</span> <span class="nav-text">创建导入目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入表"><span class="nav-number">2.4.</span> <span class="nav-text">导入表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入模式"><span class="nav-number">2.5.</span> <span class="nav-text">导入模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导入表空间"><span class="nav-number">2.6.</span> <span class="nav-text">导入表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#全库导入"><span class="nav-number">2.7.</span> <span class="nav-text">全库导入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

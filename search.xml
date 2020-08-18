@@ -1,6 +1,353 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Oracle导入导出实践</title>
+    <url>/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/</url>
+    <content><![CDATA[<p>本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。</p>
+<a id="more"></a>
+
+<h3 id="数据导出"><a href="#数据导出" class="headerlink" title="数据导出"></a>数据导出</h3><p>Oracle提供的expdp工具可以将数据库对象的元数据或数据导出到转储文件中，expdp可以导出表、用户模式、表空间和全数据库4种数据。<br>expdp工具只能将导出的转储文件存放在directory对象对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。因此，使用expdp工具时，必须首先建立directory对象，并且需要为数据库用户授予使用directory对象的权限。</p>
+<h4 id="EXPDP选项"><a href="#EXPDP选项" class="headerlink" title="EXPDP选项"></a>EXPDP选项</h4><p>可以在命令行输入<code>expdp help=y;</code>获取帮助<br>expdp常用选项：</p>
+<ul>
+<li>HELP: 帮助信息</li>
+<li>DIRECTORY：用于转储文件和日志文件的目录对象</li>
+<li>DUMPFILE：指定目标转储文件名的列表</li>
+<li>SCHEMAS: 要导出的方案的列表</li>
+<li>TABLES: 标识要导出的表的列表<br>例如, TABLES=HR.EMPLOYEES,SH.SALES:SALES_1995</li>
+<li>TABLESPACES: 标识要导出的表空间的列表</li>
+<li>EXCLUDE：排除特定对象类型<br>例如, EXCLUDE=SCHEMA:”=’HR’”</li>
+<li>INCLUDE: 包括特定对象类型</li>
+<li>FULL：导出整个数据库</li>
+<li>LOGFILE: 指定日志文件名</li>
+<li>QUERY: 用于导出表的子集的谓词子句<br>例如, QUERY=employees:”WHERE department_id &gt; 10”</li>
+</ul>
+<h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><p>为方便演示创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SQL&gt; create user manager identified by code666 default tablespace system temporary tablespace temp;</span><br><span class="line">SQL&gt; grant connect,resource,dba to manager;</span><br><span class="line">SQL&gt; alter user scott account unlock;</span><br><span class="line">SQL&gt; alter user scott identified by tiger;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建导出目录"><a href="#创建导出目录" class="headerlink" title="创建导出目录"></a>创建导出目录</h4><p>首先在oracle用户下创建导出目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$ mkdir -p &#x2F;home&#x2F;oracle&#x2F;data&#x2F;dump</span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SQL&gt; create or replace directory dump_dir as '/home/oracle/data/dump';</span><br><span class="line">SQL&gt; grant read,write on directory dump_dir to scott;</span><br><span class="line">SQL&gt; grant read,write on directory dump_dir to manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表"><a href="#导出表" class="headerlink" title="导出表"></a>导出表</h4><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp scott/tiger directory=dump_dir dumpfile=table.dmp tables=emp,dept</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出模式"><a href="#导出模式" class="headerlink" title="导出模式"></a>导出模式</h4><p>导出模式时，当前用户只能导出当前用户的模式对象，要导出其他用户的对象要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。下面导出scott模式</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp scott/tiger directory=dump_dir dumpfile=schema.dmp schemas=scott</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表空间"><a href="#导出表空间" class="headerlink" title="导出表空间"></a>导出表空间</h4><p>导出表空间是指将一个或多个表空间中的所有对象及数据存储到转储文件中。导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色，下面用manager用户导出</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp manager/code666 directory=dump_dir dumpfile=tablespace.dmp tablespaces=system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导出"><a href="#全库导出" class="headerlink" title="全库导出"></a>全库导出</h4><p>导出数据库要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。<br>注意，导出数据库时，不会导出SYS、ORDSYS、ORDPLUGINS、CTXSYS、MDSYS、LBACSYS以及XDB等模式中的对象</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> expdp manager/code666@orcl directory=dump_dir dumpfile=full.dmp full=y logfile=full.log;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h3><p>Oracle提供impdp工具可以将转储文件中的数据库对象的元数据导入到Oracle数据库中，IMPDP也可以进行4种类型的导入操作：导入表、导入模式、导入表空间和导入全数据库。<br>与expdp相似，数据泵导入时，其转储文件被存储在DIRECTORY对象所对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。</p>
+<h4 id="IMPDP命令"><a href="#IMPDP命令" class="headerlink" title="IMPDP命令"></a>IMPDP命令</h4><p>同样可以在命令行输入<code>impdp help=y;</code>查看impdp获取命令帮助。</p>
+<p>下面操作假设拿到dump文件，将dump文件导入到另一台机子中去，所以也需要创建用户和创建目录的操作。导入前需要将dump文件放到导入目录中，并改文件所属用户为oracle。</p>
+<h4 id="创建用户-1"><a href="#创建用户-1" class="headerlink" title="创建用户"></a>创建用户</h4><p>创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SQL&gt; create user manager identified by code666 default tablespace system temporary tablespace temp;</span><br><span class="line">SQL&gt; grant connect,resource,dba to manager;</span><br><span class="line">SQL&gt; alter user scott account unlock;</span><br><span class="line">SQL&gt; alter user scott identified by tiger;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建导入目录"><a href="#创建导入目录" class="headerlink" title="创建导入目录"></a>创建导入目录</h4><p>首先在oracle用户下创建导入目录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p /home/oracle/data/imp</span></span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">SQL&gt; create or replace directory imp_dir as '/home/oracle/data/imp';</span><br><span class="line">SQL&gt; grant read,write on directory imp_dir to manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表"><a href="#导入表" class="headerlink" title="导入表"></a>导入表</h4><p>普通用户只可以将表导入到自己的模式中，但如果以其他用户身份导入表，则要求该用户必须具有IMP_FULL_DATABASE角色和DBA角色。<br>导入表时，既可以将表导入到源模式中，也可以将表导入到其他模式中。以下示例将emp,dept表导入到manager模式中</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=table.dmp tables=scott.emp,scott.dept remap_schema=scott:manager</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导入模式"><a href="#导入模式" class="headerlink" title="导入模式"></a>导入模式</h4><p>普通用户可以将对象导入到自身模式中，但如果以其他用户身份导入模式时，则要求该用户必须具有IMP_FULL_DATABASE角色或DBA角色。<br>导入模式时，既可以将模式的所有对象导入到源模式中，也可以将模式的所有对象导入到其他模式中</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=schema.dmp remap_schema=scott:manager</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表空间"><a href="#导入表空间" class="headerlink" title="导入表空间"></a>导入表空间</h4><p>导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。导入时，可以将数据导入到其他表空间中。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=tablespace.dmp remap_tablespace=users:system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导入"><a href="#全库导入" class="headerlink" title="全库导入"></a>全库导入</h4><p>全库导入要求用户必须具有DBA角色或EXP_FULL_DATABASE角色</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> impdp manager/code666 directory=imp_dir dumpfile=ful.dmp full=y</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Oracle提供的expdp工具和impdp工具都是工作在服务端，可以方便的多粒度的进行数据的导出导入操作，在开发中可以灵活使用。</p>
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+        <tag>expdp</tag>
+        <tag>impdp</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 快捷键</title>
+    <url>/2020/08/12/Linux-%E5%BF%AB%E6%8D%B7%E9%94%AE/</url>
+    <content><![CDATA[<p>因为经常要用到Linux命令行和vim编辑器，虽然快捷键不多，但每次总会忘记几个，然后又要上网查，零零散散总是记不全，效率太低。本文总结Linux常用的命令行快捷键和vim快捷键，好记性不如烂笔头，多记多练习。有更好的使用经验可以评论分享，共同进步。</p>
+<a id="more"></a>
+
+<h2 id="Linux-命令行快捷键"><a href="#Linux-命令行快捷键" class="headerlink" title="Linux 命令行快捷键"></a>Linux 命令行快捷键</h2><p>Linux命令行下可以使用快捷键进行光标移动跳转，编辑查找，发送控制命令。命令行快捷键一般是使用“ctrl + 字母”键组合，熟练操作，可以提高效率。</p>
+<h3 id="常用"><a href="#常用" class="headerlink" title="常用"></a>常用</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ctrl + a</td>
+<td>光标移动至行首</td>
+</tr>
+<tr>
+<td>ctrl + e</td>
+<td>光标移动至行末</td>
+</tr>
+<tr>
+<td>ctrl + u</td>
+<td>删除当前光标前面所有文字（带剪切）</td>
+</tr>
+<tr>
+<td>ctrl + k</td>
+<td>删除当前光标后面所有文字（带剪切）</td>
+</tr>
+<tr>
+<td>ctrl + w</td>
+<td>删除光标前一个单词</td>
+</tr>
+<tr>
+<td>ctrl + y</td>
+<td>粘贴ctrl + u或ctrl + k剪切的内容</td>
+</tr>
+<tr>
+<td>ctrl + p 或者 ↑ 按键</td>
+<td>显示上一条历史命令</td>
+</tr>
+<tr>
+<td>ctrl + n 或者 ↓ 按键</td>
+<td>显示下一条历史命令</td>
+</tr>
+<tr>
+<td>ctrl + r</td>
+<td>搜索历史命令</td>
+</tr>
+<tr>
+<td>ctrl + l</td>
+<td>清屏</td>
+</tr>
+</tbody></table>
+<h3 id="光标移动"><a href="#光标移动" class="headerlink" title="光标移动"></a>光标移动</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ctrl + a</td>
+<td>光标移动至行首</td>
+</tr>
+<tr>
+<td>ctrl + e</td>
+<td>光标移动至行末</td>
+</tr>
+<tr>
+<td>ctrl + f</td>
+<td>光标往右移动一个字符</td>
+</tr>
+<tr>
+<td>ctrl + b</td>
+<td>光标往左移动一个字符</td>
+</tr>
+<tr>
+<td>ctrl  + xx</td>
+<td>（两个x）在光标和行首之间移动</td>
+</tr>
+</tbody></table>
+<h3 id="编辑命令"><a href="#编辑命令" class="headerlink" title="编辑命令"></a>编辑命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ctrl + u</td>
+<td>删除当前光标前面所有文字（带剪切）</td>
+</tr>
+<tr>
+<td>ctrl + k</td>
+<td>删除当前光标后面所有文字（带剪切）</td>
+</tr>
+<tr>
+<td>ctrl + w</td>
+<td>向左删除一个单词</td>
+</tr>
+<tr>
+<td>ctrl + y</td>
+<td>粘贴ctrl + u或ctrl + k剪切的内容</td>
+</tr>
+<tr>
+<td>ctrl + h</td>
+<td>向左删除一个字符</td>
+</tr>
+<tr>
+<td>ctrl + d</td>
+<td>向右删除一个字符</td>
+</tr>
+<tr>
+<td>ctrl  + _</td>
+<td>撤销上一次编辑操作</td>
+</tr>
+</tbody></table>
+<h3 id="控制命令"><a href="#控制命令" class="headerlink" title="控制命令"></a>控制命令</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>动作</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ctrl + l</td>
+<td>清屏</td>
+</tr>
+<tr>
+<td>ctrl + c</td>
+<td>终止命令</td>
+</tr>
+<tr>
+<td>ctrl + s</td>
+<td>锁住终端，在vim中也是。按 ctrl +q即可恢复</td>
+</tr>
+<tr>
+<td>ctrl + q</td>
+<td>解锁终端</td>
+</tr>
+<tr>
+<td>ctrl + z</td>
+<td>后台运行命令</td>
+</tr>
+<tr>
+<td>ctrl + d</td>
+<td>退出会话，相当于exit</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>vim</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>虚拟机安装RedHat6.5实践</title>
+    <url>/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/</url>
+    <content><![CDATA[<p>本文介绍在虚拟机下安装RedHat6.5步骤</p>
+<a id="more"></a>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>虚拟机创建已在另一篇文章介绍过，安装前需准备redhat6.5的iso镜像文件，可以到开源镜像站下载相应版本。</p>
+<ol>
+<li>VMware虚拟机15.1.0</li>
+<li>rhel-server-6.5-x86_64-dvd.iso镜像文件</li>
+</ol>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="虚拟机配置镜像文件"><a href="#虚拟机配置镜像文件" class="headerlink" title="虚拟机配置镜像文件"></a>虚拟机配置镜像文件</h3><p>编辑虚拟机设置  → CD/DVD → 使用ISO镜像文件，点击浏览，选择rhel-server-6.5-x86_64-dvd.iso镜像文件所在位置</p>
+<p><img src="vmware-config.png" alt="vmware-config"></p>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
+<li><p>选择Install or upgrade an existing system<br><img src="step1.png" alt="step1"></p>
+</li>
+<li><p>点击Skip<br><img src="step2.png" alt="step2"></p>
+</li>
+<li><p>语言默认选择English<br><img src="step3.png" alt="step3"></p>
+</li>
+<li><p>键盘默认选U.S. English<br><img src="step4.png" alt="step4"></p>
+</li>
+<li><p>选择Basic Storage Device<br><img src="step5.png" alt="step5"></p>
+</li>
+<li><p>选择 Yes, discard any data<br><img src="step6.png" alt="step6"></p>
+</li>
+<li><p>主机名自定义，点击配置网络，选择eth0网卡，点击Edit<br><img src="step7.png" alt="step7"></p>
+</li>
+<li><p>勾选Connect automatically，Ipv4 Settings选项卡中，Method选择Manual手动配置<br>Address填写局域网内未使用的IP，点击应用<br><img src="step8.png" alt="step8"></p>
+</li>
+<li><p>时区选择上海，去掉UTC勾选<br><img src="step9.png" alt="step9"></p>
+</li>
+<li><p>填写系统root用户密码<br><img src="step10.png" alt="step10"></p>
+</li>
+<li><p>自定义安装<br><img src="step11.png" alt="step11"></p>
+</li>
+<li><p>创建boot分区</p>
+<p>点击Free → 点击Create → 选择 Standard Partition<br><img src="step12.png" alt="step12"></p>
+</li>
+<li><p>创建swap分区<br>点击Free → 点击Create → 选择 Standard Partition<br><img src="step13.png" alt="step13"></p>
+</li>
+<li><p>创建root分区<br>点击Free → 点击Create → 选择 Standard Partition → 选择 Fill to maximum allowable size<br><img src="step14.png" alt="step14"></p>
+</li>
+<li><p>格式化系统<br>点击Format，在弹窗点击Write changes to disk<br><img src="step15.png" alt="step15"></p>
+</li>
+<li><p>默认，点击next<br><img src="step16.png" alt="step16"></p>
+</li>
+<li><p>选择Desktop桌面版安装<br><img src="step17.png" alt="step17"></p>
+</li>
+<li><p>安装完成点击Reboot<br><img src="step18.png" alt="step18"></p>
+</li>
+</ol>
+<h3 id="首次启动配置"><a href="#首次启动配置" class="headerlink" title="首次启动配置"></a>首次启动配置</h3><ol>
+<li>欢迎页直接点击Forward<br><img src="step19.png" alt="step19"></li>
+<li>许可证选择Yes, I agree to the License Agreement，点击Forward<br><img src="step20.png" alt="step20"></li>
+<li>选择稍后注册，点击Forward，弹窗点击Register Later，继续点击Forward<br><img src="step21.png" alt="step21"></li>
+<li>如果不建用户直接点击Forward，在弹窗中点击Yes确认<br><img src="step22.png" alt="step22"></li>
+<li>日期和时间，点击Forward<br><img src="step23.png" alt="step23"></li>
+<li>点击Finish，在弹窗中点击Yes和OK，系统重启。<br><img src="step24.png" alt="step24"></li>
+</ol>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ol>
+<li>root用户登陆<br><img src="step25.png" alt="step25"></li>
+<li>ping <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a> 如果网络能通则成功<br><img src="step26.png" alt="step26"></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>VMware</tag>
+        <tag>RedHat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>软件资源下载</title>
+    <url>/2020/07/17/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</url>
+    <content><![CDATA[<p>本文搜集开发常用软件资源下载链接。资源在文章发出之前都测试过可以使用，有不可使用的欢迎评论。</p>
+<a id="more"></a>
+
+<h2 id="Linux开源镜像"><a href="#Linux开源镜像" class="headerlink" title="Linux开源镜像"></a>Linux开源镜像</h2><p>Linux镜像在国内有很多镜像站可供使用，一般点前几个链接就可以找到资源，其他镜像站供参考。</p>
+<ul>
+<li><p><strong>开源网站镜像</strong><br>搜狐开源镜像站：<a href="http://mirrors.sohu.com/" target="_blank" rel="noopener">http://mirrors.sohu.com/</a><br>阿里云开源镜像：<a href="http://mirrors.aliyun.com/" target="_blank" rel="noopener">http://mirrors.aliyun.com/</a><br>首都在线科技股份有限公司：<a href="http://mirrors.yun-idc.com/" target="_blank" rel="noopener">http://mirrors.yun-idc.com/</a><br>网易开源镜像站：<a href="http://mirrors.163.com/" target="_blank" rel="noopener">http://mirrors.163.com/</a><br>常州贝特康姆软件技术有限公司(原cn99）：<a href="http://centos.bitcomm.cn/" target="_blank" rel="noopener">http://centos.bitcomm.cn/</a></p>
+</li>
+<li><p><strong>大学校园镜像</strong><br>大连理工大学：<a href="http://mirror.dlut.edu.cn/" target="_blank" rel="noopener">http://mirror.dlut.edu.cn/</a><br>浙江大学：<a href="http://mirrors.zju.edu.cn/" target="_blank" rel="noopener">http://mirrors.zju.edu.cn/</a><br>兰州大学：<a href="http://mirror.lzu.edu.cn/" target="_blank" rel="noopener">http://mirror.lzu.edu.cn/</a><br>北京理工大学：<br><a href="http://mirror.bit.edu.cn" target="_blank" rel="noopener">http://mirror.bit.edu.cn</a> (IPv4 only)<br><a href="http://mirror.bit6.edu.cn" target="_blank" rel="noopener">http://mirror.bit6.edu.cn</a> (IPv6 only)<br>北京交通大学：<br><a href="http://mirror.bjtu.edu.cn" target="_blank" rel="noopener">http://mirror.bjtu.edu.cn</a> (IPv4 only)<br><a href="http://debian.bjtu.edu.cn" target="_blank" rel="noopener">http://debian.bjtu.edu.cn</a> (IPv4+IPv6)<br>上海交通大学：<br><a href="http://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">http://ftp.sjtu.edu.cn/</a> (IPv4 only)<br><a href="http://ftp6.sjtu.edu.cn" target="_blank" rel="noopener">http://ftp6.sjtu.edu.cn</a> (IPv6 only)<br>清华大学：<br><a href="http://mirrors.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.tuna.tsinghua.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors.6.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.6.tuna.tsinghua.edu.cn/</a> (IPv6 only)<br><a href="http://mirrors.4.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.4.tuna.tsinghua.edu.cn/</a> (IPv4 only)<br>中国科学技术大学：<br><a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors4.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors4.ustc.edu.cn/</a><br><a href="http://mirrors6.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors6.ustc.edu.cn/</a><br>东北大学：<br><a href="http://mirror.neu.edu.cn/" target="_blank" rel="noopener">http://mirror.neu.edu.cn/</a> (IPv4 only)<br><a href="http://mirror.neu6.edu.cn/" target="_blank" rel="noopener">http://mirror.neu6.edu.cn/</a> (IPv6 only)<br>华中科技大学：<br><a href="http://mirrors.hust.edu.cn/" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/</a><br><a href="http://mirrors.hustunique.com/" target="_blank" rel="noopener">http://mirrors.hustunique.com/</a><br><a href="http://ubuntu.uestc.edu.cn/" target="_blank" rel="noopener">http://ubuntu.uestc.edu.cn/</a><br>电子科大星辰工作室(少数小众发布版镜像)<br><a href="http://mirrors.stuhome.net/" target="_blank" rel="noopener">http://mirrors.stuhome.net/</a></p>
+</li>
+<li><p><strong>RedHat镜像</strong><br><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></p>
+</li>
+</ul>
+<h2 id="虚拟机下载"><a href="#虚拟机下载" class="headerlink" title="虚拟机下载"></a>虚拟机下载</h2><p>这里提供VMware各版本资源的下载，下载要注册vmware帐号，本文不提供注册码。</p>
+<ul>
+<li><p>历史版本<br><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </p>
+</li>
+<li><p>14版本<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186</a> </p>
+</li>
+<li><p>15版本<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859</a></p>
+</li>
+</ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/Hi-blog/p/Linux-Mirror-Sites.html" target="_blank" rel="noopener">中国Linux源镜像站大全</a></li>
+<li><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></li>
+<li><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </li>
+</ul>
+]]></content>
+      <categories>
+        <category>资源</category>
+      </categories>
+      <tags>
+        <tag>资源下载</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>VMware虚拟机安装及使用</title>
     <url>/2020/07/17/VMware%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<p><a href="https://www.vmware.com/products/workstation-pro.html" target="_blank" rel="noopener">VMware Workstation Pro</a> 是在单个Linux或Windows系统上运行多个操作系统的行业标准。VMware是一款非常好用的虚拟机软件，在软件开发，测试中经常会使用到。本文介绍VMware15.1.0版本在Windows10环境下的安装和使用。</p>
@@ -55,6 +402,295 @@
       </categories>
       <tags>
         <tag>VMware</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux升级bash版本</title>
+    <url>/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/</url>
+    <content><![CDATA[<p>因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。</p>
+<a id="more"></a>
+
+<h2 id="bash漏洞简介"><a href="#bash漏洞简介" class="headerlink" title="bash漏洞简介"></a>bash漏洞简介</h2><p>bash4.3及以下版本的bash存在远程执行代码漏洞，包括但不限于Redhat、CentOS、Ubuntu、Debian、Fedora 等平台。</p>
+<ul>
+<li><p>CVE漏洞名称：CVE-2014-6271</p>
+</li>
+<li><p>中文漏洞名称：破壳</p>
+<p><strong>验证：</strong></p>
+<blockquote>
+<p>通过普通用户登录主机，在bash shell下执行：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果输出 ：this is a test </p>
+<p>则不存bash在远程执行代码漏洞;</p>
+</blockquote>
+<blockquote>
+<p>如果输出：<br>vulnerable<br>this is a test<br>则存在bash远程执行代码漏洞</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p>针对以上漏洞可将bash升级到4.3以上版本，下面说明升级步骤。</p>
+<h2 id="升级bash版本"><a href="#升级bash版本" class="headerlink" title="升级bash版本"></a>升级bash版本</h2><ol>
+<li><p><strong>下载最新版bash</strong><br>bash下载地址：<a href="http://ftp.gnu.org/gnu/bash/" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/</a><br>本文下载的是bash5.0版本： <a href="http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz</a></p>
+</li>
+<li><p><strong>查看当前系统bash版本</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash, version 4.1.2(1)-release (x86_64-redhat-linux-gnu)</span><br><span class="line">Copyright (C) 2009 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">This is free software; you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
+
+<p>可以知道当前版本为4.1.2</p>
+</li>
+<li><p><strong>升级bash</strong><br>上传bash版本包到服务器，解压升级</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# tar -zxf bash-5.0.tar.gz </span><br><span class="line">[root@node1 ~]# cd bash-5.0</span><br><span class="line">[root@node1 bash-5.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<p>因为bash默认是安装在/usr/local/bin/目录下，所以需要创建一个链接到 /bin/目录下！</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 bash-5.0]# mv /bin/bash /bin/bash.bak</span><br><span class="line">[root@node1 bash-5.0]# ln -s /usr/local/bin/bash /bin/bash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>验证</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash，版本 5.0.0(1)-release (x86_64-pc-linux-gnu)</span><br><span class="line">Copyright (C) 2019 Free Software Foundation, Inc.</span><br><span class="line">许可证 GPLv3+: GNU GPL 许可证第三版或者更新版本 &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">本软件是自由软件，您可以自由地更改和重新发布。</span><br><span class="line">在法律许可的情况下特此明示，本软件不提供任何担保。</span><br><span class="line">[root@node1 bash-5.0]# env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br><span class="line">this is a test</span><br></pre></td></tr></table></figure>
+
+<p>现在bash版本已经是 5.0.0，bash漏洞也已修复</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>bash</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Oracle11.2.0.4打补丁实践</title>
+    <url>/2020/07/10/oracle-Opatch/</url>
+    <content><![CDATA[<p>本文介绍如何给Oracle数据库打补丁，数据库版本为Oracle11.2.0.4，单实例，操作系统为redhat6.5。</p>
+<a id="more"></a>
+
+<h2 id="下载升级包"><a href="#下载升级包" class="headerlink" title="下载升级包"></a>下载升级包</h2><ol>
+<li><p><strong>下载升级包</strong></p>
+<p>因为没有MOS帐号，从网上下载了升级包</p>
+<blockquote>
+<p>p30670774_112040_Linux-x86-64.zip：数据库补丁<br>p6880880_112000_Linux-x86-64.zip：opatch升级包<br>百度云链接：<a href="https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw</a><br>提取码：plhp<br>微云链接：<a href="https://share.weiyun.com/k8CbxL3K" target="_blank" rel="noopener">https://share.weiyun.com/k8CbxL3K</a></p>
+</blockquote>
+<p>opatch是安装补丁的程序，数据库软件安装完成后，就自带了opatch，但是版本太旧了，所以这里下载最新的opatch，p6880880_112000_Linux-x86-64.zip包就是用来升级opatch用的。</p>
+</li>
+</ol>
+<h2 id="升级opatch"><a href="#升级opatch" class="headerlink" title="升级opatch"></a>升级opatch</h2><p>opatch的升级只要将新版本的包解压，覆盖系统原始的文件即可。</p>
+<ol start="2">
+<li><p><strong>查看原始opatch信息</strong></p>
+<p>查看原始版本</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看原始版本</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.4</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>查看补丁情况</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ ./opatch lsinventory	# 查看补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 中间补丁程序安装程序版本 11.2.0.3.4</span><br><span class="line">版权所有 (c) 2012, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">Oracle Home       : /home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">Central Inventory : /home/oracle/app/oraInventory</span><br><span class="line">   from           : /home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch version    : 11.2.0.3.4</span><br><span class="line">OUI version       : 11.2.0.4.0</span><br><span class="line">Log file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-23-35下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_16-23-35下午.txt</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line">此 Oracle 主目录中未安装任何中间补丁程序。</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>备份原opatch</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ cd $ORACLE_HOME</span><br><span class="line">[oracle@node1 dbhome_1]$ mv OPatch OPatch.bak</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解压新下载的opatch包</strong></p>
+<p>将下载的opatch包上传到oracle的家目录，上传完后，解压到<code>$ORACLE_HOME</code>下</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 dbhome_1]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p6880880_112000_Linux-x86-64.zip -d $ORACLE_HOME</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>检查opatch是否升级成功</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看版本信息</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.21</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>现在版本为11.2.0.3.21，说明升级成功</p>
+</li>
+</ol>
+<h2 id="数据库打补丁"><a href="#数据库打补丁" class="headerlink" title="数据库打补丁"></a>数据库打补丁</h2><ol start="6">
+<li><p><strong>关闭监听、数据库</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>解压补丁包</strong></p>
+<p>将下载的补丁包上传到oracle家目录，并解压</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p30670774_112040_Linux-x86-64.zip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>校验冲突</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd 30670774/</span><br><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-54-06下午_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq "checkconflictagainstohwithdetail"</span><br><span class="line"></span><br><span class="line">Prereq "checkConflictAgainstOHWithDetail" passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>由于这个测试库之前并没有打补丁，所以这里就没有补丁冲突的问题，如果这里显示有冲突，再去网MOS上查找相关解决方案。</p>
+</li>
+<li><p><strong>执行打补丁</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch apply</span><br></pre></td></tr></table></figure>
+
+<p><img src="confirmAndContinue.png" alt="确认并继续"></p>
+<p>这里要输入3次y和一次回车，打补丁的过程耗是比较久的，耐心等待</p>
+</li>
+<li><p><strong>检查打补丁情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br></pre></td></tr></table></figure>
+
+<p>这里会列出系统已打的补丁情况</p>
+</li>
+<li><p><strong>启动数据库，并运行sql文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 30670774]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle.sql psu apply</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>启动监听</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>至此数据库打补丁已经全部完成</p>
+<h2 id="回退数据库补丁"><a href="#回退数据库补丁" class="headerlink" title="回退数据库补丁"></a>回退数据库补丁</h2><p><strong>数据库在做变更时，需要考虑回退方案</strong>，接下来介绍如何回退数据库补丁</p>
+<ol start="13">
+<li><p><strong>关闭监听、数据库</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>回退补丁</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ $ORACLE_HOME/OPatch/opatch rollback -id 30670774</span><br></pre></td></tr></table></figure>
+
+<p><img src="rollback.png" alt="回退补丁"></p>
+<p>这里要回复一次y，回退过程比较耗时，需耐心等待</p>
+</li>
+</ol>
+<ol start="15">
+<li><p><strong>启动数据库，并运行sql文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 admin]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle_PSU_ORCL_ROLLBACK.sql	<span class="comment"># 这里的ORCL为实例名称</span></span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>检查回退情况</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_18-24-48下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_18-24-48下午.txt</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Local Machine Information::</span><br><span class="line">Hostname: localhost</span><br><span class="line">ARU platform id: 226</span><br><span class="line">ARU platform description:: Linux x86-64</span><br><span class="line"></span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line"></span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">此 Oracle 主目录中未安装任何临时补丁程序。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，补丁已经被卸载了</p>
+</li>
+<li><p><strong>启动监听</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>这样补丁回退就结束了</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了单实例数据库打补丁的步骤，仅做参考，实际应以补丁包中的readme为准。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.cnblogs.com/ddzj01/p/12097467.html" target="_blank" rel="noopener">Oracle - 数据库打补丁最佳实践</a></li>
+<li>readme.html</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Oracle</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+        <tag>OPatch</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初识powershell</title>
+    <url>/2020/06/06/devtool-powershell/</url>
+    <content><![CDATA[<p>PowerShell基础</p>
+<a id="more"></a>
+
+<h2 id="快捷使用"><a href="#快捷使用" class="headerlink" title="快捷使用"></a>快捷使用</h2><h3 id="控制台快捷键"><a href="#控制台快捷键" class="headerlink" title="控制台快捷键"></a>控制台快捷键</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>左箭头</td>
+<td>光标向左移动一个字符</td>
+</tr>
+<tr>
+<td><em>Ctrl + 左箭头</em></td>
+<td>光标向左移动一个单词</td>
+</tr>
+<tr>
+<td>右箭头</td>
+<td>光标向右移动一个字符</td>
+</tr>
+<tr>
+<td><em>Ctrl + 右箭头</em></td>
+<td>光标向右移动一个单词</td>
+</tr>
+<tr>
+<td><em>Home</em>键</td>
+<td>光标移动到行首</td>
+</tr>
+<tr>
+<td><em>End</em>键</td>
+<td>光标移动到行尾</td>
+</tr>
+<tr>
+<td><em>Delete</em>键</td>
+<td>删除光标指向的字符</td>
+</tr>
+<tr>
+<td><em>Backspace<em>键或</em>Ctrl + H</em></td>
+<td>删除光标左边第一个字符</td>
+</tr>
+<tr>
+<td><em>Ctrl + End</em>键</td>
+<td>删除从光标到行尾的所有字符</td>
+</tr>
+<tr>
+<td><em>Esc</em>键</td>
+<td>清除当前输入的所有字符</td>
+</tr>
+<tr>
+<td><em>Tab</em>键</td>
+<td><em>Tab</em>键自动完成命令。</td>
+</tr>
+<tr>
+<td>上箭头</td>
+<td>向上查询历史命令</td>
+</tr>
+<tr>
+<td>下箭头</td>
+<td>向下查询历史命令</td>
+</tr>
+<tr>
+<td><em>F8</em>键</td>
+<td>搜索命令对应的历史记录，<br />在命令上输入命令的一部分内容后，<br />按<em>F8</em>键，可以得到匹配该输入的历史命令。</td>
+</tr>
+<tr>
+<td><em>Enter</em>键</td>
+<td>回车（<em>Enter</em>）</td>
+</tr>
+<tr>
+<td><em>Ctrl + C</em></td>
+<td><em>终止当前执行的命令</em></td>
+</tr>
+<tr>
+<td><em>Ctrl + Break</em></td>
+<td><em>终止当前执行的命令</em></td>
+</tr>
+<tr>
+<td>Ctrl + l</td>
+<td>清屏</td>
+</tr>
+<tr>
+<td><em>Alt + F7</em>键</td>
+<td>清除所有曾经输入的命令历史记录</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>devtool</category>
+      </categories>
+      <tags>
+        <tag>windows</tag>
+        <tag>powershell</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初识windows Terminal</title>
+    <url>/2020/06/06/devtool-windowsTerminal/</url>
+    <content><![CDATA[<p>windows terminal是微软推出的简单易用的<strong>命令行终端工具</strong>，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。</p>
+<a id="more"></a>
+
+<h2 id="Windows-Terminal简介"><a href="#Windows-Terminal简介" class="headerlink" title="Windows Terminal简介"></a>Windows Terminal简介</h2><p>Windows 终端是一个面向命令行工具和 shell（如命令提示符、PowerShell 和适用于 Linux 的 Windows 子系统 (WSL)）用户的新式终端应用程序。 它的主要功能包括多个选项卡、窗格、Unicode 和 UTF-8 字符支持、GPU 加速文本呈现引擎，还可以用于创建你自己的主题并自定义文本、颜色、背景和快捷键绑定。</p>
+<p>以上是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个<strong>终端工具</strong>，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。</p>
+<h3 id="如何安装"><a href="#如何安装" class="headerlink" title="如何安装"></a>如何安装</h3><p>直接从 <a href="https://aka.ms/terminal" target="_blank" rel="noopener">Microsoft Store</a> 安装 Windows Terminal。</p>
+<h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><p><a href="https://docs.microsoft.com/zh-cn/windows/terminal/" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/terminal/</a></p>
+<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="在哪配置"><a href="#在哪配置" class="headerlink" title="在哪配置"></a>在哪配置</h3><p>打开 Windows 终端，在下拉菜单中选择“设置” 。 终端会使用默认文本编辑器打开 <code>settings.json</code> 文件。在<code>settings.json</code>文件中，终端支持自定义影响整个应用程序的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/global-settings" target="_blank" rel="noopener">全局属性</a>、影响每个配置文件的设置的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/profile-settings" target="_blank" rel="noopener">配置文件属性</a>以及允许你使用键盘与终端交互的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/key-bindings" target="_blank" rel="noopener">键绑定</a>。</p>
+<p>配置文件的具体配置官方文档已经写的足够简洁了，一般使用默认配置即可满足需求，如果需要修改快捷键或者主题样式，可以按官方文档的配置步骤配置即可。下面对配置文件进行解释。</p>
+<h3 id="配置文件注释"><a href="#配置文件注释" class="headerlink" title="配置文件注释"></a>配置文件注释</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 最外层的都是全局属性，配置的指影响全局</span><br><span class="line">&#123;</span><br><span class="line">    &quot;$schema&quot;: &quot;https:&#x2F;&#x2F;aka.ms&#x2F;terminal-profiles-schema&quot;,</span><br><span class="line">    &quot;alwaysShowTabs&quot; : true,</span><br><span class="line">    &quot;defaultProfile&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;, &#x2F;&#x2F; 配置打开新标签页时使用的是哪个profile，值对应profiles里对象的guid</span><br><span class="line">    &quot;initialCols&quot; : 120,</span><br><span class="line">    &quot;initialRows&quot; : 30,</span><br><span class="line">    &quot;keybindings&quot; : &#x2F;&#x2F; 配置快捷键的地方</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;closeTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+w&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;newTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+t&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;requestedTheme&quot; : &quot;system&quot;,</span><br><span class="line">    &quot;showTabsInTitlebar&quot; : true,</span><br><span class="line">    &quot;showTerminalTitleInTitlebar&quot; : true,</span><br><span class="line">    &quot;profiles&quot; :  &#x2F;&#x2F; 每个终端的配置</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;acrylicOpacity&quot; : 0.9,</span><br><span class="line">            &#x2F;&#x2F; &quot;background&quot; : &quot;#012456&quot;,</span><br><span class="line">            &quot;closeOnExit&quot; : true,</span><br><span class="line">            &quot;colorScheme&quot; : &quot;Solarized Dark&quot;, 		&#x2F;&#x2F; 颜色主题，对应的是schemes对象的name值</span><br><span class="line">            &quot;commandline&quot; : &quot;powershell.exe&quot;,		&#x2F;&#x2F; 打开时执行的命令</span><br><span class="line">            &quot;cursorColor&quot; : &quot;#FFFFFF&quot;,</span><br><span class="line">            &quot;cursorShape&quot; : &quot;bar&quot;,</span><br><span class="line">            &quot;fontFace&quot; : &quot;Consolas&quot;,  				&#x2F;&#x2F; 字体</span><br><span class="line">            &quot;fontSize&quot; : 10,  						&#x2F;&#x2F; 字体大小</span><br><span class="line">            &quot;guid&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;,	&#x2F;&#x2F; 终端guid</span><br><span class="line">            &quot;historySize&quot; : 9001,</span><br><span class="line">            &quot;icon&quot; : &quot;ms-appx:&#x2F;&#x2F;&#x2F;ProfileIcons&#x2F;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;.png&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Windows PowerShell&quot;, 			&#x2F;&#x2F; 终端名</span><br><span class="line">            &quot;padding&quot; : &quot;0, 0, 0, 0&quot;,</span><br><span class="line">            &quot;snapOnInput&quot; : true,</span><br><span class="line">            &quot;startingDirectory&quot; : &quot;%USERPROFILE%&quot;,</span><br><span class="line">            &quot;useAcrylic&quot; : false					&#x2F;&#x2F; 透明背景</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;schemes&quot; : 	&#x2F;&#x2F; 主题样式</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;background&quot; : &quot;#0C0C0C&quot;, 	&#x2F;&#x2F; 背景颜色</span><br><span class="line">            &quot;black&quot; : &quot;#0C0C0C&quot;,</span><br><span class="line">            &quot;blue&quot; : &quot;#0037DA&quot;,</span><br><span class="line">            &quot;brightBlack&quot; : &quot;#767676&quot;,</span><br><span class="line">            &quot;brightBlue&quot; : &quot;#3B78FF&quot;,</span><br><span class="line">            &quot;brightCyan&quot; : &quot;#61D6D6&quot;,</span><br><span class="line">            &quot;brightGreen&quot; : &quot;#16C60C&quot;,</span><br><span class="line">            &quot;brightPurple&quot; : &quot;#B4009E&quot;,</span><br><span class="line">            &quot;brightRed&quot; : &quot;#E74856&quot;,</span><br><span class="line">            &quot;brightWhite&quot; : &quot;#F2F2F2&quot;,</span><br><span class="line">            &quot;brightYellow&quot; : &quot;#F9F1A5&quot;,</span><br><span class="line">            &quot;cyan&quot; : &quot;#3A96DD&quot;,</span><br><span class="line">            &quot;foreground&quot; : &quot;#CCCCCC&quot;,	&#x2F;&#x2F;前景颜色</span><br><span class="line">            &quot;green&quot; : &quot;#13A10E&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Campbell&quot;,		&#x2F;&#x2F;主题名称</span><br><span class="line">            &quot;purple&quot; : &quot;#881798&quot;,</span><br><span class="line">            &quot;red&quot; : &quot;#C50F1F&quot;,</span><br><span class="line">            &quot;white&quot; : &quot;#CCCCCC&quot;,</span><br><span class="line">            &quot;yellow&quot; : &quot;#C19C00&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>devtool</category>
+        <category>windows</category>
+      </categories>
+      <tags>
+        <tag>windows terminal</tag>
       </tags>
   </entry>
   <entry>
@@ -242,405 +878,6 @@
       <tags>
         <tag>开发工具</tag>
         <tag>PLSQL12</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初识powershell</title>
-    <url>/2020/06/06/devtool-powershell/</url>
-    <content><![CDATA[<p>PowerShell基础</p>
-<a id="more"></a>
-
-<h2 id="快捷使用"><a href="#快捷使用" class="headerlink" title="快捷使用"></a>快捷使用</h2><h3 id="控制台快捷键"><a href="#控制台快捷键" class="headerlink" title="控制台快捷键"></a>控制台快捷键</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>左箭头</td>
-<td>光标向左移动一个字符</td>
-</tr>
-<tr>
-<td><em>Ctrl + 左箭头</em></td>
-<td>光标向左移动一个单词</td>
-</tr>
-<tr>
-<td>右箭头</td>
-<td>光标向右移动一个字符</td>
-</tr>
-<tr>
-<td><em>Ctrl + 右箭头</em></td>
-<td>光标向右移动一个单词</td>
-</tr>
-<tr>
-<td><em>Home</em>键</td>
-<td>光标移动到行首</td>
-</tr>
-<tr>
-<td><em>End</em>键</td>
-<td>光标移动到行尾</td>
-</tr>
-<tr>
-<td><em>Delete</em>键</td>
-<td>删除光标指向的字符</td>
-</tr>
-<tr>
-<td><em>Backspace<em>键或</em>Ctrl + H</em></td>
-<td>删除光标左边第一个字符</td>
-</tr>
-<tr>
-<td><em>Ctrl + End</em>键</td>
-<td>删除从光标到行尾的所有字符</td>
-</tr>
-<tr>
-<td><em>Esc</em>键</td>
-<td>清除当前输入的所有字符</td>
-</tr>
-<tr>
-<td><em>Tab</em>键</td>
-<td><em>Tab</em>键自动完成命令。</td>
-</tr>
-<tr>
-<td>上箭头</td>
-<td>向上查询历史命令</td>
-</tr>
-<tr>
-<td>下箭头</td>
-<td>向下查询历史命令</td>
-</tr>
-<tr>
-<td><em>F8</em>键</td>
-<td>搜索命令对应的历史记录，<br />在命令上输入命令的一部分内容后，<br />按<em>F8</em>键，可以得到匹配该输入的历史命令。</td>
-</tr>
-<tr>
-<td><em>Enter</em>键</td>
-<td>回车（<em>Enter</em>）</td>
-</tr>
-<tr>
-<td><em>Ctrl + C</em></td>
-<td><em>终止当前执行的命令</em></td>
-</tr>
-<tr>
-<td><em>Ctrl + Break</em></td>
-<td><em>终止当前执行的命令</em></td>
-</tr>
-<tr>
-<td>Ctrl + l</td>
-<td>清屏</td>
-</tr>
-<tr>
-<td><em>Alt + F7</em>键</td>
-<td>清除所有曾经输入的命令历史记录</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>devtool</category>
-      </categories>
-      <tags>
-        <tag>windows</tag>
-        <tag>powershell</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>初识windows Terminal</title>
-    <url>/2020/06/06/devtool-windowsTerminal/</url>
-    <content><![CDATA[<p>windows terminal是微软推出的简单易用的<strong>命令行终端工具</strong>，支持cmd命令，PowerShell命令，和WSL子系统命令。本文简单介绍windows Terminal的配置。</p>
-<a id="more"></a>
-
-<h2 id="Windows-Terminal简介"><a href="#Windows-Terminal简介" class="headerlink" title="Windows Terminal简介"></a>Windows Terminal简介</h2><p>Windows 终端是一个面向命令行工具和 shell（如命令提示符、PowerShell 和适用于 Linux 的 Windows 子系统 (WSL)）用户的新式终端应用程序。 它的主要功能包括多个选项卡、窗格、Unicode 和 UTF-8 字符支持、GPU 加速文本呈现引擎，还可以用于创建你自己的主题并自定义文本、颜色、背景和快捷键绑定。</p>
-<p>以上是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个<strong>终端工具</strong>，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。</p>
-<h3 id="如何安装"><a href="#如何安装" class="headerlink" title="如何安装"></a>如何安装</h3><p>直接从 <a href="https://aka.ms/terminal" target="_blank" rel="noopener">Microsoft Store</a> 安装 Windows Terminal。</p>
-<h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><p><a href="https://docs.microsoft.com/zh-cn/windows/terminal/" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/windows/terminal/</a></p>
-<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="在哪配置"><a href="#在哪配置" class="headerlink" title="在哪配置"></a>在哪配置</h3><p>打开 Windows 终端，在下拉菜单中选择“设置” 。 终端会使用默认文本编辑器打开 <code>settings.json</code> 文件。在<code>settings.json</code>文件中，终端支持自定义影响整个应用程序的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/global-settings" target="_blank" rel="noopener">全局属性</a>、影响每个配置文件的设置的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/profile-settings" target="_blank" rel="noopener">配置文件属性</a>以及允许你使用键盘与终端交互的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/key-bindings" target="_blank" rel="noopener">键绑定</a>。</p>
-<p>配置文件的具体配置官方文档已经写的足够简洁了，一般使用默认配置即可满足需求，如果需要修改快捷键或者主题样式，可以按官方文档的配置步骤配置即可。下面对配置文件进行解释。</p>
-<h3 id="配置文件注释"><a href="#配置文件注释" class="headerlink" title="配置文件注释"></a>配置文件注释</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 最外层的都是全局属性，配置的指影响全局</span><br><span class="line">&#123;</span><br><span class="line">    &quot;$schema&quot;: &quot;https:&#x2F;&#x2F;aka.ms&#x2F;terminal-profiles-schema&quot;,</span><br><span class="line">    &quot;alwaysShowTabs&quot; : true,</span><br><span class="line">    &quot;defaultProfile&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;, &#x2F;&#x2F; 配置打开新标签页时使用的是哪个profile，值对应profiles里对象的guid</span><br><span class="line">    &quot;initialCols&quot; : 120,</span><br><span class="line">    &quot;initialRows&quot; : 30,</span><br><span class="line">    &quot;keybindings&quot; : &#x2F;&#x2F; 配置快捷键的地方</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;closeTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+w&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;newTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+t&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;requestedTheme&quot; : &quot;system&quot;,</span><br><span class="line">    &quot;showTabsInTitlebar&quot; : true,</span><br><span class="line">    &quot;showTerminalTitleInTitlebar&quot; : true,</span><br><span class="line">    &quot;profiles&quot; :  &#x2F;&#x2F; 每个终端的配置</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;acrylicOpacity&quot; : 0.9,</span><br><span class="line">            &#x2F;&#x2F; &quot;background&quot; : &quot;#012456&quot;,</span><br><span class="line">            &quot;closeOnExit&quot; : true,</span><br><span class="line">            &quot;colorScheme&quot; : &quot;Solarized Dark&quot;, 		&#x2F;&#x2F; 颜色主题，对应的是schemes对象的name值</span><br><span class="line">            &quot;commandline&quot; : &quot;powershell.exe&quot;,		&#x2F;&#x2F; 打开时执行的命令</span><br><span class="line">            &quot;cursorColor&quot; : &quot;#FFFFFF&quot;,</span><br><span class="line">            &quot;cursorShape&quot; : &quot;bar&quot;,</span><br><span class="line">            &quot;fontFace&quot; : &quot;Consolas&quot;,  				&#x2F;&#x2F; 字体</span><br><span class="line">            &quot;fontSize&quot; : 10,  						&#x2F;&#x2F; 字体大小</span><br><span class="line">            &quot;guid&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;,	&#x2F;&#x2F; 终端guid</span><br><span class="line">            &quot;historySize&quot; : 9001,</span><br><span class="line">            &quot;icon&quot; : &quot;ms-appx:&#x2F;&#x2F;&#x2F;ProfileIcons&#x2F;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;.png&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Windows PowerShell&quot;, 			&#x2F;&#x2F; 终端名</span><br><span class="line">            &quot;padding&quot; : &quot;0, 0, 0, 0&quot;,</span><br><span class="line">            &quot;snapOnInput&quot; : true,</span><br><span class="line">            &quot;startingDirectory&quot; : &quot;%USERPROFILE%&quot;,</span><br><span class="line">            &quot;useAcrylic&quot; : false					&#x2F;&#x2F; 透明背景</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;schemes&quot; : 	&#x2F;&#x2F; 主题样式</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;background&quot; : &quot;#0C0C0C&quot;, 	&#x2F;&#x2F; 背景颜色</span><br><span class="line">            &quot;black&quot; : &quot;#0C0C0C&quot;,</span><br><span class="line">            &quot;blue&quot; : &quot;#0037DA&quot;,</span><br><span class="line">            &quot;brightBlack&quot; : &quot;#767676&quot;,</span><br><span class="line">            &quot;brightBlue&quot; : &quot;#3B78FF&quot;,</span><br><span class="line">            &quot;brightCyan&quot; : &quot;#61D6D6&quot;,</span><br><span class="line">            &quot;brightGreen&quot; : &quot;#16C60C&quot;,</span><br><span class="line">            &quot;brightPurple&quot; : &quot;#B4009E&quot;,</span><br><span class="line">            &quot;brightRed&quot; : &quot;#E74856&quot;,</span><br><span class="line">            &quot;brightWhite&quot; : &quot;#F2F2F2&quot;,</span><br><span class="line">            &quot;brightYellow&quot; : &quot;#F9F1A5&quot;,</span><br><span class="line">            &quot;cyan&quot; : &quot;#3A96DD&quot;,</span><br><span class="line">            &quot;foreground&quot; : &quot;#CCCCCC&quot;,	&#x2F;&#x2F;前景颜色</span><br><span class="line">            &quot;green&quot; : &quot;#13A10E&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Campbell&quot;,		&#x2F;&#x2F;主题名称</span><br><span class="line">            &quot;purple&quot; : &quot;#881798&quot;,</span><br><span class="line">            &quot;red&quot; : &quot;#C50F1F&quot;,</span><br><span class="line">            &quot;white&quot; : &quot;#CCCCCC&quot;,</span><br><span class="line">            &quot;yellow&quot; : &quot;#C19C00&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>devtool</category>
-        <category>windows</category>
-      </categories>
-      <tags>
-        <tag>windows terminal</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux升级bash版本</title>
-    <url>/2020/07/13/linux-bash%E5%8D%87%E7%BA%A7/</url>
-    <content><![CDATA[<p>因为bash低版本存在漏洞，需要升级版本。本文介绍在操作系统redhat6.5下将系统自带的bash-4.1.2版本升级到bash-5.0。</p>
-<a id="more"></a>
-
-<h2 id="bash漏洞简介"><a href="#bash漏洞简介" class="headerlink" title="bash漏洞简介"></a>bash漏洞简介</h2><p>bash4.3及以下版本的bash存在远程执行代码漏洞，包括但不限于Redhat、CentOS、Ubuntu、Debian、Fedora 等平台。</p>
-<ul>
-<li><p>CVE漏洞名称：CVE-2014-6271</p>
-</li>
-<li><p>中文漏洞名称：破壳</p>
-<p><strong>验证：</strong></p>
-<blockquote>
-<p>通过普通用户登录主机，在bash shell下执行：</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>如果输出 ：this is a test </p>
-<p>则不存bash在远程执行代码漏洞;</p>
-</blockquote>
-<blockquote>
-<p>如果输出：<br>vulnerable<br>this is a test<br>则存在bash远程执行代码漏洞</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p>针对以上漏洞可将bash升级到4.3以上版本，下面说明升级步骤。</p>
-<h2 id="升级bash版本"><a href="#升级bash版本" class="headerlink" title="升级bash版本"></a>升级bash版本</h2><ol>
-<li><p><strong>下载最新版bash</strong><br>bash下载地址：<a href="http://ftp.gnu.org/gnu/bash/" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/</a><br>本文下载的是bash5.0版本： <a href="http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz" target="_blank" rel="noopener">http://ftp.gnu.org/gnu/bash/bash-5.0.tar.gz</a></p>
-</li>
-<li><p><strong>查看当前系统bash版本</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash, version 4.1.2(1)-release (x86_64-redhat-linux-gnu)</span><br><span class="line">Copyright (C) 2009 Free Software Foundation, Inc.</span><br><span class="line">License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">This is free software; you are free to change and redistribute it.</span><br><span class="line">There is NO WARRANTY, to the extent permitted by law.</span><br></pre></td></tr></table></figure>
-
-<p>可以知道当前版本为4.1.2</p>
-</li>
-<li><p><strong>升级bash</strong><br>上传bash版本包到服务器，解压升级</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# tar -zxf bash-5.0.tar.gz </span><br><span class="line">[root@node1 ~]# cd bash-5.0</span><br><span class="line">[root@node1 bash-5.0]# ./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
-
-<p>因为bash默认是安装在/usr/local/bin/目录下，所以需要创建一个链接到 /bin/目录下！</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 bash-5.0]# mv /bin/bash /bin/bash.bak</span><br><span class="line">[root@node1 bash-5.0]# ln -s /usr/local/bin/bash /bin/bash</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>验证</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@node1 ~]# /bin/bash -version</span><br><span class="line">GNU bash，版本 5.0.0(1)-release (x86_64-pc-linux-gnu)</span><br><span class="line">Copyright (C) 2019 Free Software Foundation, Inc.</span><br><span class="line">许可证 GPLv3+: GNU GPL 许可证第三版或者更新版本 &lt;http://gnu.org/licenses/gpl.html&gt;</span><br><span class="line"></span><br><span class="line">本软件是自由软件，您可以自由地更改和重新发布。</span><br><span class="line">在法律许可的情况下特此明示，本软件不提供任何担保。</span><br><span class="line">[root@node1 bash-5.0]# env x='() &#123; :;&#125;; echo vulnerable' bash -c "echo this is a test"</span><br><span class="line">this is a test</span><br></pre></td></tr></table></figure>
-
-<p>现在bash版本已经是 5.0.0，bash漏洞也已修复</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>bash</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Oracle11.2.0.4打补丁实践</title>
-    <url>/2020/07/10/oracle-Opatch/</url>
-    <content><![CDATA[<p>本文介绍如何给Oracle数据库打补丁，数据库版本为Oracle11.2.0.4，单实例，操作系统为redhat6.5。</p>
-<a id="more"></a>
-
-<h2 id="下载升级包"><a href="#下载升级包" class="headerlink" title="下载升级包"></a>下载升级包</h2><ol>
-<li><p><strong>下载升级包</strong></p>
-<p>因为没有MOS帐号，从网上下载了升级包</p>
-<blockquote>
-<p>p30670774_112040_Linux-x86-64.zip：数据库补丁<br>p6880880_112000_Linux-x86-64.zip：opatch升级包<br>百度云链接：<a href="https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw" target="_blank" rel="noopener">https://pan.baidu.com/s/1ZvTQr-gI889mylgzUXkdPw</a><br>提取码：plhp<br>微云链接：<a href="https://share.weiyun.com/k8CbxL3K" target="_blank" rel="noopener">https://share.weiyun.com/k8CbxL3K</a></p>
-</blockquote>
-<p>opatch是安装补丁的程序，数据库软件安装完成后，就自带了opatch，但是版本太旧了，所以这里下载最新的opatch，p6880880_112000_Linux-x86-64.zip包就是用来升级opatch用的。</p>
-</li>
-</ol>
-<h2 id="升级opatch"><a href="#升级opatch" class="headerlink" title="升级opatch"></a>升级opatch</h2><p>opatch的升级只要将新版本的包解压，覆盖系统原始的文件即可。</p>
-<ol start="2">
-<li><p><strong>查看原始opatch信息</strong></p>
-<p>查看原始版本</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看原始版本</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.4</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-
-<p>查看补丁情况</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ ./opatch lsinventory	# 查看补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 中间补丁程序安装程序版本 11.2.0.3.4</span><br><span class="line">版权所有 (c) 2012, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">Oracle Home       : /home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">Central Inventory : /home/oracle/app/oraInventory</span><br><span class="line">   from           : /home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch version    : 11.2.0.3.4</span><br><span class="line">OUI version       : 11.2.0.4.0</span><br><span class="line">Log file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-23-35下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_16-23-35下午.txt</span><br><span class="line"></span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line">此 Oracle 主目录中未安装任何中间补丁程序。</span><br><span class="line">----------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>备份原opatch</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ cd $ORACLE_HOME</span><br><span class="line">[oracle@node1 dbhome_1]$ mv OPatch OPatch.bak</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>解压新下载的opatch包</strong></p>
-<p>将下载的opatch包上传到oracle的家目录，上传完后，解压到<code>$ORACLE_HOME</code>下</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 dbhome_1]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p6880880_112000_Linux-x86-64.zip -d $ORACLE_HOME</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>检查opatch是否升级成功</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/OPatch</span><br><span class="line">[oracle@node1 OPatch]$ ./opatch version	# 查看版本信息</span><br><span class="line"></span><br><span class="line">OPatch Version: 11.2.0.3.21</span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-
-<p>现在版本为11.2.0.3.21，说明升级成功</p>
-</li>
-</ol>
-<h2 id="数据库打补丁"><a href="#数据库打补丁" class="headerlink" title="数据库打补丁"></a>数据库打补丁</h2><ol start="6">
-<li><p><strong>关闭监听、数据库</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 OPatch]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>解压补丁包</strong></p>
-<p>将下载的补丁包上传到oracle家目录，并解压</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd ~</span><br><span class="line">[oracle@node1 ~]$ unzip p30670774_112040_Linux-x86-64.zip</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>校验冲突</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd 30670774/</span><br><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch prereq CheckConflictAgainstOHWithDetail -ph ./</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line">PREREQ session</span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_16-54-06下午_1.log</span><br><span class="line"></span><br><span class="line">Invoking prereq "checkconflictagainstohwithdetail"</span><br><span class="line"></span><br><span class="line">Prereq "checkConflictAgainstOHWithDetail" passed.</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-
-<p>由于这个测试库之前并没有打补丁，所以这里就没有补丁冲突的问题，如果这里显示有冲突，再去网MOS上查找相关解决方案。</p>
-</li>
-<li><p><strong>执行打补丁</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch apply</span><br></pre></td></tr></table></figure>
-
-<p><img src="confirmAndContinue.png" alt="确认并继续"></p>
-<p>这里要输入3次y和一次回车，打补丁的过程耗是比较久的，耐心等待</p>
-</li>
-<li><p><strong>检查打补丁情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br></pre></td></tr></table></figure>
-
-<p>这里会列出系统已打的补丁情况</p>
-</li>
-<li><p><strong>启动数据库，并运行sql文件</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 30670774]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 30670774]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle.sql psu apply</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>启动监听</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>至此数据库打补丁已经全部完成</p>
-<h2 id="回退数据库补丁"><a href="#回退数据库补丁" class="headerlink" title="回退数据库补丁"></a>回退数据库补丁</h2><p><strong>数据库在做变更时，需要考虑回退方案</strong>，接下来介绍如何回退数据库补丁</p>
-<ol start="13">
-<li><p><strong>关闭监听、数据库</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ lsnrctl stop	# 关闭监听</span><br><span class="line">[oracle@node1 ~]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> shutdown immediate </span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>回退补丁</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ $ORACLE_HOME/OPatch/opatch rollback -id 30670774</span><br></pre></td></tr></table></figure>
-
-<p><img src="rollback.png" alt="回退补丁"></p>
-<p>这里要回复一次y，回退过程比较耗时，需耐心等待</p>
-</li>
-</ol>
-<ol start="15">
-<li><p><strong>启动数据库，并运行sql文件</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 ~]$ cd $ORACLE_HOME/rdbms/admin</span><br><span class="line">[oracle@node1 admin]$ sqlplus / as sysdba</span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> startup</span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> @catbundle_PSU_ORCL_ROLLBACK.sql	<span class="comment"># 这里的ORCL为实例名称</span></span></span><br><span class="line"><span class="meta">SQL&gt;</span><span class="bash"> quit</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>检查回退情况</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ $ORACLE_HOME/OPatch/opatch lsinventory # 检查打补丁情况</span><br><span class="line"></span><br><span class="line">Oracle 临时补丁程序安装程序版本 11.2.0.3.21</span><br><span class="line">版权所有 (c) 2020, Oracle Corporation。保留所有权利。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Oracle 主目录       ：/home/oracle/app/oracle/product/11.2.0/dbhome_1</span><br><span class="line">主产品清单：/home/oracle/app/oraInventory</span><br><span class="line">   来自           ：/home/oracle/app/oracle/product/11.2.0/dbhome_1/oraInst.loc</span><br><span class="line">OPatch 版本    ：11.2.0.3.21</span><br><span class="line">OUI 版本       ：11.2.0.4.0</span><br><span class="line">日志文件位置：/home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/opatch2020-07-02_18-24-48下午_1.log</span><br><span class="line"></span><br><span class="line">Lsinventory Output file location : /home/oracle/app/oracle/product/11.2.0/dbhome_1/cfgtoollogs/opatch/lsinv/lsinventory2020-07-02_18-24-48下午.txt</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">Local Machine Information::</span><br><span class="line">Hostname: localhost</span><br><span class="line">ARU platform id: 226</span><br><span class="line">ARU platform description:: Linux x86-64</span><br><span class="line"></span><br><span class="line">已安装的顶级产品 (1):</span><br><span class="line"></span><br><span class="line">Oracle Database 11g                                                  11.2.0.4.0</span><br><span class="line">此 Oracle 主目录中已安装 1 个产品。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">此 Oracle 主目录中未安装任何临时补丁程序。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line">OPatch succeeded.</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，补丁已经被卸载了</p>
-</li>
-<li><p><strong>启动监听</strong></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[oracle@node1 admin]$ lsnrctl start</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>这样补丁回退就结束了</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文介绍了单实例数据库打补丁的步骤，仅做参考，实际应以补丁包中的readme为准。</p>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://www.cnblogs.com/ddzj01/p/12097467.html" target="_blank" rel="noopener">Oracle - 数据库打补丁最佳实践</a></li>
-<li>readme.html</li>
-</ul>
-]]></content>
-      <categories>
-        <category>Oracle</category>
-      </categories>
-      <tags>
-        <tag>Oracle</tag>
-        <tag>OPatch</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>虚拟机安装RedHat6.5实践</title>
-    <url>/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/</url>
-    <content><![CDATA[<p>本文介绍在虚拟机下安装RedHat6.5步骤</p>
-<a id="more"></a>
-
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>虚拟机创建已在另一篇文章介绍过，安装前需准备redhat6.5的iso镜像文件，可以到开源镜像站下载相应版本。</p>
-<ol>
-<li>VMware虚拟机15.1.0</li>
-<li>rhel-server-6.5-x86_64-dvd.iso镜像文件</li>
-</ol>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="虚拟机配置镜像文件"><a href="#虚拟机配置镜像文件" class="headerlink" title="虚拟机配置镜像文件"></a>虚拟机配置镜像文件</h3><p>编辑虚拟机设置  → CD/DVD → 使用ISO镜像文件，点击浏览，选择rhel-server-6.5-x86_64-dvd.iso镜像文件所在位置</p>
-<p><img src="vmware-config.png" alt="vmware-config"></p>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
-<li><p>选择Install or upgrade an existing system<br><img src="step1.png" alt="step1"></p>
-</li>
-<li><p>点击Skip<br><img src="step2.png" alt="step2"></p>
-</li>
-<li><p>语言默认选择English<br><img src="step3.png" alt="step3"></p>
-</li>
-<li><p>键盘默认选U.S. English<br><img src="step4.png" alt="step4"></p>
-</li>
-<li><p>选择Basic Storage Device<br><img src="step5.png" alt="step5"></p>
-</li>
-<li><p>选择 Yes, discard any data<br><img src="step6.png" alt="step6"></p>
-</li>
-<li><p>主机名自定义，点击配置网络，选择eth0网卡，点击Edit<br><img src="step7.png" alt="step7"></p>
-</li>
-<li><p>勾选Connect automatically，Ipv4 Settings选项卡中，Method选择Manual手动配置<br>Address填写局域网内未使用的IP，点击应用<br><img src="step8.png" alt="step8"></p>
-</li>
-<li><p>时区选择上海，去掉UTC勾选<br><img src="step9.png" alt="step9"></p>
-</li>
-<li><p>填写系统root用户密码<br><img src="step10.png" alt="step10"></p>
-</li>
-<li><p>自定义安装<br><img src="step11.png" alt="step11"></p>
-</li>
-<li><p>创建boot分区</p>
-<p>点击Free → 点击Create → 选择 Standard Partition<br><img src="step12.png" alt="step12"></p>
-</li>
-<li><p>创建swap分区<br>点击Free → 点击Create → 选择 Standard Partition<br><img src="step13.png" alt="step13"></p>
-</li>
-<li><p>创建root分区<br>点击Free → 点击Create → 选择 Standard Partition → 选择 Fill to maximum allowable size<br><img src="step14.png" alt="step14"></p>
-</li>
-<li><p>格式化系统<br>点击Format，在弹窗点击Write changes to disk<br><img src="step15.png" alt="step15"></p>
-</li>
-<li><p>默认，点击next<br><img src="step16.png" alt="step16"></p>
-</li>
-<li><p>选择Desktop桌面版安装<br><img src="step17.png" alt="step17"></p>
-</li>
-<li><p>安装完成点击Reboot<br><img src="step18.png" alt="step18"></p>
-</li>
-</ol>
-<h3 id="首次启动配置"><a href="#首次启动配置" class="headerlink" title="首次启动配置"></a>首次启动配置</h3><ol>
-<li>欢迎页直接点击Forward<br><img src="step19.png" alt="step19"></li>
-<li>许可证选择Yes, I agree to the License Agreement，点击Forward<br><img src="step20.png" alt="step20"></li>
-<li>选择稍后注册，点击Forward，弹窗点击Register Later，继续点击Forward<br><img src="step21.png" alt="step21"></li>
-<li>如果不建用户直接点击Forward，在弹窗中点击Yes确认<br><img src="step22.png" alt="step22"></li>
-<li>日期和时间，点击Forward<br><img src="step23.png" alt="step23"></li>
-<li>点击Finish，在弹窗中点击Yes和OK，系统重启。<br><img src="step24.png" alt="step24"></li>
-</ol>
-<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ol>
-<li>root用户登陆<br><img src="step25.png" alt="step25"></li>
-<li>ping <a href="http://www.baidu.com" target="_blank" rel="noopener">www.baidu.com</a> 如果网络能通则成功<br><img src="step26.png" alt="step26"></li>
-</ol>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>VMware</tag>
-        <tag>RedHat</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>软件资源下载</title>
-    <url>/2020/07/17/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</url>
-    <content><![CDATA[<p>本文搜集开发常用软件资源下载链接。资源在文章发出之前都测试过可以使用，有不可使用的欢迎评论。</p>
-<a id="more"></a>
-
-<h2 id="Linux开源镜像"><a href="#Linux开源镜像" class="headerlink" title="Linux开源镜像"></a>Linux开源镜像</h2><p>Linux镜像在国内有很多镜像站可供使用，一般点前几个链接就可以找到资源，其他镜像站供参考。</p>
-<ul>
-<li><p><strong>开源网站镜像</strong><br>搜狐开源镜像站：<a href="http://mirrors.sohu.com/" target="_blank" rel="noopener">http://mirrors.sohu.com/</a><br>阿里云开源镜像：<a href="http://mirrors.aliyun.com/" target="_blank" rel="noopener">http://mirrors.aliyun.com/</a><br>首都在线科技股份有限公司：<a href="http://mirrors.yun-idc.com/" target="_blank" rel="noopener">http://mirrors.yun-idc.com/</a><br>网易开源镜像站：<a href="http://mirrors.163.com/" target="_blank" rel="noopener">http://mirrors.163.com/</a><br>常州贝特康姆软件技术有限公司(原cn99）：<a href="http://centos.bitcomm.cn/" target="_blank" rel="noopener">http://centos.bitcomm.cn/</a></p>
-</li>
-<li><p><strong>大学校园镜像</strong><br>大连理工大学：<a href="http://mirror.dlut.edu.cn/" target="_blank" rel="noopener">http://mirror.dlut.edu.cn/</a><br>浙江大学：<a href="http://mirrors.zju.edu.cn/" target="_blank" rel="noopener">http://mirrors.zju.edu.cn/</a><br>兰州大学：<a href="http://mirror.lzu.edu.cn/" target="_blank" rel="noopener">http://mirror.lzu.edu.cn/</a><br>北京理工大学：<br><a href="http://mirror.bit.edu.cn" target="_blank" rel="noopener">http://mirror.bit.edu.cn</a> (IPv4 only)<br><a href="http://mirror.bit6.edu.cn" target="_blank" rel="noopener">http://mirror.bit6.edu.cn</a> (IPv6 only)<br>北京交通大学：<br><a href="http://mirror.bjtu.edu.cn" target="_blank" rel="noopener">http://mirror.bjtu.edu.cn</a> (IPv4 only)<br><a href="http://debian.bjtu.edu.cn" target="_blank" rel="noopener">http://debian.bjtu.edu.cn</a> (IPv4+IPv6)<br>上海交通大学：<br><a href="http://ftp.sjtu.edu.cn/" target="_blank" rel="noopener">http://ftp.sjtu.edu.cn/</a> (IPv4 only)<br><a href="http://ftp6.sjtu.edu.cn" target="_blank" rel="noopener">http://ftp6.sjtu.edu.cn</a> (IPv6 only)<br>清华大学：<br><a href="http://mirrors.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.tuna.tsinghua.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors.6.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.6.tuna.tsinghua.edu.cn/</a> (IPv6 only)<br><a href="http://mirrors.4.tuna.tsinghua.edu.cn/" target="_blank" rel="noopener">http://mirrors.4.tuna.tsinghua.edu.cn/</a> (IPv4 only)<br>中国科学技术大学：<br><a href="http://mirrors.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors.ustc.edu.cn/</a> (IPv4+IPv6)<br><a href="http://mirrors4.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors4.ustc.edu.cn/</a><br><a href="http://mirrors6.ustc.edu.cn/" target="_blank" rel="noopener">http://mirrors6.ustc.edu.cn/</a><br>东北大学：<br><a href="http://mirror.neu.edu.cn/" target="_blank" rel="noopener">http://mirror.neu.edu.cn/</a> (IPv4 only)<br><a href="http://mirror.neu6.edu.cn/" target="_blank" rel="noopener">http://mirror.neu6.edu.cn/</a> (IPv6 only)<br>华中科技大学：<br><a href="http://mirrors.hust.edu.cn/" target="_blank" rel="noopener">http://mirrors.hust.edu.cn/</a><br><a href="http://mirrors.hustunique.com/" target="_blank" rel="noopener">http://mirrors.hustunique.com/</a><br><a href="http://ubuntu.uestc.edu.cn/" target="_blank" rel="noopener">http://ubuntu.uestc.edu.cn/</a><br>电子科大星辰工作室(少数小众发布版镜像)<br><a href="http://mirrors.stuhome.net/" target="_blank" rel="noopener">http://mirrors.stuhome.net/</a></p>
-</li>
-<li><p><strong>RedHat镜像</strong><br><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></p>
-</li>
-</ul>
-<h2 id="虚拟机下载"><a href="#虚拟机下载" class="headerlink" title="虚拟机下载"></a>虚拟机下载</h2><p>这里提供VMware各版本资源的下载，下载要注册vmware帐号，本文不提供注册码。</p>
-<ul>
-<li><p>历史版本<br><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </p>
-</li>
-<li><p>14版本<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1400-WIN&amp;productId=686&amp;rPId=39186</a> </p>
-</li>
-<li><p>15版本<br><a href="https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859" target="_blank" rel="noopener">https://my.vmware.com/cn/group/vmware/downloads/details?downloadGroup=WKST-1501-WIN&amp;productId=799&amp;rPId=47859</a></p>
-</li>
-</ul>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
-<li><a href="https://www.cnblogs.com/Hi-blog/p/Linux-Mirror-Sites.html" target="_blank" rel="noopener">中国Linux源镜像站大全</a></li>
-<li><a href="http://guanjianfeng.com/archives/1159631" target="_blank" rel="noopener">Linux操作系统各版本ISO镜像下载（包括oracle linux\redhat\centos\ubuntu\debian等）</a></li>
-<li><a href="https://blog.csdn.net/huageek/article/details/90376127" target="_blank" rel="noopener">VMware Workstation for Windows 历史版本</a> </li>
-</ul>
-]]></content>
-      <categories>
-        <category>资源</category>
-      </categories>
-      <tags>
-        <tag>资源下载</tag>
       </tags>
   </entry>
 </search>
