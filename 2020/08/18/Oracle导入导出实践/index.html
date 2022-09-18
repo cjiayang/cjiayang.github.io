@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic%7CRoboto+Mono:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":{"valine":{"text":"Valine","order":-1},"gitalk":{"order":-2}}},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle导入导出实践">
+<meta property="og:url" content="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="Monkey Young">
+<meta property="og:description" content="本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-18T06:01:54.000Z">
+<meta property="article:modified_time" content="2022-09-17T16:41:07.456Z">
+<meta property="article:author" content="jychen">
+<meta property="article:tag" content="Oracle">
+<meta property="article:tag" content="expdp">
+<meta property="article:tag" content="impdp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/","path":"2020/08/18/Oracle导入导出实践/","title":"Oracle导入导出实践"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Oracle导入导出实践 | Monkey Young</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js"></script>
+  <script async src="https://hm.baidu.com/hm.js?1ddc4ff8e0c1be1f7cb8d9be0e6297a7"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Monkey Young</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">路漫漫其修远兮</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-movies"><a href="/movies/" rel="section"><i class="fa fa-film fa-fw"></i>观影</a></li><li class="menu-item menu-item-books"><a href="/books/" rel="section"><i class="fa fa-book fa-fw"></i>读书</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA"><span class="nav-number">1.</span> <span class="nav-text">数据导出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EXPDP%E9%80%89%E9%A1%B9"><span class="nav-number">1.1.</span> <span class="nav-text">EXPDP选项</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7"><span class="nav-number">1.2.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%BC%E5%87%BA%E7%9B%AE%E5%BD%95"><span class="nav-number">1.3.</span> <span class="nav-text">创建导出目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E8%A1%A8"><span class="nav-number">1.4.</span> <span class="nav-text">导出表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.5.</span> <span class="nav-text">导出模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">1.6.</span> <span class="nav-text">导出表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%BA%93%E5%AF%BC%E5%87%BA"><span class="nav-number">1.7.</span> <span class="nav-text">全库导出</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">数据导入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IMPDP%E5%91%BD%E4%BB%A4"><span class="nav-number">2.1.</span> <span class="nav-text">IMPDP命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B7-1"><span class="nav-number">2.2.</span> <span class="nav-text">创建用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%BC%E5%85%A5%E7%9B%AE%E5%BD%95"><span class="nav-number">2.3.</span> <span class="nav-text">创建导入目录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E8%A1%A8"><span class="nav-number">2.4.</span> <span class="nav-text">导入表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.5.</span> <span class="nav-text">导入模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="nav-number">2.6.</span> <span class="nav-text">导入表空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%BA%93%E5%AF%BC%E5%85%A5"><span class="nav-number">2.7.</span> <span class="nav-text">全库导入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="jychen"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">jychen</p>
+  <div class="site-description" itemprop="description">阅读,记录,前行</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/cjiayang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;cjiayang" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.douban.com/people/99588562/" title="豆瓣 → https:&#x2F;&#x2F;www.douban.com&#x2F;people&#x2F;99588562&#x2F;" rel="noopener" target="_blank"><i class="fa fa-film fa-fw"></i>豆瓣</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.zhihu.com/people/yang-zi-43-81-44" title="知乎 → https:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;yang-zi-43-81-44" rel="noopener" target="_blank"><i class="fa fa-question-circle fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/129784edb0b6" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;129784edb0b6" rel="noopener" target="_blank"><i class="fa fa-book fa-fw"></i>简书</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+        <div class="back-to-top animated" role="button" aria-label="返回顶部">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/cjiayang" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="jychen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Monkey Young">
+      <meta itemprop="description" content="阅读,记录,前行">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Oracle导入导出实践 | Monkey Young">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Oracle导入导出实践
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-18 14:01:54" itemprop="dateCreated datePublished" datetime="2020-08-18T14:01:54+08:00">2020-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-18 00:41:07" itemprop="dateModified" datetime="2022-09-18T00:41:07+08:00">2022-09-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Oracle/" itemprop="url" rel="index"><span itemprop="name">Oracle</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/" class="post-meta-item leancloud_visitors" data-flag-title="Oracle导入导出实践" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>本文介绍Oracle导出导入工具expdp和impdp的使用，并使用scott用户演示其用法。</p>
+<span id="more"></span>
+
+<h3 id="数据导出"><a href="#数据导出" class="headerlink" title="数据导出"></a>数据导出</h3><p>Oracle提供的expdp工具可以将数据库对象的元数据或数据导出到转储文件中，expdp可以导出表、用户模式、表空间和全数据库4种数据。<br>expdp工具只能将导出的转储文件存放在directory对象对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。因此，使用expdp工具时，必须首先建立directory对象，并且需要为数据库用户授予使用directory对象的权限。</p>
+<h4 id="EXPDP选项"><a href="#EXPDP选项" class="headerlink" title="EXPDP选项"></a>EXPDP选项</h4><p>可以在命令行输入<code>expdp help=y;</code>获取帮助<br>expdp常用选项：</p>
+<ul>
+<li>HELP: 帮助信息</li>
+<li>DIRECTORY：用于转储文件和日志文件的目录对象</li>
+<li>DUMPFILE：指定目标转储文件名的列表</li>
+<li>SCHEMAS: 要导出的方案的列表</li>
+<li>TABLES: 标识要导出的表的列表<br>例如, TABLES&#x3D;HR.EMPLOYEES,SH.SALES:SALES_1995</li>
+<li>TABLESPACES: 标识要导出的表空间的列表</li>
+<li>EXCLUDE：排除特定对象类型<br>例如, EXCLUDE&#x3D;SCHEMA:”&#x3D;’HR’”</li>
+<li>INCLUDE: 包括特定对象类型</li>
+<li>FULL：导出整个数据库</li>
+<li>LOGFILE: 指定日志文件名</li>
+<li>QUERY: 用于导出表的子集的谓词子句<br>例如, QUERY&#x3D;employees:”WHERE department_id &gt; 10”</li>
+</ul>
+<h4 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h4><p>为方便演示创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">user</span> manager identified <span class="keyword">by</span> code666 <span class="keyword">default</span> tablespace <span class="keyword">system</span> temporary tablespace temp;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">grant</span> <span class="keyword">connect</span>,resource,dba <span class="keyword">to</span> manager;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">alter</span> <span class="keyword">user</span> scott account unlock;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">alter</span> <span class="keyword">user</span> scott identified <span class="keyword">by</span> tiger;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建导出目录"><a href="#创建导出目录" class="headerlink" title="创建导出目录"></a>创建导出目录</h4><p>首先在oracle用户下创建导出目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /home/oracle/data/dump</span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">or</span> replace directory dump_dir <span class="keyword">as</span> <span class="string">&#x27;/home/oracle/data/dump&#x27;</span>;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">grant</span> read,write <span class="keyword">on</span> directory dump_dir <span class="keyword">to</span> scott;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">grant</span> read,write <span class="keyword">on</span> directory dump_dir <span class="keyword">to</span> manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表"><a href="#导出表" class="headerlink" title="导出表"></a>导出表</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">expdp scott/tiger directory=dump_dir dumpfile=table.dmp tables=emp,dept</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出模式"><a href="#导出模式" class="headerlink" title="导出模式"></a>导出模式</h4><p>导出模式时，当前用户只能导出当前用户的模式对象，要导出其他用户的对象要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。下面导出scott模式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">expdp scott/tiger directory=dump_dir dumpfile=schema.dmp schemas=scott</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导出表空间"><a href="#导出表空间" class="headerlink" title="导出表空间"></a>导出表空间</h4><p>导出表空间是指将一个或多个表空间中的所有对象及数据存储到转储文件中。导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色，下面用manager用户导出</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">expdp manager/code666 directory=dump_dir dumpfile=tablespace.dmp tablespaces=system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导出"><a href="#全库导出" class="headerlink" title="全库导出"></a>全库导出</h4><p>导出数据库要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。<br>注意，导出数据库时，不会导出SYS、ORDSYS、ORDPLUGINS、CTXSYS、MDSYS、LBACSYS以及XDB等模式中的对象</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">expdp manager/code666@orcl directory=dump_dir dumpfile=full.dmp full=y logfile=full.log;</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="数据导入"><a href="#数据导入" class="headerlink" title="数据导入"></a>数据导入</h3><p>Oracle提供impdp工具可以将转储文件中的数据库对象的元数据导入到Oracle数据库中，IMPDP也可以进行4种类型的导入操作：导入表、导入模式、导入表空间和导入全数据库。<br>与expdp相似，数据泵导入时，其转储文件被存储在DIRECTORY对象所对应的磁盘目录中，而不能直接指定转储文件所在的磁盘目录。</p>
+<h4 id="IMPDP命令"><a href="#IMPDP命令" class="headerlink" title="IMPDP命令"></a>IMPDP命令</h4><p>同样可以在命令行输入<code>impdp help=y;</code>查看impdp获取命令帮助。</p>
+<p>下面操作假设拿到dump文件，将dump文件导入到另一台机子中去，所以也需要创建用户和创建目录的操作。导入前需要将dump文件放到导入目录中，并改文件所属用户为oracle。</p>
+<h4 id="创建用户-1"><a href="#创建用户-1" class="headerlink" title="创建用户"></a>创建用户</h4><p>创建一个具有dba权限的管理员用户，并激活oracle自带的scott用户。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">user</span> manager identified <span class="keyword">by</span> code666 <span class="keyword">default</span> tablespace <span class="keyword">system</span> temporary tablespace temp;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">grant</span> <span class="keyword">connect</span>,resource,dba <span class="keyword">to</span> manager;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">alter</span> <span class="keyword">user</span> scott account unlock;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">alter</span> <span class="keyword">user</span> scott identified <span class="keyword">by</span> tiger;</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建导入目录"><a href="#创建导入目录" class="headerlink" title="创建导入目录"></a>创建导入目录</h4><p>首先在oracle用户下创建导入目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> -p /home/oracle/data/imp</span></span><br></pre></td></tr></table></figure>
+
+<p>然后创建oracle目录对象，并授权</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">or</span> replace directory imp_dir <span class="keyword">as</span> <span class="string">&#x27;/home/oracle/data/imp&#x27;</span>;</span><br><span class="line"><span class="keyword">SQL</span><span class="operator">&gt;</span> <span class="keyword">grant</span> read,write <span class="keyword">on</span> directory imp_dir <span class="keyword">to</span> manager;</span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表"><a href="#导入表" class="headerlink" title="导入表"></a>导入表</h4><p>普通用户只可以将表导入到自己的模式中，但如果以其他用户身份导入表，则要求该用户必须具有IMP_FULL_DATABASE角色和DBA角色。<br>导入表时，既可以将表导入到源模式中，也可以将表导入到其他模式中。以下示例将emp,dept表导入到manager模式中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">impdp manager/code666 directory=imp_dir dumpfile=table.dmp tables=scott.emp,scott.dept remap_schema=scott:manager</span>  </span><br></pre></td></tr></table></figure>
+
+<h4 id="导入模式"><a href="#导入模式" class="headerlink" title="导入模式"></a>导入模式</h4><p>普通用户可以将对象导入到自身模式中，但如果以其他用户身份导入模式时，则要求该用户必须具有IMP_FULL_DATABASE角色或DBA角色。<br>导入模式时，既可以将模式的所有对象导入到源模式中，也可以将模式的所有对象导入到其他模式中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">impdp manager/code666 directory=imp_dir dumpfile=schema.dmp remap_schema=scott:manager</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="导入表空间"><a href="#导入表空间" class="headerlink" title="导入表空间"></a>导入表空间</h4><p>导出表空间要求用户必须具有DBA角色或EXP_FULL_DATABASE角色。导入时，可以将数据导入到其他表空间中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">impdp manager/code666 directory=imp_dir dumpfile=tablespace.dmp remap_tablespace=<span class="built_in">users</span>:system</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="全库导入"><a href="#全库导入" class="headerlink" title="全库导入"></a>全库导入</h4><p>全库导入要求用户必须具有DBA角色或EXP_FULL_DATABASE角色</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">impdp manager/code666 directory=imp_dir dumpfile=ful.dmp full=y</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Oracle提供的expdp工具和impdp工具都是工作在服务端，可以方便的多粒度的进行数据的导出导入操作，在开发中可以灵活使用。</p>
+
+    </div>
+
+    
+    
+    
+      
+
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>jychen
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://yoursite.com/2020/08/18/Oracle%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%9E%E8%B7%B5/" title="Oracle导入导出实践">http://yoursite.com/2020/08/18/Oracle导入导出实践/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Oracle/" rel="tag"><i class="fa fa-tag"></i> Oracle</a>
+              <a href="/tags/expdp/" rel="tag"><i class="fa fa-tag"></i> expdp</a>
+              <a href="/tags/impdp/" rel="tag"><i class="fa fa-tag"></i> impdp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/08/12/Linux-%E5%BF%AB%E6%8D%B7%E9%94%AE/" rel="prev" title="Linux 快捷键">
+                  <i class="fa fa-chevron-left"></i> Linux 快捷键
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/08/redis%E5%AE%89%E8%A3%85/" rel="next" title="CentOS7安装Redis">
+                  CentOS7安装Redis <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2020 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">jychen</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">29k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">26 分钟</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.0/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"enable":true,"app_id":"iCSSGyWR3qqulUEHOArOYyqK-MdYXbMMI","app_key":"RoXhcmreDGWPwQ4bLxcjyfUM","server_url":null,"security":true}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"cjiayang","repo":"cjiayang.github.io","client_id":"46d07473140ffe98129d","client_secret":"c1228c546b692e34318d28da204151232843abec","admin_user":"cjiayang","distraction_free_mode":true,"proxy":"/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"3040b3d6f5e2da779dce30da393a5345"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
