@@ -406,7 +406,7 @@ reading_progress:
   start_at: left
   # Available values: top | bottom
   position: top
-  reversed: true
+  reversed: false
   color: "#37c6c0"
   height: 3px
 
@@ -588,18 +588,18 @@ comments:
   style: tabs
   # Choose a comment system to be displayed by default.
   # Available values: disqus | disqusjs | changyan | livere | gitalk | utterances
-  active:
+  active: gitalk
   # Setting `true` means remembering the comment system selected by the visitor.
   storage: true
   # Lazyload all comment systems.
-  lazyload: false
+  lazyload: true
   # Modify texts or order for any naves, here are some examples.
-  nav:
-    valine:
-     text: Valine
-     order: -1
-    gitalk:
-     order: -2
+  # nav:
+  #   valine:
+  #    text: Valine
+  #    order: -2
+  #   gitalk:
+  #    order: -1
 
 # Disqus
 # For more information: https://disqus.com
@@ -631,25 +631,6 @@ changyan:
 # You can get your uid from https://livere.com/insight/myCode (General web site)
 livere_uid: # <your_uid>
 
-# Valine
-# For more information: https://valine.js.org, https://github.com/xCss/Valine
-valine:
-  enable: true
-  appid: g2JcDOgE11SRuaMu7LMFSMAA-gzGzoHsz # Your leancloud application appid
-  appkey: tE9EIqQRVvHB9X3uQyKkOCdI # Your leancloud application appkey
-  notify: false # Mail notifier
-  verify: false # Verification code
-  placeholder: Just go go # Comment box placeholder
-  avatar: mm # Gravatar style
-  guest_info: nick,mail,link # Custom comment header
-  pageSize: 10 # Pagination size
-  language: zh-cn # Language, available values: en, zh-cn
-  visitor: false # Article reading statistic
-  comment_count: true # If false, comment count will only be displayed in post page, not in home page
-  recordIP: false # Whether to record the commenter IP
-  serverURLs: # When the custom domain name is enabled, fill it in here (it will be detected automatically by default, no need to fill in)
-  #post_meta_order: 0
-
 # Gitalk
 # For more information: https://gitalk.github.io
 gitalk:
@@ -657,10 +638,10 @@ gitalk:
   github_id: cjiayang # GitHub repo owner
   repo: cjiayang.github.io # Repository name to store issues
   client_id: 46d07473140ffe98129d # GitHub Application Client ID
-  client_secret: c1228c546b692e34318d28da204151232843abec # GitHub Application Client Secret
+  client_secret: 7fa1626cc394d63f4474981c84fc898946189df2 # GitHub Application Client Secret
   admin_user: cjiayang # GitHub repo owner and collaborators, only these guys can initialize gitHub issues
-  distraction_free_mode: true # Facebook-like distraction free mode
-  proxy: /login/oauth/access_token
+  distraction_free_mode: false # Facebook-like distraction free mode
+  # proxy: /login/oauth/access_token
   # Gitalk's display language depends on user's browser or system environment
   # If you want everyone visiting your site to see a uniform language, you can set a force language value
   # Available values: en | es-ES | fr | ru | zh-CN | zh-TW
