@@ -1,0 +1,7 @@
+# language
+zh-CN:
+  # items
+  menu:
+    movies: 观影
+      # the translation you perfer
+    books: 读书
