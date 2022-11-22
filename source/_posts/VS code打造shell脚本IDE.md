@@ -1,12 +1,11 @@
-```
+---
 title: vscode打造shell脚本IDE【转】
 date: 2022-11-22 15:22:19
 categories:
   - 开发工具
 tags:
   - vscode
-```
-
+---
 本文介绍如何简单配置vscode，使其成文好用的shell脚本编辑器
 
 <!--more-->
@@ -16,7 +15,6 @@ tags:
 近期多了些开发shell脚本的需求，便做了些研究，于是发现：
 
 1. shell没有专用的IDE
-
 2. 老手们习惯了vim的开发方式，干起活来非常黑客。但对新人，不太友好
 
 既然没有现成的，那就用插件组一套，软件依然是vscode。
@@ -69,7 +67,8 @@ tags:
 
 [VSCode: Windows 下配置 VSCode运行shell](http://link.zhihu.com/?target=https%3A//www.cnblogs.com/yongdaimi/p/15247771.html)
 
-#### 转自：
+---
+
+**转自**
 
 - [VS code打造shell脚本IDE](https://zhuanlan.zhihu.com/p/199187317)
-
