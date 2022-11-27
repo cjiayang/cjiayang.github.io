@@ -67,8 +67,20 @@ tags:
 
 [VSCode: Windows 下配置 VSCode运行shell](http://link.zhihu.com/?target=https%3A//www.cnblogs.com/yongdaimi/p/15247771.html)
 
----
+### shell编程资源
 
-**转自**
+shell是与Linux系统对话的门户，每个要与Linux对话的人都避免不了学习shell。市面上充斥着各种培训教材和培训课程，引导了shell的初学者入门，但又往往对学习shell的初学者产生误导，入门而无法深入。信息的社会里最不缺的就是信息，缺的是高质量的信息。如果有质量上乘权威的学习资料和手册，将会使想要学习shell的人少走很多弯路。我也是在学习shell的路上碰到了这些好的资料，发现其质量上乘，还是开放阅读的，相见恨晚，感于其被杂乱的信息所淹没，分享于此。
+
+| 资源                            | 地址                                                                                                                                            |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| 高级Bash脚本编程指南-英文原版   | [https://tldp.org/LDP/abs/html/](https://tldp.org/LDP/abs/html/)                                                                                   |
+| 高级Bash脚本编程指南-中译本     | [http://home.ustc.edu.cn/~stephen1/book/abs-guide-3.7-cn/HTML/index.html](http://home.ustc.edu.cn/~stephen1/book/abs-guide-3.7-cn/HTML/index.html) |
+| 高级Bash脚本编程指南-中译本最新 | [https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/](https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/) |
+| Bash Reference Manual           | [https://www.gnu.org/software/bash/manual/bash.html](https://www.gnu.org/software/bash/manual/bash.html)                                           |
+| Bash中文手册                    | [https://chegva.com/2777.html](https://chegva.com/2777.html)                                                                                       |
+| 鸟哥的Linux私房菜               | [http://cn.linux.vbird.org/linux_basic/linux_basic.php](http://cn.linux.vbird.org/linux_basic/linux_basic.php)                                     |
+
+### **参考**
 
 - [VS code打造shell脚本IDE](https://zhuanlan.zhihu.com/p/199187317)
+- [Shell调试技巧](https://chegva.com/3776.html)
