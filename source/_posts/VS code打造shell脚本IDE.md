@@ -6,7 +6,7 @@ categories:
 tags:
   - vscode
 ---
-本文介绍如何简单配置vscode，使其成文好用的shell脚本编辑器
+本文介绍如何简单配置vscode，使其成为好用的shell脚本编辑器。同时分享一些shell相关的学习资料。
 
 <!--more-->
 
