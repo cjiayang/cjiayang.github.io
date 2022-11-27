@@ -20,57 +20,37 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"cjyang.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"mac"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":{"gitalk":{"order":-1}},"activeClass":"gitalk"},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="本文介绍在虚拟机下安装RedHat6.5步骤">
+    <meta name="description" content="本文介绍如何简单配置vscode，使其成为好用的shell脚本编辑器。同时分享一些shell相关的学习资料。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="虚拟机安装RedHat6.5实践">
-<meta property="og:url" content="http://cjyang.github.io/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:title" content="vscode打造shell脚本IDE【转】">
+<meta property="og:url" content="http://cjyang.github.io/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/index.html">
 <meta property="og:site_name" content="Monkey Young">
-<meta property="og:description" content="本文介绍在虚拟机下安装RedHat6.5步骤">
+<meta property="og:description" content="本文介绍如何简单配置vscode，使其成为好用的shell脚本编辑器。同时分享一些shell相关的学习资料。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://cjyang.github.io/vmware-config.png">
-<meta property="og:image" content="http://cjyang.github.io/step1.png">
-<meta property="og:image" content="http://cjyang.github.io/step2.png">
-<meta property="og:image" content="http://cjyang.github.io/step3.png">
-<meta property="og:image" content="http://cjyang.github.io/step4.png">
-<meta property="og:image" content="http://cjyang.github.io/step5.png">
-<meta property="og:image" content="http://cjyang.github.io/step6.png">
-<meta property="og:image" content="http://cjyang.github.io/step7.png">
-<meta property="og:image" content="http://cjyang.github.io/step8.png">
-<meta property="og:image" content="http://cjyang.github.io/step9.png">
-<meta property="og:image" content="http://cjyang.github.io/step10.png">
-<meta property="og:image" content="http://cjyang.github.io/step11.png">
-<meta property="og:image" content="http://cjyang.github.io/step12.png">
-<meta property="og:image" content="http://cjyang.github.io/step13.png">
-<meta property="og:image" content="http://cjyang.github.io/step14.png">
-<meta property="og:image" content="http://cjyang.github.io/step15.png">
-<meta property="og:image" content="http://cjyang.github.io/step16.png">
-<meta property="og:image" content="http://cjyang.github.io/step17.png">
-<meta property="og:image" content="http://cjyang.github.io/step18.png">
-<meta property="og:image" content="http://cjyang.github.io/step19.png">
-<meta property="og:image" content="http://cjyang.github.io/step20.png">
-<meta property="og:image" content="http://cjyang.github.io/step21.png">
-<meta property="og:image" content="http://cjyang.github.io/step22.png">
-<meta property="og:image" content="http://cjyang.github.io/step23.png">
-<meta property="og:image" content="http://cjyang.github.io/step24.png">
-<meta property="og:image" content="http://cjyang.github.io/step25.png">
-<meta property="og:image" content="http://cjyang.github.io/step26.png">
-<meta property="article:published_time" content="2020-08-10T10:53:38.000Z">
-<meta property="article:modified_time" content="2022-09-17T16:41:07.471Z">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/gy6PcdSmQkULB7Z.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/fDmVr9TxEhlkOni.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/eKMrgNvDEGuftRX.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/JPH5Nb1TQGSRsgI.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/t3o67U1Sbr9Ggzi.png">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/FU9BTz8aRpr4vuW.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/ravESXh56Gm9n1Y.jpg">
+<meta property="og:image" content="https://s2.loli.net/2022/11/22/KYPw9SzsIXUbrDJ.jpg">
+<meta property="article:published_time" content="2022-11-22T07:22:19.000Z">
+<meta property="article:modified_time" content="2022-11-27T09:34:31.384Z">
 <meta property="article:author" content="jychen">
-<meta property="article:tag" content="VMware">
-<meta property="article:tag" content="RedHat">
+<meta property="article:tag" content="vscode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://cjyang.github.io/vmware-config.png">
+<meta name="twitter:image" content="https://s2.loli.net/2022/11/22/gy6PcdSmQkULB7Z.png">
 
 
-<link rel="canonical" href="http://cjyang.github.io/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/">
+<link rel="canonical" href="http://cjyang.github.io/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://cjyang.github.io/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/","path":"2020/08/10/虚拟机安装RedHat6.5实践/","title":"虚拟机安装RedHat6.5实践"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://cjyang.github.io/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/","path":"2022/11/22/VS code打造shell脚本IDE/","title":"vscode打造shell脚本IDE【转】"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>虚拟机安装RedHat6.5实践 | Monkey Young</title>
+<title>vscode打造shell脚本IDE【转】 | Monkey Young</title>
   
 
   <script src="/js/third-party/analytics/baidu-analytics.js"></script>
@@ -176,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%86%E5%A4%87"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">虚拟机配置镜像文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="nav-number">2.2.</span> <span class="nav-text">安装步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E6%AC%A1%E5%90%AF%E5%8A%A8%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">首次启动配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">2.4.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#VS-code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE%E3%80%90%E8%BD%AC%E3%80%91"><span class="nav-number">1.</span> <span class="nav-text">VS code打造shell脚本IDE【转】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-shellman"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. shellman</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-shellcheck"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. shellcheck</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-shell-format"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. shell-format</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-Code-Runner"><span class="nav-number">1.0.4.</span> <span class="nav-text">4. Code Runner</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E9%85%8D%E7%BD%AEVSCode%E8%BF%90%E8%A1%8Cshell"><span class="nav-number">1.0.5.</span> <span class="nav-text">5. 配置VSCode运行shell</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell%E7%BC%96%E7%A8%8B%E8%B5%84%E6%BA%90"><span class="nav-number">1.1.</span> <span class="nav-text">shell编程资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.2.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -258,7 +238,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://cjyang.github.io/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/">
+    <link itemprop="mainEntityOfPage" href="http://cjyang.github.io/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -271,12 +251,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="虚拟机安装RedHat6.5实践 | Monkey Young">
+      <meta itemprop="name" content="vscode打造shell脚本IDE【转】 | Monkey Young">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          虚拟机安装RedHat6.5实践
+          vscode打造shell脚本IDE【转】
         </h1>
 
         <div class="post-meta-container">
@@ -287,14 +267,14 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2020-08-10 18:53:38" itemprop="dateCreated datePublished" datetime="2020-08-10T18:53:38+08:00">2020-08-10</time>
+      <time title="创建时间：2022-11-22 15:22:19" itemprop="dateCreated datePublished" datetime="2022-11-22T15:22:19+08:00">2022-11-22</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-09-18 00:41:07" itemprop="dateModified" datetime="2022-09-18T00:41:07+08:00">2022-09-18</time>
+      <time title="修改时间：2022-11-27 17:34:31" itemprop="dateModified" datetime="2022-11-27T17:34:31+08:00">2022-11-27</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -302,12 +282,12 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+          <a href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">开发工具</span></a>
         </span>
     </span>
 
   
-    <span id="/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/" class="post-meta-item leancloud_visitors" data-flag-title="虚拟机安装RedHat6.5实践" title="阅读次数">
+    <span id="/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/" class="post-meta-item leancloud_visitors" data-flag-title="vscode打造shell脚本IDE【转】" title="阅读次数">
       <span class="post-meta-item-icon">
         <i class="far fa-eye"></i>
       </span>
@@ -327,7 +307,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>918</span>
+      <span>1.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -345,67 +325,71 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>本文介绍在虚拟机下安装RedHat6.5步骤</p>
+        <p>本文介绍如何简单配置vscode，使其成为好用的shell脚本编辑器。同时分享一些shell相关的学习资料。</p>
 <span id="more"></span>
 
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>虚拟机创建已在另一篇文章介绍过，安装前需准备redhat6.5的iso镜像文件，可以到开源镜像站下载相应版本。</p>
+<h2 id="VS-code打造shell脚本IDE【转】"><a href="#VS-code打造shell脚本IDE【转】" class="headerlink" title="VS code打造shell脚本IDE【转】"></a>VS code打造shell脚本IDE【转】</h2><p>近期多了些开发shell脚本的需求，便做了些研究，于是发现：</p>
 <ol>
-<li>VMware虚拟机15.1.0</li>
-<li>rhel-server-6.5-x86_64-dvd.iso镜像文件</li>
+<li>shell没有专用的IDE</li>
+<li>老手们习惯了vim的开发方式，干起活来非常黑客。但对新人，不太友好</li>
 </ol>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="虚拟机配置镜像文件"><a href="#虚拟机配置镜像文件" class="headerlink" title="虚拟机配置镜像文件"></a>虚拟机配置镜像文件</h3><p>编辑虚拟机设置  → CD&#x2F;DVD → 使用ISO镜像文件，点击浏览，选择rhel-server-6.5-x86_64-dvd.iso镜像文件所在位置</p>
-<p><img src="/vmware-config.png" alt="vmware-config"></p>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ol>
-<li><p>选择Install or upgrade an existing system<br><img src="/step1.png" alt="step1"></p>
-</li>
-<li><p>点击Skip<br><img src="/step2.png" alt="step2"></p>
-</li>
-<li><p>语言默认选择English<br><img src="/step3.png" alt="step3"></p>
-</li>
-<li><p>键盘默认选U.S. English<br><img src="/step4.png" alt="step4"></p>
-</li>
-<li><p>选择Basic Storage Device<br><img src="/step5.png" alt="step5"></p>
-</li>
-<li><p>选择 Yes, discard any data<br><img src="/step6.png" alt="step6"></p>
-</li>
-<li><p>主机名自定义，点击配置网络，选择eth0网卡，点击Edit<br><img src="/step7.png" alt="step7"></p>
-</li>
-<li><p>勾选Connect automatically，Ipv4 Settings选项卡中，Method选择Manual手动配置<br>Address填写局域网内未使用的IP，点击应用<br><img src="/step8.png" alt="step8"></p>
-</li>
-<li><p>时区选择上海，去掉UTC勾选<br><img src="/step9.png" alt="step9"></p>
-</li>
-<li><p>填写系统root用户密码<br><img src="/step10.png" alt="step10"></p>
-</li>
-<li><p>自定义安装<br><img src="/step11.png" alt="step11"></p>
-</li>
-<li><p>创建boot分区</p>
-<p>点击Free → 点击Create → 选择 Standard Partition<br><img src="/step12.png" alt="step12"></p>
-</li>
-<li><p>创建swap分区<br>点击Free → 点击Create → 选择 Standard Partition<br><img src="/step13.png" alt="step13"></p>
-</li>
-<li><p>创建root分区<br>点击Free → 点击Create → 选择 Standard Partition → 选择 Fill to maximum allowable size<br><img src="/step14.png" alt="step14"></p>
-</li>
-<li><p>格式化系统<br>点击Format，在弹窗点击Write changes to disk<br><img src="/step15.png" alt="step15"></p>
-</li>
-<li><p>默认，点击next<br><img src="/step16.png" alt="step16"></p>
-</li>
-<li><p>选择Desktop桌面版安装<br><img src="/step17.png" alt="step17"></p>
-</li>
-<li><p>安装完成点击Reboot<br><img src="/step18.png" alt="step18"></p>
-</li>
-</ol>
-<h3 id="首次启动配置"><a href="#首次启动配置" class="headerlink" title="首次启动配置"></a>首次启动配置</h3><ol>
-<li>欢迎页直接点击Forward<br><img src="/step19.png" alt="step19"></li>
-<li>许可证选择Yes, I agree to the License Agreement，点击Forward<br><img src="/step20.png" alt="step20"></li>
-<li>选择稍后注册，点击Forward，弹窗点击Register Later，继续点击Forward<br><img src="/step21.png" alt="step21"></li>
-<li>如果不建用户直接点击Forward，在弹窗中点击Yes确认<br><img src="/step22.png" alt="step22"></li>
-<li>日期和时间，点击Forward<br><img src="/step23.png" alt="step23"></li>
-<li>点击Finish，在弹窗中点击Yes和OK，系统重启。<br><img src="/step24.png" alt="step24"></li>
-</ol>
-<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><ol>
-<li>root用户登陆<br><img src="/step25.png" alt="step25"></li>
-<li>ping <a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a> 如果网络能通则成功<br><img src="/step26.png" alt="step26"></li>
-</ol>
+<p>既然没有现成的，那就用插件组一套，软件依然是vscode。</p>
+<h4 id="1-shellman"><a href="#1-shellman" class="headerlink" title="1. shellman"></a>1. shellman</h4><p>说起IDE，第一时间想到的必然是智能提示和自动补全，shellman全部搞定</p>
+<p><img src="https://s2.loli.net/2022/11/22/gy6PcdSmQkULB7Z.png" alt="img"></p>
+<p>下载后，新建test.bash文件，输入case，可见如下结果：</p>
+<p><img src="https://s2.loli.net/2022/11/22/fDmVr9TxEhlkOni.jpg" alt="img"></p>
+<p>选中提示中的第一个，然后就获得了if全家桶：</p>
+<p><img src="https://s2.loli.net/2022/11/22/eKMrgNvDEGuftRX.jpg" alt="img"></p>
+<p>由上面两张图可见shellman的提示是比较系统的。</p>
+<h4 id="2-shellcheck"><a href="#2-shellcheck" class="headerlink" title="2. shellcheck"></a>2. shellcheck</h4><p>有了自动补全，然后就是语法错误检查了</p>
+<p><img src="https://s2.loli.net/2022/11/22/JPH5Nb1TQGSRsgI.jpg" alt="img"></p>
+<p>安装成功后，再写代码就会出现如下的错误提示：</p>
+<p><img src="https://s2.loli.net/2022/11/22/t3o67U1Sbr9Ggzi.png" alt="img"></p>
+<h4 id="3-shell-format"><a href="#3-shell-format" class="headerlink" title="3. shell-format"></a>3. shell-format</h4><p>脚本写好了，当然要格式化一下</p>
+<p><img src="https://s2.loli.net/2022/11/22/FU9BTz8aRpr4vuW.jpg" alt="img"></p>
+<p>快捷键：Alt+Shift+F</p>
+<h4 id="4-Code-Runner"><a href="#4-Code-Runner" class="headerlink" title="4. Code Runner"></a>4. Code Runner</h4><p>在vs code里开发，在vs code里纠错，又在vs code里格式化，到了调试不会要去命令行吧！</p>
+<p><img src="https://s2.loli.net/2022/11/22/ravESXh56Gm9n1Y.jpg" alt="img"></p>
+<p>安装完后，如果出现require reload的字样，请重启vs code。然后对刚才创建的test.bash右键，（或者在文件里右键）：</p>
+<p><img src="https://s2.loli.net/2022/11/22/KYPw9SzsIXUbrDJ.jpg" alt="img"></p>
+<h4 id="5-配置VSCode运行shell"><a href="#5-配置VSCode运行shell" class="headerlink" title="5. 配置VSCode运行shell"></a>5. 配置VSCode运行shell</h4><p><a href="http://link.zhihu.com/?target=https://www.cnblogs.com/yongdaimi/p/15247771.html">VSCode: Windows 下配置 VSCode运行shell</a></p>
+<h3 id="shell编程资源"><a href="#shell编程资源" class="headerlink" title="shell编程资源"></a>shell编程资源</h3><p>shell是与Linux系统对话的门户，每个要与Linux对话的人都避免不了学习shell。市面上充斥着各种培训教材和培训课程，引导了shell的初学者入门，但又往往对学习shell的初学者产生误导，入门而无法深入。信息的社会里最不缺的就是信息，缺的是高质量的信息。如果有质量上乘权威的学习资料和手册，将会使想要学习shell的人少走很多弯路。我也是在学习shell的路上碰到了这些好的资料，发现其质量上乘，还是开放阅读的，相见恨晚，感于其被杂乱的信息所淹没，分享于此。</p>
+<table>
+<thead>
+<tr>
+<th>资源</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高级Bash脚本编程指南-英文原版</td>
+<td><a target="_blank" rel="noopener" href="https://tldp.org/LDP/abs/html/">https://tldp.org/LDP/abs/html/</a></td>
+</tr>
+<tr>
+<td>高级Bash脚本编程指南-中译本</td>
+<td><a target="_blank" rel="noopener" href="http://home.ustc.edu.cn/~stephen1/book/abs-guide-3.7-cn/HTML/index.html">http://home.ustc.edu.cn/~stephen1&#x2F;book&#x2F;abs-guide-3.7-cn&#x2F;HTML&#x2F;index.html</a></td>
+</tr>
+<tr>
+<td>高级Bash脚本编程指南-中译本最新</td>
+<td><a target="_blank" rel="noopener" href="https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/">https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/</a></td>
+</tr>
+<tr>
+<td>Bash Reference Manual</td>
+<td><a target="_blank" rel="noopener" href="https://www.gnu.org/software/bash/manual/bash.html">https://www.gnu.org/software/bash/manual/bash.html</a></td>
+</tr>
+<tr>
+<td>Bash中文手册</td>
+<td><a target="_blank" rel="noopener" href="https://chegva.com/2777.html">https://chegva.com/2777.html</a></td>
+</tr>
+<tr>
+<td>鸟哥的Linux私房菜</td>
+<td><a target="_blank" rel="noopener" href="http://cn.linux.vbird.org/linux_basic/linux_basic.php">http://cn.linux.vbird.org/linux_basic&#x2F;linux_basic.php</a></td>
+</tr>
+</tbody></table>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a><strong>参考</strong></h3><ul>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/199187317">VS code打造shell脚本IDE</a></li>
+<li><a target="_blank" rel="noopener" href="https://chegva.com/3776.html">Shell调试技巧</a></li>
+</ul>
 
     </div>
 
@@ -425,7 +409,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="http://cjyang.github.io/2020/08/10/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85RedHat6.5%E5%AE%9E%E8%B7%B5/" title="虚拟机安装RedHat6.5实践">http://cjyang.github.io/2020/08/10/虚拟机安装RedHat6.5实践/</a>
+      <a href="http://cjyang.github.io/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/" title="vscode打造shell脚本IDE【转】">http://cjyang.github.io/2022/11/22/VS code打造shell脚本IDE/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -434,22 +418,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/VMware/" rel="tag"><i class="fa fa-tag"></i> VMware</a>
-              <a href="/tags/RedHat/" rel="tag"><i class="fa fa-tag"></i> RedHat</a>
+              <a href="/tags/vscode/" rel="tag"><i class="fa fa-tag"></i> vscode</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/07/17/%E8%BD%AF%E4%BB%B6%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/" rel="prev" title="软件资源下载">
-                  <i class="fa fa-chevron-left"></i> 软件资源下载
+                <a href="/2022/11/04/docsify%E6%96%87%E6%A1%A3%E6%90%AD%E5%BB%BA/" rel="prev" title="docsify文档搭建">
+                  <i class="fa fa-chevron-left"></i> docsify文档搭建
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/08/12/Linux-%E5%BF%AB%E6%8D%B7%E9%94%AE/" rel="next" title="Linux 快捷键">
-                  Linux 快捷键 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -537,7 +517,7 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"cjiayang","repo":"cjiayang.github.io","client_id":"46d07473140ffe98129d","client_secret":"7fa1626cc394d63f4474981c84fc898946189df2","admin_user":"cjiayang","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"551fe7b3dc11d5e806d1bcb8cf5aba1a"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"cjiayang","repo":"cjiayang.github.io","client_id":"46d07473140ffe98129d","client_secret":"7fa1626cc394d63f4474981c84fc898946189df2","admin_user":"cjiayang","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/gitalk/1.8.0/gitalk.min.js","integrity":"sha256-MVK9MGD/XJaGyIghSVrONSnoXoGh3IFxLw0zfvzpxR4="},"path_md5":"c561a96eaec53f65c5409f070159a4ac"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>

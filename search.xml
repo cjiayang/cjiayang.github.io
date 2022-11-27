@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>vscode打造shell脚本IDE【转】</title>
+    <url>/2022/11/22/VS%20code%E6%89%93%E9%80%A0shell%E8%84%9A%E6%9C%ACIDE/</url>
+    <content><![CDATA[<p>本文介绍如何简单配置vscode，使其成为好用的shell脚本编辑器。同时分享一些shell相关的学习资料。</p>
+<span id="more"></span>
+
+<h2 id="VS-code打造shell脚本IDE【转】"><a href="#VS-code打造shell脚本IDE【转】" class="headerlink" title="VS code打造shell脚本IDE【转】"></a>VS code打造shell脚本IDE【转】</h2><p>近期多了些开发shell脚本的需求，便做了些研究，于是发现：</p>
+<ol>
+<li>shell没有专用的IDE</li>
+<li>老手们习惯了vim的开发方式，干起活来非常黑客。但对新人，不太友好</li>
+</ol>
+<p>既然没有现成的，那就用插件组一套，软件依然是vscode。</p>
+<h4 id="1-shellman"><a href="#1-shellman" class="headerlink" title="1. shellman"></a>1. shellman</h4><p>说起IDE，第一时间想到的必然是智能提示和自动补全，shellman全部搞定</p>
+<p><img src="https://s2.loli.net/2022/11/22/gy6PcdSmQkULB7Z.png" alt="img"></p>
+<p>下载后，新建test.bash文件，输入case，可见如下结果：</p>
+<p><img src="https://s2.loli.net/2022/11/22/fDmVr9TxEhlkOni.jpg" alt="img"></p>
+<p>选中提示中的第一个，然后就获得了if全家桶：</p>
+<p><img src="https://s2.loli.net/2022/11/22/eKMrgNvDEGuftRX.jpg" alt="img"></p>
+<p>由上面两张图可见shellman的提示是比较系统的。</p>
+<h4 id="2-shellcheck"><a href="#2-shellcheck" class="headerlink" title="2. shellcheck"></a>2. shellcheck</h4><p>有了自动补全，然后就是语法错误检查了</p>
+<p><img src="https://s2.loli.net/2022/11/22/JPH5Nb1TQGSRsgI.jpg" alt="img"></p>
+<p>安装成功后，再写代码就会出现如下的错误提示：</p>
+<p><img src="https://s2.loli.net/2022/11/22/t3o67U1Sbr9Ggzi.png" alt="img"></p>
+<h4 id="3-shell-format"><a href="#3-shell-format" class="headerlink" title="3. shell-format"></a>3. shell-format</h4><p>脚本写好了，当然要格式化一下</p>
+<p><img src="https://s2.loli.net/2022/11/22/FU9BTz8aRpr4vuW.jpg" alt="img"></p>
+<p>快捷键：Alt+Shift+F</p>
+<h4 id="4-Code-Runner"><a href="#4-Code-Runner" class="headerlink" title="4. Code Runner"></a>4. Code Runner</h4><p>在vs code里开发，在vs code里纠错，又在vs code里格式化，到了调试不会要去命令行吧！</p>
+<p><img src="https://s2.loli.net/2022/11/22/ravESXh56Gm9n1Y.jpg" alt="img"></p>
+<p>安装完后，如果出现require reload的字样，请重启vs code。然后对刚才创建的test.bash右键，（或者在文件里右键）：</p>
+<p><img src="https://s2.loli.net/2022/11/22/KYPw9SzsIXUbrDJ.jpg" alt="img"></p>
+<h4 id="5-配置VSCode运行shell"><a href="#5-配置VSCode运行shell" class="headerlink" title="5. 配置VSCode运行shell"></a>5. 配置VSCode运行shell</h4><p><a href="http://link.zhihu.com/?target=https://www.cnblogs.com/yongdaimi/p/15247771.html">VSCode: Windows 下配置 VSCode运行shell</a></p>
+<h3 id="shell编程资源"><a href="#shell编程资源" class="headerlink" title="shell编程资源"></a>shell编程资源</h3><p>shell是与Linux系统对话的门户，每个要与Linux对话的人都避免不了学习shell。市面上充斥着各种培训教材和培训课程，引导了shell的初学者入门，但又往往对学习shell的初学者产生误导，入门而无法深入。信息的社会里最不缺的就是信息，缺的是高质量的信息。如果有质量上乘权威的学习资料和手册，将会使想要学习shell的人少走很多弯路。我也是在学习shell的路上碰到了这些好的资料，发现其质量上乘，还是开放阅读的，相见恨晚，感于其被杂乱的信息所淹没，分享于此。</p>
+<table>
+<thead>
+<tr>
+<th>资源</th>
+<th>地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>高级Bash脚本编程指南-英文原版</td>
+<td><a href="https://tldp.org/LDP/abs/html/">https://tldp.org/LDP/abs/html/</a></td>
+</tr>
+<tr>
+<td>高级Bash脚本编程指南-中译本</td>
+<td><a href="http://home.ustc.edu.cn/~stephen1/book/abs-guide-3.7-cn/HTML/index.html">http://home.ustc.edu.cn/~stephen1&#x2F;book&#x2F;abs-guide-3.7-cn&#x2F;HTML&#x2F;index.html</a></td>
+</tr>
+<tr>
+<td>高级Bash脚本编程指南-中译本最新</td>
+<td><a href="https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/">https://linuxstory.gitbook.io/advanced-bash-scripting-guide-in-chinese/</a></td>
+</tr>
+<tr>
+<td>Bash Reference Manual</td>
+<td><a href="https://www.gnu.org/software/bash/manual/bash.html">https://www.gnu.org/software/bash/manual/bash.html</a></td>
+</tr>
+<tr>
+<td>Bash中文手册</td>
+<td><a href="https://chegva.com/2777.html">https://chegva.com/2777.html</a></td>
+</tr>
+<tr>
+<td>鸟哥的Linux私房菜</td>
+<td><a href="http://cn.linux.vbird.org/linux_basic/linux_basic.php">http://cn.linux.vbird.org/linux_basic&#x2F;linux_basic.php</a></td>
+</tr>
+</tbody></table>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a><strong>参考</strong></h3><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/199187317">VS code打造shell脚本IDE</a></li>
+<li><a href="https://chegva.com/3776.html">Shell调试技巧</a></li>
+</ul>
+]]></content>
+      <categories>
+        <category>开发工具</category>
+      </categories>
+      <tags>
+        <tag>vscode</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docsify文档搭建</title>
     <url>/2022/11/04/docsify%E6%96%87%E6%A1%A3%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>本文主要介绍docsify文档系统的配置。顺便介绍了市场上主流的团队文档工具。读完本文，可以按文中步骤搭建一个可用的docsify文档系统。</p>
@@ -826,9 +902,10 @@
 <p>以上是官方文档的介绍，可以看出Windows Terminal首先是一个微软官方提供的一个<strong>终端工具</strong>，包含了许多便于用户使用的新特性，并提供自定义配置功能。我们可以方便的使用Windows Terminal中执行cmd命令，PowerShell命令，和WSL子系统命令。</p>
 <h3 id="如何安装"><a href="#如何安装" class="headerlink" title="如何安装"></a>如何安装</h3><p>直接从 <a href="https://aka.ms/terminal">Microsoft Store</a> 安装 Windows Terminal。</p>
 <h3 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h3><p><a href="https://docs.microsoft.com/zh-cn/windows/terminal/">https://docs.microsoft.com/zh-cn/windows/terminal/</a></p>
-<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="在哪配置"><a href="#在哪配置" class="headerlink" title="在哪配置"></a>在哪配置</h3><p>打开 Windows 终端，在下拉菜单中选择“设置” 。 终端会使用默认文本编辑器打开 <code>settings.json</code> 文件。在 <code>settings.json</code>文件中，终端支持自定义影响整个应用程序的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/global-settings">全局属性</a>、影响每个配置文件的设置的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/profile-settings">配置文件属性</a>以及允许你使用键盘与终端交互的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/key-bindings">键绑定</a>。</p>
+<h2 id="自定义配置"><a href="#自定义配置" class="headerlink" title="自定义配置"></a>自定义配置</h2><h3 id="在哪配置"><a href="#在哪配置" class="headerlink" title="在哪配置"></a>在哪配置</h3><p>打开 Windows 终端，在下拉菜单中选择“设置” 。 终端会使用默认文本编辑器打开 <code>settings.json</code> 文件。在<code>settings.json</code>文件中，终端支持自定义影响整个应用程序的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/global-settings">全局属性</a>、影响每个配置文件的设置的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/profile-settings">配置文件属性</a>以及允许你使用键盘与终端交互的<a href="https://docs.microsoft.com/zh-cn/windows/terminal/customize-settings/key-bindings">键绑定</a>。</p>
 <p>配置文件的具体配置官方文档已经写的足够简洁了，一般使用默认配置即可满足需求，如果需要修改快捷键或者主题样式，可以按官方文档的配置步骤配置即可。下面对配置文件进行解释。</p>
 <h3 id="配置文件注释"><a href="#配置文件注释" class="headerlink" title="配置文件注释"></a>配置文件注释</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">// 最外层的都是全局属性，配置的指影响全局</span><br><span class="line">&#123;</span><br><span class="line">    &quot;$schema&quot;: &quot;https://aka.ms/terminal-profiles-schema&quot;,</span><br><span class="line">    &quot;alwaysShowTabs&quot; : true,</span><br><span class="line">    &quot;defaultProfile&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;, // 配置打开新标签页时使用的是哪个profile，值对应profiles里对象的guid</span><br><span class="line">    &quot;initialCols&quot; : 120,</span><br><span class="line">    &quot;initialRows&quot; : 30,</span><br><span class="line">    &quot;keybindings&quot; : // 配置快捷键的地方</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;closeTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+w&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;command&quot; : &quot;newTab&quot;,</span><br><span class="line">            &quot;keys&quot; : </span><br><span class="line">            [</span><br><span class="line">                &quot;ctrl+t&quot;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;requestedTheme&quot; : &quot;system&quot;,</span><br><span class="line">    &quot;showTabsInTitlebar&quot; : true,</span><br><span class="line">    &quot;showTerminalTitleInTitlebar&quot; : true,</span><br><span class="line">    &quot;profiles&quot; :  // 每个终端的配置</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;acrylicOpacity&quot; : 0.9,</span><br><span class="line">            // &quot;background&quot; : &quot;#012456&quot;,</span><br><span class="line">            &quot;closeOnExit&quot; : true,</span><br><span class="line">            &quot;colorScheme&quot; : &quot;Solarized Dark&quot;, 		// 颜色主题，对应的是schemes对象的name值</span><br><span class="line">            &quot;commandline&quot; : &quot;powershell.exe&quot;,		// 打开时执行的命令</span><br><span class="line">            &quot;cursorColor&quot; : &quot;#FFFFFF&quot;,</span><br><span class="line">            &quot;cursorShape&quot; : &quot;bar&quot;,</span><br><span class="line">            &quot;fontFace&quot; : &quot;Consolas&quot;,  				// 字体</span><br><span class="line">            &quot;fontSize&quot; : 10,  						// 字体大小</span><br><span class="line">            &quot;guid&quot; : &quot;&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;&quot;,	// 终端guid</span><br><span class="line">            &quot;historySize&quot; : 9001,</span><br><span class="line">            &quot;icon&quot; : &quot;ms-appx:///ProfileIcons/&#123;61c54bbd-c2c6-5271-96e7-009a87ff44bf&#125;.png&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Windows PowerShell&quot;, 			// 终端名</span><br><span class="line">            &quot;padding&quot; : &quot;0, 0, 0, 0&quot;,</span><br><span class="line">            &quot;snapOnInput&quot; : true,</span><br><span class="line">            &quot;startingDirectory&quot; : &quot;%USERPROFILE%&quot;,</span><br><span class="line">            &quot;useAcrylic&quot; : false					// 透明背景</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;schemes&quot; : 	// 主题样式</span><br><span class="line">    [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;background&quot; : &quot;#0C0C0C&quot;, 	// 背景颜色</span><br><span class="line">            &quot;black&quot; : &quot;#0C0C0C&quot;,</span><br><span class="line">            &quot;blue&quot; : &quot;#0037DA&quot;,</span><br><span class="line">            &quot;brightBlack&quot; : &quot;#767676&quot;,</span><br><span class="line">            &quot;brightBlue&quot; : &quot;#3B78FF&quot;,</span><br><span class="line">            &quot;brightCyan&quot; : &quot;#61D6D6&quot;,</span><br><span class="line">            &quot;brightGreen&quot; : &quot;#16C60C&quot;,</span><br><span class="line">            &quot;brightPurple&quot; : &quot;#B4009E&quot;,</span><br><span class="line">            &quot;brightRed&quot; : &quot;#E74856&quot;,</span><br><span class="line">            &quot;brightWhite&quot; : &quot;#F2F2F2&quot;,</span><br><span class="line">            &quot;brightYellow&quot; : &quot;#F9F1A5&quot;,</span><br><span class="line">            &quot;cyan&quot; : &quot;#3A96DD&quot;,</span><br><span class="line">            &quot;foreground&quot; : &quot;#CCCCCC&quot;,	//前景颜色</span><br><span class="line">            &quot;green&quot; : &quot;#13A10E&quot;,</span><br><span class="line">            &quot;name&quot; : &quot;Campbell&quot;,		//主题名称</span><br><span class="line">            &quot;purple&quot; : &quot;#881798&quot;,</span><br><span class="line">            &quot;red&quot; : &quot;#C50F1F&quot;,</span><br><span class="line">            &quot;white&quot; : &quot;#CCCCCC&quot;,</span><br><span class="line">            &quot;yellow&quot; : &quot;#C19C00&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>devtool</category>
